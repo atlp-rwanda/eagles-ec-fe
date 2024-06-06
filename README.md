@@ -13,7 +13,10 @@ To run the app locally, follow these steps:
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/atlp-rwanda/eagles-ec-fe.git
-   cd eagle-ec-fr
-   npm install
-   npm run dev
    ```
+2. **Change working dir to cloned repo
+  ```cd eagle-ec-fr```
+3. **Install dependencies
+ ```npm install```
+4. ** Run developmnt server
+   ```npm run dev```
