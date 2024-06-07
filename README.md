@@ -11,12 +11,18 @@ This project was built using the PERN (PostgreSQL, Express.js, React.js, Node.js
 To run the app locally, follow these steps:
 
 1. **Clone the repository:**
-   ```bash
+```bash
    git clone https://github.com/atlp-rwanda/eagles-ec-fe.git
    ```
-2. **Change working dir to cloned repo
-  ```cd eagle-ec-fr```
-3. **Install dependencies
- ```npm install```
-4. ** Run developmnt server
-   ```npm run dev```
+2. **Change working dir to cloned repo:**
+```bash
+cd eagle-ec-fe
+```
+3. **Install dependencies:**
+```bash
+npm install
+```
+4. **Run developmnt server:**
+```bash
+   npm run dev
+   ```
