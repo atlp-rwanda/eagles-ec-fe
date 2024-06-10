@@ -1,18 +1,72 @@
 module.exports = {
   root: true,
-  env: { browser: true, es2020: true },
+  env: {
+    browser: true,
+    es2020: true,
+    node: true,
+  },
   extends: [
-    "eslint:recommended",
+    "airbnb",
+    "airbnb-typescript",
+    "airbnb/hooks",
     "plugin:@typescript-eslint/recommended",
     "plugin:react-hooks/recommended",
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
+  parserOptions: {
+    project: "./tsconfig.eslint.json",
+    tsconfigRootDir: __dirname,
+  },
   plugins: ["react-refresh"],
   rules: {
+    "react/react-in-jsx-scope": "off",
+    "react/function-component-definition": [
+      "warn",
+      {
+        namedComponents: "arrow-function",
+        unnamedComponents: "arrow-function",
+      },
+    ],
+    "no-undef": "off",
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true },
     ],
+    "@typescript-eslint/quotes": ["off"],
+    "arrow-body-style": ["warn", "as-needed"],
+    "import/order": [
+      "warn",
+      {
+        groups: [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+        ],
+        "newlines-between": "always",
+      },
+    ],
+    "@typescript-eslint/comma-dangle": ["warn", "always-multiline"],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        devDependencies: [
+          "vite.config.ts",
+          "postcss.config.js",
+          "tailwind.config.js",
+        ],
+      },
+    ],
+    "import/extensions": ["off"],
+  },
+  settings: {
+    "import/resolver": {
+      node: {
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
+      },
+    },
   },
 };
