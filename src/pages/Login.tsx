@@ -13,6 +13,7 @@ import InputField from "../components/common/auth/InputField";
 import { RootState } from "../redux/store";
 import { login } from "../redux/api/loginApiSlice";
 import sideImage from "../assets/sideImage.png";
+import LinkPages from "../components/common/auth/LinkPages";
 
 interface LoginFormInputs {
   email: string;
@@ -104,15 +105,11 @@ const Login = () => {
             </button>
           </div>
         </form>
-        <div className="flex mt-2 justify-center">
-          <p className=" text-[14px] md:text-[16px]">Don't have an account?</p>
-          <a
-            className="pl-2 underline font-medium text-small md:text-normal"
-            href="/signup"
-          >
-            Sign Up
-          </a>
-        </div>
+        <LinkPages
+          description="Don't have an account?"
+          link="/register"
+          text="Sign Up"
+        />
       </div>
     </div>
   );
