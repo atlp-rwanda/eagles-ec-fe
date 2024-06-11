@@ -16,11 +16,14 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: "./tsconfig.eslint.json",
-    tsconfigRootDir: __dirname,
+    tsconfigRootDir: __dirname
   },
   plugins: ["react-refresh"],
   rules: {
     "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/require-default-props": "off",
+    "no-param-reassign": "off",
     "react/function-component-definition": [
       "warn",
       {
@@ -28,7 +31,10 @@ module.exports = {
         unnamedComponents: "arrow-function",
       },
     ],
+    "no-console": "off",
     "no-undef": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "react/no-unescaped-entities": "off",
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true },
