@@ -1,75 +1,9 @@
-/* index.css */
+@import url("https://fonts.cdnfonts.com/css/poppins");
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f8f9fa;
   color: #333;
-}
-
-.Add-article {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 20px;
-  max-width: 500px;
-  margin: 20px auto;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.Add-article input {
-  width: calc(100% - 20px);
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-.Add-article button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  margin-top: 10px;
-}
-
-.Add-article button:disabled {
-  background-color: #6c757d;
-  cursor: not-allowed;
-}
-
-.Article {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 20px;
-  max-width: 600px;
-  margin: 20px auto;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.Article h1 {
-  font-size: 24px;
-  margin: 0 0 10px;
-}
-
-.Article p {
-  font-size: 18px;
-  line-height: 1.5;
-  margin: 0 0 10px;
-}
-
-.Article button {
-  padding: 10px 20px;
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
 }

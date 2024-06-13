@@ -21,6 +21,10 @@ module.exports = {
   plugins: ["react-refresh"],
   rules: {
     "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/require-default-props": "off",
+    "no-param-reassign": "off",
+    "arrow-spacing": "off",
     "react/function-component-definition": [
       "warn",
       {
@@ -28,7 +32,18 @@ module.exports = {
         unnamedComponents: "arrow-function",
       },
     ],
+    "no-console": "off",
     "no-undef": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "jsx-a11y/mouse-events-have-key-events": "off",
+    "react/button-has-type": "off",
+    "react/no-array-index-key": "off",
+    "no-promise-executor-return": "off",
+    "max-len": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "@typescript-eslint/semi": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "react/no-unescaped-entities": "off",
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true },

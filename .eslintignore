@@ -1,2 +1,5 @@
 # jest
 jest.config.*
+type.d.*
+coverage
+**/*.css
