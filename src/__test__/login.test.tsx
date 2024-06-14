@@ -2,45 +2,25 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router } from "react-router-dom";
-import configureStore from "redux-mock-store";
 import userEvent from "@testing-library/user-event";
 import { ToastContainer } from "react-toastify";
-import { AnyAction } from "redux";
-import { ThunkDispatch } from "@reduxjs/toolkit";
 
 import Login from "../pages/Login";
-import { RootState } from "../redux/store";
+import store from "../redux/store";
 
 const localStorageMock = (() => {
-  let store: Record<string, string> = {};
+  let lstore: Record<string, string> = {};
   return {
-    getItem: (key: string) => store[key] || null,
+    getItem: (key: string) => lstore[key] || null,
     setItem: (key: string, value: string) => {
-      store[key] = value.toString();
+      lstore[key] = value.toString();
     },
     clear: () => {
-      store = {};
+      lstore = {};
     },
   };
 })();
 Object.defineProperty(window, "localStorage", { value: localStorageMock });
-
-const mockStore = configureStore<
-RootState,
-ThunkDispatch<RootState, unknown, AnyAction>
->([]);
-const initialState: RootState = {
-  login: {
-    loading: false,
-    error: null,
-  },
-};
-
-let store: ReturnType<typeof mockStore>;
-
-beforeEach(() => {
-  store = mockStore(initialState);
-});
 
 test("test user login", () => {
   render(
@@ -61,9 +41,6 @@ test("test user login", () => {
   userEvent.type(passwordInput, "Test@123");
 
   userEvent.click(loginButton);
-
-  console.log("email input: ", emailInput);
-  console.log("password input: ", passwordInput);
 
   expect(emailInput).toBeDefined();
   expect(passwordInput).toBeDefined();

@@ -13,4 +13,21 @@ export type ArticleAction = {
   article: IArticle;
 };
 
+export type UserData = {
+  name: string
+  username: string
+  email: string
+  password: string
+};
+
+export type RegisterError = {
+  error : string
+};
+
+export type RegisterState = {
+  isLoading: boolean;
+  data: [];
+  error: string | null;
+};
+
 export type DispatchType = (args: ArticleAction) => ArticleAction;

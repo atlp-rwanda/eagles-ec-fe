@@ -1,13 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-
-// eslint-disable-next-line import/order
-import App from "./App";
+import { Provider } from "react-redux";
 import "./index.css";
 import { BrowserRouter as Router } from "react-router-dom";
-import { Provider } from "react-redux";
 
 import store from "./redux/store";
+import App from "./App";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
