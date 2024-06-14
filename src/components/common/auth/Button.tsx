@@ -16,5 +16,4 @@ const Button: React.FC<ButtonProps> = ({ text, disabled, dataTestId }) => (
     {text}
   </button>
 );
-
 export default Button;

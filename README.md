@@ -7,6 +7,7 @@ The front-end of Eagle E-commerce utilizes React for a modern, user-friendly int
 [![Maintainability](https://api.codeclimate.com/v1/badges/81fa30232b27b1482f4f/maintainability)](https://codeclimate.com/github/atlp-rwanda/eagles-ec-fe/maintainability)
 ![Github Actions](https://github.com/atlp-rwanda/eagles-ec-fe/actions/workflows/deploy.yml/badge.svg)
 [![codecov](https://codecov.io/gh/atlp-rwanda/eagles-ec-fe/graph/badge.svg?token=MZAXZNVDXC)](https://codecov.io/gh/atlp-rwanda/eagles-ec-fe)
+[![Coverage Status](https://coveralls.io/repos/github/atlp-rwanda/eagles-ec-fe/badge.svg?branch=dev)](https://coveralls.io/github/atlp-rwanda/eagles-ec-fe?branch=dev)
 
 ## Tech Stack
 
