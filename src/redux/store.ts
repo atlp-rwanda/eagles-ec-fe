@@ -5,6 +5,7 @@ import registerReducer from "./reducers/registerSlice";
 import otpVerificationReucer from "./api/otpApiSclice";
 import getLinkReducer from "./reducers/getLinkSlice";
 import resetReducer from "./reducers/resetPasswordSlice";
+import categoriesReducer from "./reducers/categoriesSlice";
 
 const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
     otpVerification: otpVerificationReucer,
     getLink: getLinkReducer,
     reset: resetReducer,
+    categories: categoriesReducer,
   },
 });
 

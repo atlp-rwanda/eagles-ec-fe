@@ -42,8 +42,8 @@ const OtpVerificationForm: React.FC = () => {
       const verfiedToken = result.token;
       localStorage.setItem("accessToken", verfiedToken);
       setTimeout(() => {
-        navigate("/");
-      }, 3000);
+        navigate("/dashboard");
+      }, 2000);
     } catch (err) {
       const error = err as AxiosError;
       toast.error(
