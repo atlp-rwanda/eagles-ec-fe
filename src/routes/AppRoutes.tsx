@@ -4,6 +4,7 @@ import RootLayout from "../components/layouts/RootLayout";
 import Homepage from "../pages/Homepage";
 import Login from "../pages/Login";
 import RegisterUser from "../pages/RegisterUser";
+import UpdatePasswordPage from "../pages/passwordUpdatePage";
 
 const AppRoutes = () => (
   <Routes>
@@ -12,6 +13,7 @@ const AppRoutes = () => (
     </Route>
     <Route path="/register" element={<RegisterUser />} />
     <Route path="/login" element={<Login />} />
+    <Route path="/update-password" element={<UpdatePasswordPage />} />
   </Routes>
 );
 
