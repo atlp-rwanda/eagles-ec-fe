@@ -1,11 +1,35 @@
-export interface IProductR {
-  name: string;
-  stockQuantity: string;
+export interface IUser {
   id: number;
+  name: string;
+  username: string;
+  email: string;
+}
+
+export interface ICategory {
+  id: number;
+  name: string;
+  description: string;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IProduct {
+  id: number;
+  name: string;
+  images: string[];
+  stockQuantity: number;
   price: number;
   discount: number;
-  images: string[];
+  categoryID: number;
   description: string;
+  userId: number;
+  isAvailable: boolean;
+  expiryDate: string;
+  createdAt: string;
+  updatedAt: string;
+  category: ICategory;
+  user: IUser;
 }
 
 export const prod = [

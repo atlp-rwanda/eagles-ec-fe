@@ -7,7 +7,10 @@ import {
 
 const HeaderInfo = () => {
   return (
-    <div className="hidden lg:flex justify-between items-center bg-[#FFFFFF] px-4 py-2">
+    <div
+      className="hidden lg:flex justify-between items-center bg-[#FFFFFF] px-4 py-2"
+      id="header-info"
+    >
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-1">
           <CiLocationOn />

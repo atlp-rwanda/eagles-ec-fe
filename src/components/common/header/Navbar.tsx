@@ -1,14 +1,31 @@
 /* eslint-disable arrow-body-style */
 import { IconButton, Stack, TextField } from "@mui/material";
+import React, { SetStateAction, useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { MdMenu } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 
-const Navbar = () => {
+import ClientSidbarDrawer from "../drawrers/ClientSidbarDrawer";
+
+interface InavbarProps {
+  searchQuery: string;
+  setSearchQuery: React.Dispatch<SetStateAction<string>>;
+}
+
+const Navbar: React.FC<InavbarProps> = (searchQuery, setSearchQuery) => {
+  const [open, setOpen] = useState(false);
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Stack className="bg-red-400 " paddingX={{ xs: "10px", sm: 0, md: 0 }}>
       <Stack
-        className=" max-w-[1440px] py-6 lg:mx-auto lg:w-[90%] w-[100%]"
+        className="max-w-[1440px] py-4 lg:mx-auto lg:w-[90%] w-[100%]"
         width={{ xs: "100%", sm: "100%", md: "90%" }}
       >
         <Stack
@@ -24,6 +41,8 @@ const Navbar = () => {
             gap={2}
           >
             <TextField
+              value={searchQuery}
+              onChange={handleSearch}
               InputProps={{
                 endAdornment: (
                   <IconButton>
@@ -41,23 +60,6 @@ const Navbar = () => {
               }}
               className="flex-1 border-white"
               sx={{
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "white",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "white",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "white",
-                  },
-                },
-                "& .MuiInputBase-input": {
-                  color: "white",
-                },
-                "& .MuiInputLabel-root": {
-                  color: "white",
-                },
                 display: {
                   xs: "flex",
                   sm: "flex",
@@ -67,16 +69,26 @@ const Navbar = () => {
               size="small"
               variant="outlined"
             />
-            <MdMenu fontSize={30} className="lg:hidden flex" />
+            <MdMenu
+              fontSize={30}
+              className="lg:hidden flex text-white"
+              onClick={() => setOpen(true)}
+            />
             <Stack
               direction="row"
               gap={2}
               display={{ xs: "none", sm: "none", md: "flex" }}
             >
-              <MdMenu fontSize={30} className="hidden lg:flex" />
-              <NavLink to="/">All categories</NavLink>
-              <NavLink to="/products">Products</NavLink>
-              <NavLink to="/">Blogs</NavLink>
+              <MdMenu fontSize={30} className="hidden lg:flex text-white" />
+              <NavLink to="/" className=" text-white">
+                All categories
+              </NavLink>
+              <NavLink to="/products" className=" text-white">
+                Products
+              </NavLink>
+              <NavLink to="/" className=" text-white">
+                Blogs
+              </NavLink>
             </Stack>
           </Stack>
           <Stack
@@ -84,18 +96,19 @@ const Navbar = () => {
             gap={2}
             display={{ xs: "none", sm: "none", md: "flex" }}
           >
-            <NavLink to="/" className="text-nowrap">
+            <NavLink to="/" className="text-nowrap text-white">
               Limited Sales
             </NavLink>
-            <NavLink to="/" className="text-nowrap">
+            <NavLink to="/" className="text-nowrap text-white">
               Best Offer
             </NavLink>
-            <NavLink to="/" className="text-nowrap">
+            <NavLink to="/" className="text-nowrap text-white">
               New Arrival
             </NavLink>
           </Stack>
         </Stack>
       </Stack>
+      <ClientSidbarDrawer open={open} handleClose={handleClose} />
     </Stack>
   );
 };
