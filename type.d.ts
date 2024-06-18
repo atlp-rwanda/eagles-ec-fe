@@ -14,20 +14,35 @@ export type ArticleAction = {
 };
 
 export type UserData = {
-  name: string
-  username: string
-  email: string
-  password: string
+  name: string;
+  username: string;
+  email: string;
+  password: string;
 };
 
 export type RegisterError = {
-  error : string
+  error: string;
+};
+export type errorLink = {
+  error?: string;
+};
+export type ResetError = {
+  error?: string;
 };
 
 export type RegisterState = {
   isLoading: boolean;
   data: [];
   error: string | null;
+};
+
+export type emailType = {
+  email: string;
+};
+
+type passwordType = {
+  password: string;
+  confirmPassword: string;
 };
 
 export type DispatchType = (args: ArticleAction) => ArticleAction;

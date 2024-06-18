@@ -5,7 +5,6 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
-    "noImplicitAny": false,
     "types": [
       "jest",
       "@testing-library/react"
@@ -17,6 +16,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "noImplicitAny": false,
     "esModuleInterop": true,
     "jsx": "react-jsx",
 
