@@ -35,6 +35,7 @@ module.exports = {
     "no-undef": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "react/no-unescaped-entities": "off",
+    "react/prop-types": "off",
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true },
