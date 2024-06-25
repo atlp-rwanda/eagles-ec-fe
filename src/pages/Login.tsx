@@ -42,9 +42,14 @@ const Login = () => {
       const { token } = result;
       localStorage.setItem("accessToken", token);
       reset();
-      setTimeout(() => {
-        navigate("/");
-      }, 3000);
+      const sellerOtp = JSON.parse(atob(token.split(".")[1])).otp;
+      if (sellerOtp) {
+        navigate("/2fa-verify");
+      } else {
+        setTimeout(() => {
+          navigate("/");
+        }, 3000);
+      }
     } catch (err) {
       const error = err as AxiosError;
       toast.error(`Login failed: ${error.message}`);
@@ -85,7 +90,7 @@ const Login = () => {
             error={errors.password?.message}
           />
           <Link
-            to="/reset-password"
+            to="/password-reset-link"
             className="text-blue-500 font-normal text-normal"
           >
             Forgot Password?
@@ -93,6 +98,7 @@ const Login = () => {
           <div className="flex flex-col">
             <Button
               text={loading ? "Loading..." : "Login"}
+              backgroundColor="bg-[#161616]"
               disabled={loading}
               data-testid="login-btn"
             />

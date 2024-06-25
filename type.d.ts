@@ -23,11 +23,26 @@ export type UserData = {
 export type RegisterError = {
   error: string;
 };
+export type errorLink = {
+  error?: string;
+};
+export type ResetError = {
+  error?: string;
+};
 
 export type RegisterState = {
   isLoading: boolean;
   data: [];
   error: string | null;
+};
+
+export type emailType = {
+  email: string;
+};
+
+type passwordType = {
+  password: string;
+  confirmPassword: string;
 };
 
 export type DispatchType = (args: ArticleAction) => ArticleAction;

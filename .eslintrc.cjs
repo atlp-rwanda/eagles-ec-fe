@@ -50,6 +50,8 @@ module.exports = {
     "react/button-has-type": "off",
     "react/no-array-index-key": "off",
     "no-promise-executor-return": "off",
+    "jsx-a11y/control-has-associated-label": "off",
+    "jsx-a11y/no-static-element-interactions":"off",
     "max-len": "off",
     "react-hooks/exhaustive-deps": "off",
     "@typescript-eslint/semi": "off",

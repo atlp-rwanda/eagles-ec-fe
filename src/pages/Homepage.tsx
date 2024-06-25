@@ -14,7 +14,6 @@ const Homepage = () => (
     {/* <NewArrivals /> */}
     <AdvertisedCategory />
     <CustomerService />
-    <div data-testid="footer">dd</div>
   </div>
 );
 

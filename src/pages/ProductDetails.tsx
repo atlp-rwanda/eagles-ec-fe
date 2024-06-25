@@ -18,36 +18,43 @@ import { BsChatRightText } from "react-icons/bs";
 import { useFetchSingleProduct } from "../libs/queries";
 import ProductDetailSkleton from "../components/skeletons/ProductDetailSkleton";
 import { IProduct, prod } from "../types";
+import api from "../redux/api/api";
 
 const ProductDetails: React.FC = () => {
   const [mainImage, setMainImage] = useState<string | null>(null);
   const [product, setProduct] = useState<IProduct | null>(null);
   const [items, setItems] = useState(0);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
 
-  // @ts-ignore
-  const { data, isPending, error } = useFetchSingleProduct(id);
   useEffect(() => {
-    if (data) {
-      setMainImage(data.product[0].images[0]);
-      setProduct(data.product[0]);
-    }
+    setIsLoading(true);
+
+    const fetch = async () => {
+      try {
+        const res = await api.get(`/products/${id}`);
+
+        console.log(res.data.product[0]);
+        res.status === 404;
+        setProduct(res.data.product[0]);
+        setIsLoading(false);
+      } catch (error: any) {
+        setError(error.message);
+      } finally {
+        setIsloading(false);
+      }
+    };
+
+    fetch();
   }, [id]);
 
-  if (!id) {
-    return <div>Invalid it</div>;
-  }
-
-  if (isPending) {
-    return <ProductDetailSkleton />;
-  }
-
   if (error) {
-    return (
-      <div className=" flex items-center justify-center h-[50vh]">
-        {error.message}
-      </div>
-    );
+    return <div>{error}</div>;
+  }
+
+  if (isLoading) {
+    return <ProductDetailSkleton />;
   }
 
   const handleImageClick = (image: string) => {
@@ -85,10 +92,10 @@ const ProductDetails: React.FC = () => {
               {product?.images.map((img, index) => (
                 <img
                   width={100}
-                  height={110}
+                  height={100}
                   alt="some alt here"
                   src={img}
-                  className="rounded-md max-w-[170px] w-[100%] "
+                  className="rounded-md max-w-[170px] w-[100%] max-h-[100px] h-full"
                   key={index}
                   onClick={() => setMainImage(img)}
                 />

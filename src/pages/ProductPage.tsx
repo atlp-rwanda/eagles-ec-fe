@@ -11,55 +11,72 @@ import { gsap } from "gsap";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { useOutletContext } from "react-router-dom";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 
 import ProductPageSkeleton from "../components/skeletons/ProductPageSkeleton";
 import ProductCard from "../components/cards/ProductCard";
 import { IProduct } from "../types";
 import ProductFilter from "../components/common/filter/ProductFilter";
-import { useFetchProducts } from "../libs/queries";
+// import { useFetchProducts } from "../libs/queries";
 import { IOutletProps } from "../components/layouts/RootLayout";
+import api from "../redux/api/api";
 
 const ProductPage = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(15);
-
-  const { searchQuery } = useOutletContext<IOutletProps>();
-  const { data, isPending, error } = useFetchProducts();
+  const [isLoading, setIsloading] = useState(true);
+  const [error, setError] = useState("");
+  const { searchQuery, showFilters } = useOutletContext<IOutletProps>();
 
   useEffect(() => {
-    if (data) {
-      setProducts(data);
-      setFilteredProducts(data);
-      gsap.fromTo(
-        ".soleil2",
-        {
-          opacity: 0,
-          y: 20,
-        },
-        {
-          y: 0,
-          opacity: 1,
-          ease: "power1.inOut",
-          stagger: 0.2,
-          yoyo: true,
-          delay: 1,
-        },
-      );
-    }
-  }, [data]);
+    const fetch = async () => {
+      try {
+        const res = await api.get("/products");
+        setProducts(res.data.products);
+        setIsloading(false);
+        gsap.fromTo(
+          ".soleil2",
+          {
+            opacity: 0,
+            y: 20,
+          },
+          {
+            y: 0,
+            opacity: 1,
+            ease: "power1.inOut",
+            stagger: 0.2,
+            yoyo: true,
+            delay: 1,
+          },
+        );
+      } catch (error: any) {
+        setError(error.message);
+        setIsloading(false);
+      } finally {
+        setIsloading(false);
+      }
+    };
+    fetch();
+  }, []);
 
-  if (isPending) {
+  useEffect(() => {
+    const filtered = products.filter(
+      (product) => product.name.toLowerCase().includes(searchQuery.toLowerCase())
+        || product.category.name.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
+    setFilteredProducts(filtered);
+    setCurrentPage(1);
+  }, [searchQuery]);
+
+  if (isLoading) {
     return <ProductPageSkeleton />;
   }
 
   if (error) {
     return (
-      <div className="flex items-center justify-center my-[50px]">
-        {error.message}
-      </div>
+      <div className="flex items-center justify-center my-[50px]">{error}</div>
     );
   }
 
@@ -89,24 +106,17 @@ const ProductPage = () => {
     setCurrentPage(1);
   };
 
-  useEffect(() => {
-    const filtered = products.filter(
-      (product) => product.name.toLowerCase().includes(searchQuery.toLowerCase())
-        || product.category.name.toLowerCase().includes(searchQuery.toLowerCase()),
-    );
-    setFilteredProducts(filtered);
-    setCurrentPage(1);
-  }, [searchQuery, products]);
-
   return (
-    <div>
-      <ProductFilter products={products} onFilter={handleFilter} />
+    <div className={`${!showFilters ? "mt-4" : ""}`}>
+      {showFilters && (
+        <ProductFilter products={products} onFilter={handleFilter} />
+      )}
 
       <Grid
         container
         spacing={{ xs: 1, sm: 1, md: 2 }}
         alignItems="center"
-        className="mb-4"
+        className="mb-4 px-4"
       >
         {currentItems.map((product) => (
           <Grid
@@ -120,6 +130,12 @@ const ProductPage = () => {
             <ProductCard product={product} />
           </Grid>
         ))}
+
+        {searchQuery && currentItems.length < 1 && (
+          <div className="flex w-full items-center justify-center py-[50px]">
+            <p className=" text-center">No product found based on your query</p>
+          </div>
+        )}
       </Grid>
 
       <Stack

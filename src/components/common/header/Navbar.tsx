@@ -23,7 +23,7 @@ const Navbar: React.FC<InavbarProps> = (searchQuery, setSearchQuery) => {
   };
 
   return (
-    <Stack className="bg-red-400 " paddingX={{ xs: "10px", sm: 0, md: 0 }}>
+    <Stack className="bg-[#DB4444] " paddingX={{ xs: "10px", sm: 0, md: 0 }}>
       <Stack
         className="max-w-[1440px] py-4 lg:mx-auto lg:w-[90%] w-[100%]"
         width={{ xs: "100%", sm: "100%", md: "90%" }}

@@ -1,19 +1,29 @@
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import { Divider } from "@mui/material";
 
 import Header from "../common/header/Header";
 import Footer from "../common/footer/Footer";
 import HeaderInfo from "../common/header/Info";
 import Navbar from "../common/header/Navbar";
+import BreadCrums from "../common/breadcrum/BreadCrum";
 
 export interface IOutletProps {
   searchQuery: string;
+  showFilters: boolean;
 }
 
 const RootLayout = () => {
   const [isSticky, setIsSticky] = useState(false);
   const [isHeaderInfoVisible, setIsHeaderInfoVisible] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showFilters, setShowFilters] = useState(true);
+
+  const location = useLocation();
+
+  const toggleFilters = () => {
+    setShowFilters((state) => !state);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,7 +57,9 @@ const RootLayout = () => {
         <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       </div>
       <div className="flex-1 max-w-[1440px] mx-auto lg:w-[90%] w-[100%]">
-        <Outlet context={{ searchQuery } satisfies IOutletProps} />
+        <BreadCrums showFilters={showFilters} toggleFilter={toggleFilters} />
+        {location.pathname !== "/" && <Divider className="mb-3" />}
+        <Outlet context={{ searchQuery, showFilters } satisfies IOutletProps} />
       </div>
       <Footer />
     </div>

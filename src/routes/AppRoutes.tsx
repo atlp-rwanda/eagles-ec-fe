@@ -6,6 +6,9 @@ import Login from "../pages/Login";
 import ProductPage from "../pages/ProductPage";
 import RegisterUser from "../pages/RegisterUser";
 import ProductDetails from "../pages/ProductDetails";
+import OtpVerificationForm from "../pages/otpVerfication";
+import GetLinkPage from "../pages/GetLinkPage";
+import ResetPassword from "../pages/ResetPassword";
 
 const AppRoutes = () => (
   <Routes>
@@ -14,8 +17,11 @@ const AppRoutes = () => (
       <Route path="products" element={<ProductPage />} />
       <Route path="products/:id" element={<ProductDetails />} />
     </Route>
+    <Route path="/password-reset-link" element={<GetLinkPage />} />
+    <Route path="/reset-password" element={<ResetPassword />} />
     <Route path="/register" element={<RegisterUser />} />
     <Route path="/login" element={<Login />} />
+    <Route path="2fa-verify" element={<OtpVerificationForm />} />
   </Routes>
 );
 

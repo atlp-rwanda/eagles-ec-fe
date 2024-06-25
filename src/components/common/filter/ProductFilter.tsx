@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { TextField } from "@mui/material";
 
 import { ICategory, IProduct } from "../../../types";
 
@@ -28,9 +29,19 @@ const ProductFilter: React.FC<IProductFilterProps> = ({
 
   useEffect(() => {
     if (products) {
-      const categories: ICategory[] = products.map((p) => p.category);
+      const categorySet = new Set<ICategory>();
+      products.forEach((product) => {
+        categorySet.add(product.category);
+      });
+      const filteredCategories: ICategory[] = Array.from(categorySet);
 
-      setCategories(categories);
+      const uniqueCategories = filteredCategories.filter(
+        (category, index, self) => self.findIndex(
+          (otherCategory) => otherCategory.id === category.id,
+        ) === index,
+      );
+
+      setCategories(uniqueCategories);
       setIsLoading(false);
     }
   }, []);
@@ -145,6 +156,7 @@ const ProductFilter: React.FC<IProductFilterProps> = ({
                 <input
                   type="checkbox"
                   className="mr-1"
+                  // hidden
                   checked={
                     priceRange[0] === range.value[0]
                     && priceRange[1] === range.value[1]
@@ -165,16 +177,26 @@ const ProductFilter: React.FC<IProductFilterProps> = ({
           <select
             multiple
             value={selectedCategories}
-            className="w-[200px]"
+            className=" w-full "
             onChange={handleCategoryChange}
           >
-            {categories.map((category) => (
-              <option key={category.id} value={category.name}>
+            {categories.map((category, i) => (
+              <option key={i} value={category.name}>
                 {category.name}
               </option>
             ))}
           </select>
-          {/* <TextField></TextField> */}
+          {/* <TextField select size="small"
+             value={selectedCategories}
+             className="w-[200px]"
+             onChange={handleCategoryChange}>
+            <option value="">All</option>
+            {categories.map((category,i) => (
+              <option key={i} value={category.name}>
+                {category.name}
+              </option>
+            ))}
+          </TextField> */}
         </div>
       </div>
     </div>

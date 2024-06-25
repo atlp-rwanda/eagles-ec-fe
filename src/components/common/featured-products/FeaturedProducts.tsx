@@ -5,15 +5,27 @@ import ProductCardSkelton from "../../cards/ProductCardSkeleton";
 import ProductCard from "../../cards/ProductCard";
 import { useFetchProducts } from "../../../libs/queries";
 import { IProduct } from "../../../types";
+import api from "../../../redux/api/api";
 
 const FeaturedProducts = () => {
   const [products, setProducts] = useState<IProduct[] | []>([]);
-  const { data, isPending, error } = useFetchProducts();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    if (data) {
-      setProducts(data);
-    }
+    const fetch = async () => {
+      try {
+        const res = await api.get("/products");
+        setProducts(res.data.products);
+        setIsLoading(false);
+      } catch (error: any) {
+        setError(error.message);
+        setIsLoading(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetch();
   }, []);
 
   if (error) {
@@ -22,27 +34,12 @@ const FeaturedProducts = () => {
         <Typography className="p-3 font-bold" variant="h5">
           Featured Products
         </Typography>
-        <p className=" flex justify-center items-center my-[50px]">
-          {error.message}
-        </p>
+        <p className=" flex justify-center items-center my-[50px]">{error}</p>
       </div>
     );
   }
 
-  if (data?.lenght < 1) {
-    return (
-      <div className="my-5 px-4">
-        <Typography className="p-3 font-bold" variant="h5">
-          Featured Products
-        </Typography>
-        <p className=" flex justify-center items-center my-[50px]">
-          no product found
-        </p>
-      </div>
-    );
-  }
-
-  if (isPending) {
+  if (isLoading) {
     return (
       <div className="my-5">
         <div className="flex items-center gap-2 p-3">
@@ -89,13 +86,13 @@ const FeaturedProducts = () => {
         container
         spacing={{ xs: 1, sm: 1, md: 2 }}
         alignItems="center"
-        className="mb-4"
+        className="mb-4 px-4"
       >
         {products?.slice(0, 8).map((product: IProduct) => (
           <Grid
             key={product.id}
             item
-            xs={6}
+            xs={12}
             sm={4}
             md={2.4}
             className="soleil2"
@@ -104,11 +101,6 @@ const FeaturedProducts = () => {
           </Grid>
         ))}
       </Grid>
-      {!products && (
-        <p className=" flex justify-center items-center my-[50px]">
-          {data.length}
-        </p>
-      )}
     </div>
   );
 };
