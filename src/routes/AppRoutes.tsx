@@ -9,6 +9,7 @@ import GetLinkPage from "../pages/GetLinkPage";
 import ResetPassword from "../pages/ResetPassword";
 import SellerDashboard from "../dashboard/sellers/Index";
 import AddProduct from "../dashboard/sellers/AddProduct";
+import UpdatePasswordPage from "../pages/passwordUpdatePage";
 
 const AppRoutes = () => (
   <Routes>
@@ -22,6 +23,7 @@ const AppRoutes = () => (
     <Route path="2fa-verify" element={<OtpVerificationForm />} />
     <Route path="/dashboard" element={<SellerDashboard />} />
     <Route path="/dashboard/addproduct" element={<AddProduct />} />
+    <Route path="/update-password" element={<UpdatePasswordPage />} />
   </Routes>
 );
 
