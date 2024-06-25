@@ -33,6 +33,7 @@ LoginPayload,
 >("login", async (payload, { rejectWithValue }) => {
   try {
     const response = await axios.post("/users/login", payload);
+    console.log("Payload being returned:", response.data);
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError<LoginError>;

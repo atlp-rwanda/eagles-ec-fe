@@ -5,12 +5,16 @@ import Homepage from "../pages/Homepage";
 import Login from "../pages/Login";
 import RegisterUser from "../pages/RegisterUser";
 import OtpVerificationForm from "../pages/otpVerfication";
+import GetLinkPage from "../pages/GetLinkPage";
+import ResetPassword from "../pages/ResetPassword";
 
 const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Homepage />} />
     </Route>
+    <Route path="/password-reset-link" element={<GetLinkPage />} />
+    <Route path="/reset-password" element={<ResetPassword />} />
     <Route path="/register" element={<RegisterUser />} />
     <Route path="/login" element={<Login />} />
     <Route path="2fa-verify" element={<OtpVerificationForm />} />
