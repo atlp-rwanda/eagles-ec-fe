@@ -45,4 +45,17 @@ type passwordType = {
   confirmPassword: string;
 };
 
+export type Profile = {
+  profileImage: string;
+  fullName: string;
+  gender: string;
+  birthdate: string;
+  preferredLanguage: string;
+  preferredCurrency: string;
+  street: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+};
 export type DispatchType = (args: ArticleAction) => ArticleAction;
