@@ -16,12 +16,12 @@ const ClientSidbarDrawer: React.FC<ISidebarProps> = ({ open, handleClose }) => (
   >
     <Box
       sx={{ width: 300 }}
-      className=" backdrop-blur-[20px] bg-transparent h-full"
+      className=" backdrop-blur-[20px] bg-transparent h-full flex flex-col gap-2"
     >
       <NavLink to="/" onClick={() => handleClose}>
         All Catgories
       </NavLink>
-      <NavLink to="/" onClick={() => handleClose}>
+      <NavLink to="/products" onClick={() => handleClose}>
         Products
       </NavLink>
       <NavLink to="/" onClick={() => handleClose}>

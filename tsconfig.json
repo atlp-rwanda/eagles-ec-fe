@@ -7,7 +7,8 @@
     "skipLibCheck": true,
     "types": [
       "jest",
-      "@testing-library/react"
+      "@testing-library/react",
+      "node"
     ],
 
     /* Bundler mode */
@@ -26,6 +27,6 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["vite.config.ts", ".eslintrc.cjs", "src"],
+  "include": [".eslintrc.cjs", "src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

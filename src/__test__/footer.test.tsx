@@ -7,10 +7,6 @@ import { BrowserRouter } from "react-router-dom";
 import store from "../redux/store";
 import Footer from "../components/common/footer/Footer";
 
-test("demo", () => {
-  expect(true).toBe(true);
-});
-
 describe("Testing React components", () => {
   it("should render home page components", () => {
     render(

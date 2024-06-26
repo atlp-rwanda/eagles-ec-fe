@@ -4,6 +4,7 @@ import {
 import { CiUser } from "react-icons/ci";
 import { FaSearch, FaShoppingCart } from "react-icons/fa";
 import React from "react";
+import { Link } from "react-router-dom";
 
 import Logo from "../auth/Logo";
 
@@ -19,16 +20,16 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
 
   return (
     <Stack
-      className="px-4 py-1 bg-white w-full relative"
+      className="px-4 bg-white w-full relative"
       // display={{ xs: "none", sm: "none", md: "flex" }}
       id="header"
     >
       <Stack className=" justify-between items-center" direction="row">
         <Stack paddingY={{ xs: "15px" }}>
-          <Logo className="p-1" />
+          <Logo className="" />
         </Stack>
         <Stack
-          className="items-center gap-2 py-2"
+          className="items-center gap-2 py-"
           direction="row"
           display={{ xs: "none", sm: "none", md: "flex" }}
         >
@@ -56,12 +57,16 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
                 <span className="ml-2 font-semibold text-[12px]">$150.00</span>
               </Stack>
             </Stack>
-            <Stack direction="row" className="flex items-center">
-              <CiUser className="text-[24px] text-black" />
-              <Stack className="flex flex-col">
-                <span className="ml-2 font-semibold text-[12px]">User</span>
-                <span className="ml-2 font-semibold text-[12px]">Account</span>
-              </Stack>
+            <Stack>
+              <Link to="/login" className="flex items-center">
+                <CiUser className="text-[24px] text-black" />
+                <Stack className="flex flex-col">
+                  <span className="ml-2 font-semibold text-[12px]">User</span>
+                  <span className="ml-2 font-semibold text-[12px]">
+                    Account
+                  </span>
+                </Stack>
+              </Link>
             </Stack>
           </Stack>
         </Stack>

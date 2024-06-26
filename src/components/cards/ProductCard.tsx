@@ -13,11 +13,14 @@ interface IProductCardProps {
 const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  const price = product.price >= 100000
-    ? `${(product.price / 1000000).toFixed(1)}M`
-    : product.price >= 1000
-      ? `${(product.price / 1000).toFixed(1)}k`
-      : product.price.toString();
+  const soleilFN = (price: number) => {
+    if (price < 1000) {
+      return price.toString();
+    } if (price >= 1000 && price < 1000000) {
+      return `${(price / 1000).toFixed(1)}k`;
+    }
+    return `${(price / 1000000).toFixed(1)}M`;
+  };
 
   const name = product.name.length > 20
     ? `${product.name.substring(0, 12)}...`
@@ -34,7 +37,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
       data-testid="tbt"
     >
       {diff < 2 && (
-        <div className="absolute top-2 left-2 ">
+        <div className="absolute top-2 left-2 " data-testid="new">
           <p className=" rounded-md z-40  text-white new-product ">New</p>
         </div>
       )}
@@ -48,9 +51,13 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
           src={product.images[0]}
           alt="d-ss"
           className="w-[100%] h-[200px] hover:scale-[1.05] transition duration-200"
+          data-testid="prod-image"
         />
         {isHovered && (
-          <button className="bg-black text-white w-full py-2 text-center absolute bottom-0 ">
+          <button
+            className="bg-black text-white w-full py-2 text-center absolute bottom-0 "
+            data-testid="add-to-cart"
+          >
             Add to cart
           </button>
         )}
@@ -62,9 +69,15 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
             className="bg-white"
             sx={{ paddingY: 0.5, paddingX: 0.5 }}
           >
-            <CiHeart className="text-black bg-white p-2 rounded-full text-[30px]" />
+            <CiHeart
+              className="text-black bg-white p-2 rounded-full text-[30px]"
+              data-testid="like-btn"
+            />
           </IconButton>
-          <IconButton sx={{ paddingY: 0.5, paddingX: 0.5 }}>
+          <IconButton
+            sx={{ paddingY: 0.5, paddingX: 0.5 }}
+            data-testid="dprod-detailbtn"
+          >
             <Link to={`/products/${product.id}`}>
               {" "}
               <FaEye className="text-black bg-white p-2 rounded-full text-[30px]" />
@@ -73,16 +86,27 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
         </div>
       </div>
 
-      <Typography className="font-bold text-[14px] sm:text-[18px] text-nowrap p-1">
+      <Typography
+        className="font-bold text-[14px] sm:text-[18px] text-nowrap p-1"
+        data-testid="product-name"
+      >
         {name}
       </Typography>
       <div className="flex items-center gap-1 p-1">
-        <p className="text-red-400 text-[10px]">
+        <p className="text-red-400 text-[10px]" data-testid="price">
           $
-          {price}
+          {soleilFN(product.price)}
         </p>
-        <Rating value={4} color="orange" disabled size="small" />
-        <p className="text-[10px]">(56)</p>
+        <Rating
+          value={4}
+          color="orange"
+          disabled
+          size="small"
+          data-testid="rating"
+        />
+        <p className="text-[10px]" data-testid="review">
+          (56)
+        </p>
       </div>
     </div>
   );

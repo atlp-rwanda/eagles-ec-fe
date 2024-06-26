@@ -26,6 +26,7 @@ const ProductDetails: React.FC = () => {
   const [items, setItems] = useState(0);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [activeImage, setActiveImage] = useState(0);
   const { id } = useParams();
 
   useEffect(() => {
@@ -68,8 +69,22 @@ const ProductDetails: React.FC = () => {
 
   const priceAfterDiscount = discountedAmount && product?.price - discountedAmount;
 
+  const handleImage = (url: string, index: number) => {
+    setMainImage(url);
+    setActiveImage(index);
+  };
+
+  const soleilFN = (price: number) => {
+    if (price < 1000) {
+      return price.toString();
+    }
+    if (price >= 1000 && price < 1000000) {
+      return `${(price / 1000).toFixed(1)}k`;
+    }
+    return `${(price / 1000000).toFixed(1)}M`;
+  };
   return (
-    <div className="py-6 mx-auto p-3">
+    <div className="py-6 mx-auto p-1">
       {product && (
         <Stack gap={2} direction={{ xs: "column", sm: "column", md: "row" }}>
           <Stack
@@ -95,9 +110,9 @@ const ProductDetails: React.FC = () => {
                   height={100}
                   alt="some alt here"
                   src={img}
-                  className="rounded-md max-w-[170px] w-[100%] max-h-[100px] h-full"
+                  className={`rounded-md ${activeImage === index ? "border-[5px] border-green-600" : ""} cursor-pointer max-w-[170px] w-[100%] max-h-[100px] h-full`}
                   key={index}
-                  onClick={() => setMainImage(img)}
+                  onClick={() => handleImage(img, index)}
                 />
               ))}
             </Stack>
@@ -106,7 +121,7 @@ const ProductDetails: React.FC = () => {
               <img
                 width="100%"
                 height={400}
-                className="rounded-md mx-auto flex-1"
+                className="rounded-md cursor-pointer mx-auto flex-1"
                 alt="main prod"
                 src={mainImage || product?.images[0]}
                 style={{
@@ -153,14 +168,14 @@ const ProductDetails: React.FC = () => {
                           className="text-[24px] text-red-600 font-bold line-through"
                         >
                           $
-                          {product?.price}
+                          {soleilFN(product?.price)}
                         </Typography>
                         <Typography
                           variant="h4"
                           className="text-[24px] font-bold "
                         >
                           $
-                          {priceAfterDiscount}
+                          {soleilFN(priceAfterDiscount)}
                         </Typography>
                       </>
                     ) : (
@@ -169,7 +184,7 @@ const ProductDetails: React.FC = () => {
                         className="text-[24px] font-bold"
                       >
                         $
-                        {product?.price}
+                        {soleilFN(product?.price)}
                       </Typography>
                     )}
                   </div>
@@ -188,9 +203,10 @@ const ProductDetails: React.FC = () => {
 
               <Stack
                 direction={{ xs: "column", sm: "row", md: "row" }}
-                className="flex justify-between items-center w-[100%]"
+                className="flex justify-between w-[100%]"
+                gap={{ xs: 1, sm: 1, md: 0 }}
               >
-                <div className="w-[159px] flex items-center border border-[#808080] rounded-md">
+                <div className="sm:w-[159px] w-full flex items-center border border-[#808080] rounded-md">
                   <button
                     disabled={items < 1}
                     className={`text-center p-3 flex-1 border-r-[#808080] ${items === product?.stockQuantity ? "hover:-translate-x-4 hover:-translate-y-5 bg-red-600 transition-all duration-300 hover:rounded-bl-md hover:rounded-tl-md" : ""}`}

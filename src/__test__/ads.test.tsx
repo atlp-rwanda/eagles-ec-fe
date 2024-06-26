@@ -7,10 +7,6 @@ import { BrowserRouter } from "react-router-dom";
 import AdvertisedCategory from "../components/common/ads/AdvertisedCategory";
 import store from "../redux/store";
 
-test("demo", () => {
-  expect(true).toBe(true);
-});
-
 describe("Testing AdvertisedCategory Component", () => {
   it("should render advertised category section", () => {
     render(

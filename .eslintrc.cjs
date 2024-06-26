@@ -36,6 +36,16 @@ module.exports = {
     "no-plusplus": "off",
     "no-param-reassign": "off",
     "arrow-spacing": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "react/button-has-type": "off",
+    "no-param-reassign": "off",
+    "react/prop-types": "off",
+    "import/no-extraneous-dependencies": "off",
+    "no-nested-ternary": "off",
+    "import/prefer-default-export": "off",
+    "no-return-assign": "off",
+    "jsx-a11y/label-has-associated-control": "off",
     "react/function-component-definition": [
       "warn",
       {
@@ -58,6 +68,7 @@ module.exports = {
     "@typescript-eslint/ban-ts-comment": "off",
     "no-unsafe-optional-chaining": "off",
     "react/no-unescaped-entities": "off",
+    '@typescript-eslint/no-explicit-any': 0,
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true },

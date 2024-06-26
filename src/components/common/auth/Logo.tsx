@@ -9,12 +9,12 @@ interface ILogoProps {
 const Logo: React.FC<ILogoProps> = ({ className }) => (
   <Link
     to="/"
-    className={`text-black font-bold text-[20px] z-50 flex items-center gap-1 ${className}`}
+    className={`text-black font-bold z-50 flex  items-center gap-1 ${className}`}
   >
-    <h1 className="font-medium text-[26px]">
-      <span className="font-[550] text-heading"> eagles</span>
+    <h1 className="font-medium p-0">
+      <span className="font-[550] text-[30px] "> eagles</span>
     </h1>
-    <FaCircle className="text-sm text-[#DB4444] mt-6" />
+    <FaCircle className="text-[15px] text-[#DB4444] mt-6 p-0" />
   </Link>
 );
 

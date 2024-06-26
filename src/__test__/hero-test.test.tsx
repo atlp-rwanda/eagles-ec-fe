@@ -6,11 +6,6 @@ import { BrowserRouter } from "react-router-dom";
 
 import store from "../redux/store";
 import HeroSection from "../components/common/hero/HeroSection";
-import Navbar from "../components/common/header/Navbar";
-
-test("demo", () => {
-  expect(true).toBe(true);
-});
 
 describe("Testing HeroSection Component", () => {
   it("should render hero section", () => {

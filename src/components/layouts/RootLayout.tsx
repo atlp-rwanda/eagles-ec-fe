@@ -48,7 +48,7 @@ const RootLayout = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       <div className={`soleil ${isSticky ? "sticky top-0 z-50" : ""}`}>
         <div className="max-w-[1440px] lg:mx-auto lg:w-[90%] w-full">
           {isHeaderInfoVisible && <HeaderInfo />}

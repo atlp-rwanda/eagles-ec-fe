@@ -2,7 +2,7 @@ import { Divider, Skeleton, Stack } from "@mui/material";
 import React from "react";
 
 const ProductDetailSkleton = () => (
-  <Stack className="p-4 mt-5">
+  <Stack className="p-4 mt-5" data-testid="product-details-skeleton">
     <Stack gap={2} direction={{ xs: "column", sm: "column", md: "row" }}>
       <Stack
         width={{ xs: "100%", sm: "100%", md: "60%" }}

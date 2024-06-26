@@ -12,7 +12,7 @@ interface InavbarProps {
   setSearchQuery: React.Dispatch<SetStateAction<string>>;
 }
 
-const Navbar: React.FC<InavbarProps> = (searchQuery, setSearchQuery) => {
+const Navbar: React.FC<InavbarProps> = ({ searchQuery, setSearchQuery }) => {
   const [open, setOpen] = useState(false);
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
