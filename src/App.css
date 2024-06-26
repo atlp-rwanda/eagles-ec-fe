@@ -7,3 +7,26 @@ body {
   background-color: #f8f9fa;
   color: #333;
 }
+
+.active {
+  color: #eb5757;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(29%) sepia(93%) saturate(5115%) hue-rotate(330deg)
+    brightness(97%) contrast(96%);
+  opacity: 1;
+}
+
+.category-options {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+input[type="date"]::-webkit-datetime-edit-day-field:focus,
+input[type="date"]::-webkit-datetime-edit-month-field:focus,
+input[type="date"]::-webkit-datetime-edit-year-field:focus {
+  background-color: red;
+  color: white;
+  outline: none;
+}

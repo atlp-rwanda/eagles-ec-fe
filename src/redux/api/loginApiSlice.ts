@@ -37,7 +37,9 @@ LoginPayload,
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError<LoginError>;
-    return rejectWithValue(axiosError.response?.data as LoginError);
+    return rejectWithValue({
+      message: axiosError.message,
+    });
   }
 });
 
@@ -50,13 +52,14 @@ const loginApiSlice = createSlice({
       .addCase(login.pending, (state) => {
         state.loading = true;
       })
-      .addCase(login.fulfilled, (state) => {
+      .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
+        localStorage.setItem("accessToken", action.payload.token);
       })
-      .addCase(login.rejected, (state, { payload }) => {
+      .addCase(login.rejected, (state, action) => {
         state.loading = false;
-        state.error = payload?.message ?? "Unknown error";
+        state.error = action.payload?.message ?? "Unknown error";
       });
   },
 });
