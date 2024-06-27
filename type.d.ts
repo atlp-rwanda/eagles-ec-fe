@@ -58,4 +58,22 @@ export type Profile = {
   postalCode: string;
   country: string;
 };
+export interface UserCart {
+  id: number;
+  userId: number;
+  items: CartItem[];
+  total: string;
+  quantity: number;
+  product: number;
+  price: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CartState {
+  isLoading: boolean;
+  data: UserCart | null;
+  error: boolean | string;
+}
+
 export type DispatchType = (args: ArticleAction) => ArticleAction;

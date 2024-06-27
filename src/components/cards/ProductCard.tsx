@@ -1,10 +1,22 @@
 import { IconButton, Rating, Typography } from "@mui/material";
 import { FaEye } from "react-icons/fa";
 import { CiHeart } from "react-icons/ci";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import { AxiosError } from "axios";
+import { useSelector } from "react-redux";
 
 import { IProduct } from "../../types";
+import { useAppDispatch } from "../../redux/hooks";
+import {
+  addToCart,
+  cartManage,
+  removeFromCart,
+} from "../../redux/reducers/cartSlice";
+import Warning from "../common/notify/Warning";
+import { RootState } from "../../redux/store";
+import { RegisterError } from "../../../type";
 
 interface IProductCardProps {
   product: IProduct;
@@ -12,14 +24,56 @@ interface IProductCardProps {
 
 const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useAppDispatch();
 
   const soleilFN = (price: number) => {
     if (price < 1000) {
       return price.toString();
-    } if (price >= 1000 && price < 1000000) {
+    }
+    if (price >= 1000 && price < 1000000) {
       return `${(price / 1000).toFixed(1)}k`;
     }
     return `${(price / 1000000).toFixed(1)}M`;
+  };
+  const handleRemove = async (productId: number) => {
+    try {
+      // @ts-ignore
+      await dispatch(removeFromCart(productId));
+      dispatch(cartManage());
+    } catch (err) {
+      const error = err as AxiosError<RegisterError>;
+      toast.error(`${error.message}`);
+    }
+  };
+  const loading = useSelector(
+    (state: RootState) => state.cart.remove.isLoading,
+  );
+  const userCart = useSelector((state: RootState) => state.cart.data);
+
+  const alreadyInCart = userCart?.some(
+    (item) =>
+      // @ts-ignore
+      item.product?.id === product.id,
+  );
+
+  const handleAddToCart = async () => {
+    if (!localStorage.getItem("accessToken")) {
+      toast.info("Please Log in to add to cart.");
+      return;
+    }
+    setIsLoading(true);
+    try {
+      await dispatch(
+        addToCart({ productId: product.id, quantity: 1 }),
+      ).unwrap();
+      dispatch(cartManage());
+    } catch (err) {
+      const error = err as AxiosError;
+      toast.error(`Failed to add product to cart: ${error.message}`);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const name = product.name.length > 20
@@ -27,44 +81,51 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
     : product.name;
 
   const date = new Date(product.createdAt).getDate();
-  const currrentDate = new Date().getDate();
+  const currentDate = new Date().getDate();
 
-  const diff = currrentDate - date;
-
+  const diff = currentDate - date;
   return (
-    <div
-      className=" max-h-[270px] bg-[#F5F5F5] mb-2 relative"
-      data-testid="tbt"
-    >
+    <div className="max-h-[270px] bg-[#F5F5F5] mb-2 relative" data-testid="tbt">
       {diff < 2 && (
-        <div className="absolute top-2 left-2 " data-testid="new">
-          <p className=" rounded-md z-40  text-white new-product ">New</p>
+        <div className="absolute top-2 left-2" data-testid="new">
+          <p className="rounded-md z-40 text-white new-product">New</p>
         </div>
       )}
-
+      <ToastContainer />
       <div
-        className=" relative min-h-[200px]"
+        className="relative min-h-[200px]"
         onMouseOver={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         <img
           src={product.images[0]}
-          alt="d-ss"
+          alt="product"
           className="w-[100%] h-[200px] hover:scale-[1.05] transition duration-200"
           data-testid="prod-image"
         />
         {isHovered && (
-          <button
-            className="bg-black text-white w-full py-2 text-center absolute bottom-0 "
-            data-testid="add-to-cart"
-          >
-            Add to cart
-          </button>
+          <div className="">
+            {!alreadyInCart ? (
+              <button
+                className="bg-black text-white w-full py-2 text-center absolute bottom-0"
+                data-testid="add-to-cart"
+                onClick={handleAddToCart}
+              >
+                {isLoading ? "Adding..." : "Add To Cart"}
+              </button>
+            ) : (
+              <button
+                className="bg-red-500 text-white w-full py-2 text-center absolute bottom-0"
+                onClick={() => handleRemove(product.id)}
+              >
+                {loading ? "Loading" : "Remove Cart"}
+              </button>
+            )}
+          </div>
         )}
       </div>
-
-      <div className=" absolute top-0 right-0 p-0 ">
-        <div className=" w-full flex flex-col gap-0 ">
+      <div className="absolute top-0 right-0 p-0">
+        <div className="w-full flex flex-col gap-0">
           <IconButton
             className="bg-white"
             sx={{ paddingY: 0.5, paddingX: 0.5 }}
@@ -79,7 +140,6 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
             data-testid="dprod-detailbtn"
           >
             <Link to={`/products/${product.id}`}>
-              {" "}
               <FaEye className="text-black bg-white p-2 rounded-full text-[30px]" />
             </Link>
           </IconButton>

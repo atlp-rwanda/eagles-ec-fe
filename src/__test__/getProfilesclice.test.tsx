@@ -1,8 +1,7 @@
-import { getProfile, profileSlice } from "../redux/reducers/profileSlice";
-
-import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 
+import { getProfile, profileSlice } from "../redux/reducers/profileSlice";
+import "@testing-library/jest-dom";
 import DisplayProfileData from "../components/profile/getProfile";
 
 const { reducer } = profileSlice;
