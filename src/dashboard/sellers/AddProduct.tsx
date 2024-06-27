@@ -4,18 +4,24 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import { AxiosError } from "axios";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
 
 import Layout from "../../components/layouts/SellerLayout";
 import TextInput from "../../components/common/TextInput";
 import FileUpload from "../../components/dashboard/FileUpload";
 import Button from "../../components/dashboard/Button";
 import CustomSelect from "../../components/dashboard/CustomSelect";
-import productSchema from "../../schemas/productSchema";
+import {
+  productSchema,
+  updateProductSchema,
+} from "../../schemas/productSchema";
 import AddCategory from "../../components/dashboard/AddCategory";
-import addProduct from "../../redux/api/productsApiSlice";
+import { addProduct, updateProduct } from "../../redux/api/productsApiSlice";
 import { useAppDispatch } from "../../redux/hooks";
 import { fetchCategories } from "../../redux/reducers/categoriesSlice";
 import { RootState } from "../../redux/store";
+import { fetchProducts } from "../../redux/reducers/productsSlice";
 
 export type ErrorType = {
   error?: string;
@@ -28,9 +34,17 @@ const AddProduct: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const categories = useSelector((state: RootState) => state.categories.data);
   const dispatch = useAppDispatch();
+  const { id } = useParams();
+
+  const products = useSelector((state: any) => state.products.data);
+  const [existingImages, setExistingImages] = useState<string[]>([]);
+  const [removeImages, setRemoveImages] = useState<string[]>([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchCategories());
+    dispatch(fetchProducts());
   }, [dispatch]);
 
   const {
@@ -40,13 +54,37 @@ const AddProduct: React.FC = () => {
     control,
     setValue,
   } = useForm({
-    resolver: yupResolver(productSchema),
+    resolver: yupResolver(id ? updateProductSchema : productSchema),
   });
 
   const handleSelect = (option) => {
     setCategory(option.name);
     setValue("categoryID", option.id);
   };
+
+  useEffect(() => {
+    if (id && products.length) {
+      const selectedProduct = products.find(
+        (item: any) => item.id === Number(id),
+      );
+      setCategory(selectedProduct.category.name);
+      if (selectedProduct) {
+        setValue("name", selectedProduct.name);
+        setValue("price", selectedProduct.price);
+        setValue("stockQuantity", selectedProduct.stockQuantity);
+        setValue("discount", selectedProduct.discount);
+        setValue("categoryID", selectedProduct.categoryID);
+        setValue("description", selectedProduct.description);
+        const formattedExpiryDate = new Date(selectedProduct.expiryDate)
+          .toISOString()
+          .split("T")[0];
+        // @ts-ignore
+        setValue("expiryDate", formattedExpiryDate);
+        handleSelect(selectedProduct.category);
+        setExistingImages(selectedProduct.images);
+      }
+    }
+  }, [id, products, setValue]);
 
   const handleDrop = useCallback((acceptedFiles: File[]) => {
     setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
@@ -74,29 +112,63 @@ const AddProduct: React.FC = () => {
         formData.append("images", file);
       });
     }
-
     try {
-      setLoading(true);
-      // @ts-ignore
-      const response = await dispatch(addProduct(formData)).unwrap();
-      setLoading(false);
-      console.log(response);
-      toast.success("Product added successfully");
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
+      if (id) {
+        formData.append("removeImages", JSON.stringify(removeImages));
+        setLoading(true);
+        const response = await dispatch(
+          updateProduct({ id: Number(id), data: formData }),
+        ).unwrap();
+        setLoading(false);
+        if (response.status === 201) {
+          toast.success("Your product was updated successfully!");
+          setTimeout(() => {
+            navigate("/dashboard/products");
+          }, 3000);
+        } else {
+          toast.error("Failed to update product");
+        }
+      } else {
+        setLoading(true);
+        // @ts-ignore
+        const response = await dispatch(addProduct(formData)).unwrap();
+        setLoading(false);
+        toast.success("Product added successfully");
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
+      }
     } catch (err) {
       setLoading(false);
       const error = err as AxiosError<ErrorType>;
-      toast.error(error.message);
-      console.log(error);
+      toast.error("An error occurred");
     }
+  };
+
+  const handleRemoveExistingImage = (
+    index: number,
+    image: string,
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    event.stopPropagation();
+    setRemoveImages((prevIndexes) => [...prevIndexes, image]);
+    setExistingImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
 
   return (
     <Layout>
-      <section className="mt-24 lg:pl-5">
-        <ToastContainer />
+      <ToastContainer />
+      <section className="mt-24 lg:pl-5 2xl:max-w-[90%] mx-auto">
+        <button type="button">
+          <Link
+            to="/dashboard/products"
+            className="text-dark-gray flex items-center gap-2 mb-4"
+          >
+            <FaArrowLeft className="text-sm" />
+            Back
+          </Link>
+        </button>
+
         <h1 className="text-[18px] font-bold">Product Information</h1>
         <form
           className="flex gap-4 flex-col lg:flex-row w-full"
@@ -193,10 +265,13 @@ const AddProduct: React.FC = () => {
                       field.onChange([...files, ...acceptedFiles]);
                     }}
                     remove={(file, event) => {
+                      // @ts-ignore
                       handleRemoveFile(file, event);
                       field.onChange(files.filter((f) => f !== file));
                     }}
                     files={files}
+                    existingImages={existingImages}
+                    removeExistingImage={handleRemoveExistingImage}
                   />
                 )}
               />
