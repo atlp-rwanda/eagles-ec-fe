@@ -1,4 +1,3 @@
-import { FcGoogle } from "react-icons/fc";
 import { AxiosError } from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
@@ -13,6 +12,7 @@ import { RegisterError, UserData } from "../../type";
 import { RootState } from "../redux/store";
 import InputField from "../components/common/auth/InputField";
 import LinkPages from "../components/common/auth/LinkPages";
+import { GoogleAuthLink } from "../components/common/auth/GoogleAuthLink";
 
 const RegisterUser = () => {
   const dispatch = useDispatch();
@@ -40,7 +40,7 @@ const RegisterUser = () => {
     }
   };
   return (
-    <div className="w-full max-h-screen overflow-y-hidden flex">
+    <div className="flex w-full max-h-screen overflow-y-hidden">
       <div className="hidden min-h-screen lg:flex w-[60%] xl:w-[60%] items-center">
         <img className="w-full" src={registerPhoto} alt="registerImage" />
       </div>
@@ -48,7 +48,7 @@ const RegisterUser = () => {
         <h1 className="text-black font-medium text-[36px]">
           Create an account
         </h1>
-        <h5 className="text-left pt-6">Enter your details below</h5>
+        <h5 className="pt-6 text-left">Enter your details below</h5>
         <form onSubmit={handleSubmit(onSubmit)}>
           <InputField
             name="name"
@@ -85,13 +85,7 @@ const RegisterUser = () => {
             >
               {loading ? "Loading..." : "Create Account"}
             </button>
-            <button
-              type="submit"
-              className="border flex items-center justify-center py-3 px-10 text-[13px] md:text-lg rounded-sm"
-            >
-              <FcGoogle className="mr-3" />
-              Sign up with Google
-            </button>
+            <GoogleAuthLink baseUrl={process.env.VITE_BASE_URL} />
           </div>
         </form>
         <LinkPages

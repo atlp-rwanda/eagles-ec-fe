@@ -29,10 +29,11 @@ test("should render registration page correctly", async () => {
   expect(email).toBeInTheDocument();
   expect(password).toBeInTheDocument();
 
-  const googleButton = screen.getByRole("button", {
-    name: /Sign up with Google/i,
+  const linkElement = screen.getByRole("link", {
+    name: /Sign in with Google/i,
   });
-  expect(googleButton).toBeInTheDocument();
+  expect(linkElement).toBeDefined();
+  expect(linkElement).toBeInTheDocument();
 
   const loginLink = screen.getByRole("link", { name: /Login/i });
   expect(loginLink).toBeInTheDocument();

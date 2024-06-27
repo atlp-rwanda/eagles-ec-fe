@@ -1,4 +1,3 @@
-import { FcGoogle } from "react-icons/fc";
 import { FaCircle } from "react-icons/fa";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -6,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import { AxiosError } from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { useEffect } from "react";
 
 import loginSchema from "../schemas/loginSchema";
 import Button from "../components/common/auth/Button";
@@ -14,6 +14,7 @@ import { RootState } from "../redux/store";
 import { login } from "../redux/api/loginApiSlice";
 import sideImage from "../assets/sideImage.png";
 import LinkPages from "../components/common/auth/LinkPages";
+import { GoogleAuthLink } from "../components/common/auth/GoogleAuthLink";
 
 interface LoginFormInputs {
   email: string;
@@ -56,6 +57,20 @@ const Login = () => {
       console.log(err);
     }
   };
+  useEffect(() => {
+    const getTokenFromUrl = () => {
+      const urlSearchParams = new URLSearchParams(window.location.search);
+      const params = Object.fromEntries(urlSearchParams.entries());
+      const { token } = params;
+      return token;
+    };
+
+    const token = getTokenFromUrl();
+    if (token) {
+      localStorage.setItem("accessToken", token);
+      navigate("/");
+    }
+  });
 
   return (
     <div className="w-full max-h-[100vh] overflow-y-hidden flex">
@@ -91,7 +106,7 @@ const Login = () => {
           />
           <Link
             to="/password-reset-link"
-            className="text-blue-500 font-normal text-normal"
+            className="font-normal text-blue-500 text-normal"
           >
             Forgot Password?
           </Link>
@@ -102,13 +117,8 @@ const Login = () => {
               disabled={loading}
               data-testid="login-btn"
             />
-            <button
-              type="button"
-              className="border flex items-center font-normal justify-center py-2.5 text-[16px] rounded-sm"
-            >
-              <FcGoogle className="mr-3 text-2xl" />
-              Sign in with Google
-            </button>
+
+            <GoogleAuthLink baseUrl={process.env.VITE_BASE_URL} />
           </div>
         </form>
         <LinkPages
