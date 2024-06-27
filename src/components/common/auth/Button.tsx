@@ -5,6 +5,8 @@ interface ButtonProps {
   disabled?: boolean;
   dataTestId?: string;
   backgroundColor?: string;
+  className?: string;
+  onClick?: () => void;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -12,12 +14,15 @@ const Button: React.FC<ButtonProps> = ({
   disabled,
   dataTestId,
   backgroundColor,
+  className,
+  onClick,
 }) => (
   <button
     type="submit"
-    className={`${backgroundColor} text-white py-3  px-12 my-4 text-normal md:text-lg rounded-sm cursor-pointer`}
+    className={`${backgroundColor} text-white py-3  px-12 my-4 text-normal md:text-lg rounded-sm cursor-pointer ${className}`}
     disabled={disabled}
     data-testid={dataTestId}
+    onClick={onClick}
   >
     {text}
   </button>
