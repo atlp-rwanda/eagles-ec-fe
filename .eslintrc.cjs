@@ -69,6 +69,7 @@ module.exports = {
     "no-unsafe-optional-chaining": "off",
     "react/no-unescaped-entities": "off",
     '@typescript-eslint/no-explicit-any': 0,
+    "react/prop-types": "off",
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true },
