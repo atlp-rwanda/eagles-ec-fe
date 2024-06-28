@@ -1,7 +1,8 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 
 import api from "../api/api";
+import { ICategory } from "../../types";
 
 export const fetchCategories = createAsyncThunk(
   "categories",
@@ -13,8 +14,10 @@ export const fetchCategories = createAsyncThunk(
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
+      alert("fetched");
       return response.data.categories;
     } catch (err) {
+      alert("error");
       const error = err as AxiosError;
       return rejectWithValue(error.response?.data);
     }
@@ -42,24 +45,37 @@ export const addCategory = createAsyncThunk(
   },
 );
 
+interface ICategoryRoot {
+  loading: boolean;
+  data: ICategory[];
+  error: string | null;
+}
+
+const initialState: ICategoryRoot = {
+  loading: false,
+  data: [],
+  error: null,
+};
+
 const categoriesSlice = createSlice({
   name: "categories",
-  initialState: {
-    loading: false,
-    data: [],
-    error: null,
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchCategories.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchCategories.fulfilled, (state, action) => {
-        state.loading = false;
-        state.data = action.payload;
-      })
+      .addCase(
+        fetchCategories.fulfilled,
+        (state, action: PayloadAction<ICategory[]>) => {
+          alert("fullfilled");
+          state.loading = false;
+          state.data = action.payload;
+        },
+      )
       .addCase(fetchCategories.rejected, (state, action) => {
+        alert("faled");
         state.loading = false;
         // @ts-ignore
         state.error = action.payload || action.error.message;

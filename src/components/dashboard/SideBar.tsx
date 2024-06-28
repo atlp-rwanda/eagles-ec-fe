@@ -27,8 +27,6 @@ const SideBar: React.FC<SidebarProps> = ({ isOpen }) => (
         </div>
         <nav className="mt-10 flex flex-col gap-2 text-dark-gray">
           <NavLink
-            // @ts-ignore
-            activeclassname="active"
             to="/dashboard"
             className="py-2.5 px-4 flex items-center gap-2 text-lg rounded transition duration-200"
           >

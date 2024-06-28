@@ -4,12 +4,78 @@ body {
   font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f8f9fa;
+  background-color: white;
   color: #333;
 }
 
-.active {
-  color: #eb5757;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.new-product {
+  position: relative;
+  padding: 5px 10px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.new-product::before {
+  content: "";
+  position: absolute;
+  background-image: conic-gradient(rgb(10, 81, 10) 20deg, transparent 120deg);
+  width: 100%;
+  height: 100%;
+  animation: rotate 1s linear infinite;
+}
+
+.new-product::after {
+  content: "New";
+  font-size: 10px;
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  background: #db4444;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: larger;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.breadcrumbs {
+  max-width: 1200px;
+  margin: 10px auto;
+}
+.breadcrumbs > * {
+  display: inline-block;
+  margin-right: 10px;
+}
+.breadcrumbs .crumb:after {
+  content: "/";
+  margin-left: 10px;
+}
+.breadcrumbs .crumb:last-child:after {
+  display: none;
+}
+.breadcrumbs .crumb a {
+  color: #161616;
+  font-size: 20px;
+  font-weight: 500;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {

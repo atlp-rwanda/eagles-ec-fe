@@ -7,6 +7,7 @@ import getLinkReducer from "./reducers/getLinkSlice";
 import resetReducer from "./reducers/resetPasswordSlice";
 import categoriesReducer from "./reducers/categoriesSlice";
 import updatePasswordApiSlice from "./api/updatePasswordApiSlice";
+import productReducer from "./reducers/productSlice";
 
 const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ const store = configureStore({
     reset: resetReducer,
     categories: categoriesReducer,
     updatePassword: updatePasswordApiSlice,
+    products: productReducer,
   },
 });
 

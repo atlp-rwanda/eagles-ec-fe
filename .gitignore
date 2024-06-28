@@ -28,3 +28,5 @@ dist-ssr
 # Environment variables
 .env
 coverage
+
+package-lock.json

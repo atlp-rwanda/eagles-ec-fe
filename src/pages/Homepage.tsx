@@ -1,26 +1,20 @@
-import { useState } from "react";
+import { Divider } from "@mui/material";
 
-import UpdatePasswordmod from "../components/password/updateModal";
+import HeroSection from "../components/common/hero/HeroSection";
+import FeaturedProducts from "../components/common/featured-products/FeaturedProducts";
+import NewArrivals from "../components/common/new-arrivals/NewArrivalProducts";
+import CustomerService from "../components/common/customerservice/CustomerService";
+import AdvertisedCategory from "../components/common/ads/AdvertisedCategory";
 
-const Homepage = () => {
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
-  return (
-    <>
-      <div>Homepage</div>
-      <button
-        onClick={() => {
-          setShowPasswordModal(true);
-        }}
-        className="bg-[#DB4444] text-white py-3 px-2 my-4 text-normal md:text-lg rounded-sm"
-        type="button"
-      >
-        Update Password
-      </button>
-      {showPasswordModal && (
-        <UpdatePasswordmod setPasswordModal={setShowPasswordModal} />
-      )}
-    </>
-  );
-};
+const Homepage = () => (
+  <div className="mx-auto">
+    <HeroSection />
+    <Divider orientation="horizontal" className="my-4" />
+    <FeaturedProducts />
+    {/* <NewArrivals /> */}
+    <AdvertisedCategory />
+    <CustomerService />
+  </div>
+);
 
 export default Homepage;
