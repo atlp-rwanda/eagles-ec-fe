@@ -38,7 +38,7 @@ const GetLinkPage = () => {
   return (
     <div className="w-full h-screen overflow-y-hidden">
       <ToastContainer />
-      <Logo />
+      <Logo className="p-5" />
       <div className=" w-[75%] md:w-1/2 flex mx-auto flex-col mt-36">
         <h1 className="text-[#EB5757]  text-[15px] sm:text-2xl md:text-[38px] text-center">
           Get a link to reset password
