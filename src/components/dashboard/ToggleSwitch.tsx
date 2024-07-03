@@ -23,7 +23,7 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ checked, onChange }) => (
     >
       {checked ? (
         <svg
-          className="w-4 h-4 text-brand-blue mx-auto my-auto"
+          className="w-4 h-4 mx-auto my-auto text-brand-blue"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -38,7 +38,7 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ checked, onChange }) => (
         </svg>
       ) : (
         <svg
-          className="w-4 h-4 text-gray-700 mx-auto my-auto"
+          className="w-4 h-4 mx-auto my-auto text-gray-700"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
