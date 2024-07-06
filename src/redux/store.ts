@@ -7,6 +7,8 @@ import getLinkReducer from "./reducers/getLinkSlice";
 import resetReducer from "./reducers/resetPasswordSlice";
 import categoriesReducer from "./reducers/categoriesSlice";
 import updatePasswordApiSlice from "./api/updatePasswordApiSlice";
+import profileSlice from "./reducers/profileSlice";
+import updateProfileSlice from "./reducers/updateProfileSlice";
 
 const store = configureStore({
   reducer: {
@@ -17,9 +19,10 @@ const store = configureStore({
     reset: resetReducer,
     categories: categoriesReducer,
     updatePassword: updatePasswordApiSlice,
+    usersProfile: profileSlice,
+    updateUsersProfile: updateProfileSlice,
   },
 });
-
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 

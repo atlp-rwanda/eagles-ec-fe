@@ -17,7 +17,6 @@ const addProduct = createAsyncThunk(
       return data;
     } catch (err) {
       const error = err as AxiosError;
-      console.log(error);
       return rejectWithValue(error.response?.data);
     }
   },
