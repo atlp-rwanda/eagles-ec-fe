@@ -3,10 +3,14 @@ import {
 } from "@mui/material";
 import { CiUser } from "react-icons/ci";
 import { FaSearch, FaShoppingCart } from "react-icons/fa";
-import React, { SetStateAction, useEffect } from "react";
+import React, { useEffect, useState, SetStateAction } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
+import { getProfile } from "../../../redux/reducers/profileSlice";
 import Logo from "../auth/Logo";
+import { RootState } from "../../../redux/store";
+import { useAppDispatch } from "../../../redux/hooks";
 
 interface ISerachProps {
   searchQuery: string;
@@ -14,14 +18,31 @@ interface ISerachProps {
   setRefetch: React.Dispatch<SetStateAction<boolean>>;
 }
 
-const Header: React.FC<ISerachProps> = ({
-  searchQuery,
-  setSearchQuery,
-  setRefetch,
-}) => {
+const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
+
+  let userInfo;
+  const accessToken = localStorage.getItem("accessToken");
+  if (accessToken) {
+    userInfo = JSON.parse(atob(accessToken.split(".")[1]));
+  }
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (accessToken) {
+      try {
+        const userInfo = JSON.parse(atob(accessToken.split(".")[1]));
+        if (userInfo) {
+          setIsLoggedIn(true);
+        }
+      } catch (error) {
+        console.error("Invalid token format", error);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -34,15 +55,6 @@ const Header: React.FC<ISerachProps> = ({
 
     window.history.pushState(null, "", newUrl);
   }, [searchQuery]);
-
-  const refectData = () => {
-    if (searchQuery !== "") {
-      setRefetch(true);
-      return;
-    }
-
-    alert("Please add a search query");
-  };
 
   return (
     <Stack
@@ -66,7 +78,7 @@ const Header: React.FC<ISerachProps> = ({
             onChange={handleSearch}
             InputProps={{
               endAdornment: (
-                <button onClick={refectData}>
+                <button>
                   <FaSearch className="" />
                 </button>
               ),
@@ -84,15 +96,29 @@ const Header: React.FC<ISerachProps> = ({
               </Stack>
             </Stack>
             <Stack>
-              <Link to="/login" className="flex items-center">
-                <CiUser className="text-[24px] text-black" />
-                <Stack className="flex flex-col">
-                  <span className="ml-2 font-semibold text-[12px]">User</span>
-                  <span className="ml-2 font-semibold text-[12px]">
-                    Account
-                  </span>
-                </Stack>
-              </Link>
+              {isLoggedIn ? (
+                <Link to="/profile" className="flex items-center">
+                  <CiUser className="text-[24px] text-black" />
+                  <Stack className="flex flex-col">
+                    <span className="ml-2 font-semibold text-[12px]">
+                      {userInfo.name}
+                    </span>
+                    <span className="ml-2 font-semibold text-[12px]">
+                      {userInfo.email}
+                    </span>
+                  </Stack>
+                </Link>
+              ) : (
+                <Link to="/login" className="flex items-center">
+                  <CiUser className="text-[24px] text-black" />
+                  <Stack className="flex flex-col">
+                    <span className="ml-2 font-semibold text-[12px]">User</span>
+                    <span className="ml-2 font-semibold text-[12px]">
+                      Account
+                    </span>
+                  </Stack>
+                </Link>
+              )}
             </Stack>
           </Stack>
         </Stack>

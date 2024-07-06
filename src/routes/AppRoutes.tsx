@@ -12,6 +12,8 @@ import ResetPassword from "../pages/ResetPassword";
 import SellerDashboard from "../dashboard/sellers/Index";
 import AddProduct from "../dashboard/sellers/AddProduct";
 import UpdatePasswordPage from "../pages/passwordUpdatePage";
+import UsersProfile from "../pages/userProfile";
+import UpdateUserProfile from "../pages/updateProfile";
 
 const AppRoutes = () => (
   <Routes>
@@ -28,6 +30,8 @@ const AppRoutes = () => (
     <Route path="/dashboard" element={<SellerDashboard />} />
     <Route path="/dashboard/addproduct" element={<AddProduct />} />
     <Route path="/update-password" element={<UpdatePasswordPage />} />
+    <Route path="/profile" element={<UsersProfile />} />
+    <Route path="/profile/update" element={<UpdateUserProfile />} />
   </Routes>
 );
 

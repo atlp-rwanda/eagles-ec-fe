@@ -8,6 +8,8 @@ import resetReducer from "./reducers/resetPasswordSlice";
 import categoriesReducer from "./reducers/categoriesSlice";
 import updatePasswordApiSlice from "./api/updatePasswordApiSlice";
 import productReducer from "./reducers/productSlice";
+import profileSlice from "./reducers/profileSlice";
+import updateProfileSlice from "./reducers/updateProfileSlice";
 
 const store = configureStore({
   reducer: {
@@ -19,9 +21,10 @@ const store = configureStore({
     categories: categoriesReducer,
     updatePassword: updatePasswordApiSlice,
     products: productReducer,
+    usersProfile: profileSlice,
+    updateUsersProfile: updateProfileSlice,
   },
 });
-
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 

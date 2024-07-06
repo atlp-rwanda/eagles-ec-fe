@@ -149,7 +149,6 @@ describe("OtpVerification", () => {
 
   it("should render form elements", () => {
     const { getByText } = renderComponent(store);
-
     expect(
       getByText(
         "Protecting your account is our priority. Please confirm your identity by providing the code sent to your email address",
