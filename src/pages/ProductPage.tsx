@@ -157,7 +157,8 @@ const ProductPage = () => {
             <MenuItem value={20}>20</MenuItem>
           </TextField>
         </div>
-        <Stack direction="row" spacing={2} justifyContent="center">
+        <Stack spacing={2}>
+          <Stack direction="row" spacing={2} justifyContent="center" />
           <Pagination
             size="small"
             count={Math.ceil(filteredProducts.length / itemsPerPage)}

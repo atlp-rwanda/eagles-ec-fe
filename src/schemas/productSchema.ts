@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-const productSchema = yup.object().shape({
+export const productSchema = yup.object().shape({
   name: yup.string().required("Name is required"),
   price: yup
     .number()
@@ -30,4 +30,17 @@ const productSchema = yup.object().shape({
     .required("Images are required"),
 });
 
-export default productSchema;
+export const updateProductSchema = yup.object().shape({
+  name: yup.string().optional(),
+  price: yup.number().typeError("Price must be a number").optional(),
+  stockQuantity: yup.number().optional().typeError("Quantity must be a number"),
+  description: yup.string().optional(),
+  categoryID: yup.number().optional().typeError("Category must be a number"),
+  expiryDate: yup.date().typeError("Invalid date format").nullable().optional(),
+  discount: yup
+    .number()
+    .nullable()
+    .typeError("Discount must be a number")
+    .optional(),
+  images: yup.array().of(yup.mixed().optional()).optional(),
+});
