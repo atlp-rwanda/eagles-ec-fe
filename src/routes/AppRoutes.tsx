@@ -21,12 +21,13 @@ import Settings from "../dashboard/admin/Settings";
 import Analytics from "../dashboard/admin/Analytics";
 import Dashboard from "../dashboard/admin/Dashboard";
 import CartManagement from "../pages/CartManagement";
-import { setNavigateFunction } from "../redux/api/api";
+import { setNavigate } from "../redux/api/api";
+import ChatPage from "../pages/ChatPage";
 
 const AppRoutes = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    setNavigateFunction(navigate);
+    setNavigate(navigate);
   }, [navigate]);
 
   const AlreadyLogged = ({ children }) => {
@@ -53,6 +54,7 @@ const AppRoutes = () => {
         <Route path="products/:id" element={<ProductDetails />} />
         <Route path="/carts" element={<CartManagement />} />
       </Route>
+      <Route path="chat" element={<ChatPage />} />
       <Route path="/password-reset-link" element={<GetLinkPage />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/register" element={<RegisterUser />} />

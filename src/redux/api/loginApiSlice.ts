@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 
+import { setUser } from "../reducers/authSlice";
+
 import axios from "./api";
 
 interface LoginState {
@@ -26,6 +28,23 @@ interface LoginError {
   message: string;
 }
 
+export const fetchUser = createAsyncThunk(
+  "fetchUser",
+  async (id: number, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await axios.get(`/users/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
 export const login = createAsyncThunk<
 LoginResponse,
 LoginPayload,
@@ -35,11 +54,8 @@ LoginPayload,
     const response = await axios.post("/users/login", payload);
     console.log("Payload being returned:", response.data);
     return response.data;
-  } catch (error) {
-    const axiosError = error as AxiosError<LoginError>;
-    return rejectWithValue({
-      message: axiosError.message,
-    });
+  } catch (error: any) {
+    return rejectWithValue(error.response?.data);
   }
 });
 

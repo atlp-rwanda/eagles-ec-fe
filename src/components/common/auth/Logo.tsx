@@ -14,7 +14,7 @@ const Logo: React.FC<ILogoProps> = ({ className }) => (
     <h1 className="font-medium p-0">
       <span className="font-[550] text-[30px] "> eagles</span>
     </h1>
-    <FaCircle className="text-[15px] text-[#DB4444] mt-6 p-0" />
+    <FaCircle className="text-[12px] text-[#DB4444] mt-2 p-0" />
   </Link>
 );
 

@@ -4,8 +4,8 @@ import { Rating } from "@mui/material";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { toast } from "react-toastify";
-import { Spinner } from "flowbite-react";
 
+import Spinner from "../components/dashboard/Spinner";
 import Button from "../components/common/auth/Button";
 import {
   fetchReviews,
@@ -157,13 +157,7 @@ const ReviewsList: React.FC<ReviewsListProps> = ({ productId }) => {
                   disabled
                   size="small"
                 />
-                {deletingReviewId === parseInt(review.id, 10) && (
-                  <Spinner
-                    aria-label="Spinner button example"
-                    size="md"
-                    color="pink"
-                  />
-                )}
+                {deletingReviewId === parseInt(review.id, 10) && <Spinner />}
               </div>
               {review
                 && review.user
