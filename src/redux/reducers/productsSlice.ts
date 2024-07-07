@@ -1,4 +1,5 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { AxiosError } from "axios";
 
 import api from "../api/api";
 import { IProduct } from "../../types";
@@ -10,6 +11,44 @@ interface SearchParams {
   category?: string;
 }
 
+interface ProductsState {
+  data: IProduct[];
+  loading: boolean;
+  error: string | null;
+}
+
+export const fetchProducts = createAsyncThunk<IProduct[], void>(
+  "products",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/products", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      return response.data.products;
+    } catch (err) {
+      const error = err as AxiosError;
+      return rejectWithValue(error.response?.data);
+    }
+  },
+);
+
+export const deleteProduct = createAsyncThunk(
+  "products/delete",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await api.delete(`/products/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  },
+);
 export const handleSearchProduct = createAsyncThunk<
 IProduct[] | { status: number; message: string },
 SearchParams
@@ -40,69 +79,54 @@ SearchParams
   },
 );
 
-export const fetchProducts = createAsyncThunk<
-IProduct[],
-void,
-{ rejectValue: string }
->("products/fetch", async (_, { rejectWithValue }) => {
-  try {
-    const res = await api.get<{ products: IProduct[] }>("/products");
-    return res.data.products;
-  } catch (error: any) {
-    return rejectWithValue(error.message || "Failed to fetch products");
-  }
-});
-
-interface ProductsState {
-  products: IProduct[];
-  isLoading: boolean;
-  error: string | null;
-}
-
 const initialState: ProductsState = {
-  products: [],
-  isLoading: false,
+  loading: false,
+  data: [],
   error: null,
 };
 
-const productSlice = createSlice({
+const productsSlice = createSlice({
   name: "products",
   initialState,
-  reducers: {},
+  reducers: {
+    setProducts: (state, action) => {
+      state.data = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
+        state.loading = true;
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.products = action.payload;
+        state.loading = false;
+        state.data = action.payload;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload ?? "An unknown error occurred";
+        state.loading = false;
+        // @ts-ignore
+        state.error = action.payload || action.error.message;
       })
       .addCase(handleSearchProduct.pending, (state) => {
-        state.isLoading = true;
+        state.loading = true;
         state.error = null;
       })
       .addCase(handleSearchProduct.fulfilled, (state, action) => {
         if (Array.isArray(action.payload)) {
-          state.isLoading = false;
-          state.products = action.payload;
+          state.loading = false;
+          state.data = action.payload;
         } else {
-          state.isLoading = false;
-          state.products = [];
+          state.loading = false;
+          state.data = [];
         }
       })
       .addCase(handleSearchProduct.rejected, (state, action) => {
-        state.isLoading = false;
-        state.products = [];
+        state.loading = false;
+        state.data = [];
         // @ts-ignore
         state.error = action.payload || "Failed to search products";
       });
   },
 });
 
-export default productSlice.reducer;
+export default productsSlice.reducer;

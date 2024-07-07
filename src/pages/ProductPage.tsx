@@ -18,7 +18,7 @@ import { IProduct } from "../types";
 import ProductFilter from "../components/common/filter/ProductFilter";
 import { IOutletProps } from "../components/layouts/RootLayout";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { handleSearchProduct } from "../redux/reducers/productSlice";
+import { handleSearchProduct } from "../redux/reducers/productsSlice";
 
 const ProductPage = () => {
   const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
@@ -31,9 +31,7 @@ const ProductPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const dispatch = useAppDispatch();
-  const { products, isLoading, error } = useAppSelector(
-    (state) => state.products,
-  );
+  const { data, loading, error } = useAppSelector((state) => state.products);
 
   useEffect(() => {
     dispatch(
@@ -70,7 +68,7 @@ const ProductPage = () => {
   }, [searchParams, searchQuery, dispatch]);
 
   useEffect(() => {
-    let filtered = products;
+    let filtered = data;
 
     const name = searchParams.get("name") || "";
     const minPrice = parseFloat(searchParams.get("minPrice") || "0");
@@ -92,7 +90,7 @@ const ProductPage = () => {
     );
 
     setFilteredProducts(filtered);
-  }, [products, searchParams]);
+  }, [data, searchParams]);
 
   const handleFilter = (filtered: IProduct[]) => {
     setFilteredProducts(filtered);
@@ -120,10 +118,10 @@ const ProductPage = () => {
     setCurrentPage(1);
   };
 
-  if (isLoading) {
+  if (loading) {
     return (
       <>
-        <ProductFilter products={products} onFilter={handleFilter} />
+        <ProductFilter products={data} onFilter={handleFilter} />
         <ProductPageSkeleton />
         ;
       </>
@@ -132,7 +130,7 @@ const ProductPage = () => {
   if (error) {
     return (
       <div>
-        <ProductFilter products={products} onFilter={handleFilter} />
+        <ProductFilter products={data} onFilter={handleFilter} />
         <p className=" flex items-center justify-center p-4">{error}</p>
       </div>
     );
@@ -140,7 +138,7 @@ const ProductPage = () => {
 
   return (
     <div className={`${!showFilters ? "mt-4" : ""}`}>
-      <ProductFilter products={products} onFilter={handleFilter} />
+      <ProductFilter products={data} onFilter={handleFilter} />
 
       <Grid
         container
@@ -161,7 +159,7 @@ const ProductPage = () => {
           </Grid>
         ))}
 
-        {searchQuery && currentItems.length < 1 && products.length < 1 && (
+        {searchQuery && currentItems.length < 1 && data.length < 1 && (
           <div className="flex w-full items-center justify-center py-[50px]">
             <p className=" text-center">No product found based on your query</p>
           </div>
@@ -187,7 +185,8 @@ const ProductPage = () => {
             <MenuItem value={20}>20</MenuItem>
           </TextField>
         </div>
-        <Stack direction="row" spacing={2} justifyContent="center">
+        <Stack spacing={2}>
+          <Stack direction="row" spacing={2} justifyContent="center" />
           <Pagination
             size="small"
             count={Math.ceil(filteredProducts.length / itemsPerPage)}

@@ -71,6 +71,7 @@ module.exports = {
     "react/no-unescaped-entities": "off",
     "@typescript-eslint/no-explicit-any": 0,
     "react/prop-types": "off",
+    "jsx-a11y/control-has-associated-label": "off",
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true },

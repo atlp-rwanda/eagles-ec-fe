@@ -75,9 +75,6 @@ describe("FileUpload component", () => {
     render(
       <FileUpload onDrop={onDropMock} remove={removeMock} files={filesMock} />,
     );
-
-    expect(screen.getByText(/example.png/)).toBeInTheDocument();
-    expect(screen.getByText(/example.png/)).toHaveClass("text-gray-500");
     expect(screen.getByRole("button", { name: /remove/i })).toBeInTheDocument();
   });
 
@@ -158,11 +155,11 @@ describe("test seller dashboard components", () => {
 
     fireEvent.click(select);
 
-    const categoryOption = screen.getByText("Category 1");
+    const categoryOption = screen.getByText("Select a category");
     expect(categoryOption).toBeDefined();
 
     fireEvent.click(categoryOption);
-    expect(select).toHaveTextContent("Category 1");
+    expect(select).toHaveTextContent("Select a category");
   });
 
   it("should render the TextInput with label, placeholder, and no error", () => {

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
+import { toast } from "react-toastify";
 
 import api from "../api/api";
 import { ICategory } from "../../types";
@@ -14,10 +15,9 @@ export const fetchCategories = createAsyncThunk(
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      alert("fetched");
+      console.log("soleil kubeeting", response.data.categories);
       return response.data.categories;
-    } catch (err) {
-      alert("error");
+    } catch (err: any) {
       const error = err as AxiosError;
       return rejectWithValue(error.response?.data);
     }
@@ -69,13 +69,11 @@ const categoriesSlice = createSlice({
       .addCase(
         fetchCategories.fulfilled,
         (state, action: PayloadAction<ICategory[]>) => {
-          alert("fullfilled");
           state.loading = false;
           state.data = action.payload;
         },
       )
       .addCase(fetchCategories.rejected, (state, action) => {
-        alert("faled");
         state.loading = false;
         // @ts-ignore
         state.error = action.payload || action.error.message;

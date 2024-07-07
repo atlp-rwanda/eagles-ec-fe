@@ -9,11 +9,13 @@ import {
 } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import { BiSearch } from "react-icons/bi";
+import { ToastContainer, toast } from "react-toastify";
 
 import { ICategory, IProduct } from "../../../types";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { fetchCategories } from "../../../redux/reducers/categoriesSlice";
-import { fetchProducts } from "../../../redux/reducers/productSlice";
+import { fetchProducts } from "../../../redux/reducers/productsSlice";
+import api from "../../../redux/api/api";
 
 interface IProductFilterProps {
   products: IProduct[];
@@ -49,36 +51,12 @@ const ProductFilter: React.FC<IProductFilterProps> = ({
   });
 
   const dispatch = useAppDispatch();
-  const { data, loading, error } = useAppSelector((state) => state.categories);
-  const { isLoading } = useAppSelector((state) => state.products);
+
+  const { data, error } = useAppSelector((state) => state.categories);
+  const { loading } = useAppSelector((state) => state.products);
 
   useEffect(() => {
-    dispatch(fetchCategories);
-  }, []);
-
-  useEffect(() => {
-    const unique = localStorage.getItem("uniqueCat");
-
-    if (unique) {
-      const cats = JSON.parse(unique);
-      setCategories(cats);
-    } else {
-      const categorySet = new Set<ICategory>();
-      products?.forEach((product) => {
-        categorySet.add(product.category);
-      });
-      const filteredCategories: ICategory[] = Array.from(categorySet);
-
-      const uniqueCategories = filteredCategories.filter(
-        (category, index, self) => self.findIndex(
-          (otherCategory) => otherCategory.id === category.id,
-        ) === index,
-      );
-
-      localStorage.setItem("uniqueCat", JSON.stringify(uniqueCategories));
-
-      setCategories(uniqueCategories);
-    }
+    dispatch(fetchCategories());
   }, []);
 
   useEffect(() => {
@@ -109,6 +87,12 @@ const ProductFilter: React.FC<IProductFilterProps> = ({
   const handleSortChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSort(event.target.value);
   };
+
+  useEffect(() => {
+    if (data) {
+      setCategories(data);
+    }
+  }, [data]);
 
   const handleCategoryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -249,9 +233,11 @@ const ProductFilter: React.FC<IProductFilterProps> = ({
             <Button
               variant="contained"
               disabled={
-                !!(ranges.max !== null
-                && ranges.min !== null
-                && ranges.min > ranges.max)
+                !!(
+                  ranges.max !== null
+                  && ranges.min !== null
+                  && ranges.min > ranges.max
+                )
               }
               color="error"
               className=" hover:bg-[#DB4444] active:bg-[#DB4444]"
@@ -271,7 +257,7 @@ const ProductFilter: React.FC<IProductFilterProps> = ({
             FILTER BY CATEGORY
           </h5>
           {loading && <p>Loading categories...</p>}
-          {error && <p>Error fetching categories</p>}
+          {isError && <p>Error fetching categories</p>}
 
           <TextField
             select
@@ -282,15 +268,22 @@ const ProductFilter: React.FC<IProductFilterProps> = ({
             className=" w-full sm:w-[300px]"
             value={cat}
           >
-            <MenuItem value="All">{isLoading ? "Loading..." : "All"}</MenuItem>
-            {categories.map((category, i) => (
-              <MenuItem key={i} value={category.name}>
-                {category.name}
-              </MenuItem>
-            ))}
+            <MenuItem value="All">{loading ? "Loading..." : "All"}</MenuItem>
+            {!error ? (
+              categories.map((category, i) => (
+                <MenuItem key={i} value={category.name}>
+                  {category.name}
+                </MenuItem>
+              ))
+            ) : (
+              <div className="p-3 max-w-[300px] text-center">
+                Failed to fetch category wait until backedn PR is merged
+              </div>
+            )}
           </TextField>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
