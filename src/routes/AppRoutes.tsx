@@ -15,6 +15,10 @@ import UpdatePasswordPage from "../pages/passwordUpdatePage";
 import UsersProfile from "../pages/userProfile";
 import UpdateUserProfile from "../pages/updateProfile";
 import Products from "../dashboard/sellers/Products";
+import UserManagement from "../dashboard/admin/UserManagement";
+import Settings from "../dashboard/admin/Settings";
+import Analytics from "../dashboard/admin/Analytics";
+import Dashboard from "../dashboard/admin/Dashboard";
 
 const AppRoutes = () => (
   <Routes>
@@ -35,6 +39,11 @@ const AppRoutes = () => (
     <Route path="/profile/update" element={<UpdateUserProfile />} />
     <Route path="/dashboard/products" element={<Products />} />
     <Route path="/dashboard/products/:id" element={<AddProduct />} />
+    <Route path="/admin/dashboard" element={<Dashboard />} />
+    <Route path="/admin/users" element={<UserManagement />} />
+    <Route path="/admin/settings" element={<Settings />} />
+    <Route path="/admin/analytics" element={<Analytics />} />
+    <Route path="/admin/Products" element={<Products />} />
   </Routes>
 );
 
