@@ -6,6 +6,18 @@ import updatePasswordApiSlice, {
 } from "../redux/api/updatePasswordApiSlice";
 
 jest.mock("axios");
+jest.mock("../redux/api/api", () => ({
+  api: {
+    interceptors: {
+      response: {
+        use: jest.fn(),
+      },
+      request: {
+        use: jest.fn(),
+      },
+    },
+  },
+}));
 
 describe("updatePasswordApiSlice", () => {
   let store;

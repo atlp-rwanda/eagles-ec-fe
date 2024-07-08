@@ -11,6 +11,7 @@ import profileSlice from "./reducers/profileSlice";
 import updateProfileSlice from "./reducers/updateProfileSlice";
 import productsReducer from "./reducers/productsSlice";
 import cartsReducer from "./reducers/cartSlice";
+import NetworkErrorSlice from "./reducers/NetworkErrorSlice";
 
 const store = configureStore({
   reducer: {
@@ -25,6 +26,7 @@ const store = configureStore({
     updateUsersProfile: updateProfileSlice,
     products: productsReducer,
     cart: cartsReducer,
+    networkError: NetworkErrorSlice,
   },
 });
 export type RootState = ReturnType<typeof store.getState>;

@@ -25,6 +25,7 @@ module.exports = {
     "implicit-arrow-linebreak":"off",
     "react/require-default-props": "off",
     "import/no-extraneous-dependencies": "off",
+    "import/no-cycle": "off",
     "@typescript-eslint/no-shadow": "off",
     "no-unsafe-optional-chaining": "off",
     "react/no-unused-prop-types": "off",
