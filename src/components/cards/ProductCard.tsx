@@ -13,7 +13,7 @@ interface IProductCardProps {
 const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  const soleilFN = (price: number) => {
+  const formatPrice = (price: number) => {
     if (price < 1000) {
       return price.toString();
     }
@@ -97,7 +97,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
       <div className="flex items-center gap-1 p-1">
         <p className="text-red-400 text-[10px]" data-testid="price">
           $
-          {soleilFN(product.price)}
+          {formatPrice(product.price)}
         </p>
         <Rating
           value={4}
