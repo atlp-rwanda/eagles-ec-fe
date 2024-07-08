@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { getProfile } from "../../../redux/reducers/profileSlice";
 import Logo from "../auth/Logo";
 import { RootState } from "../../../redux/store";
+import { cartManage } from "../../../redux/reducers/cartSlice";
 import { useAppDispatch } from "../../../redux/hooks";
 
 interface ISerachProps {
@@ -56,6 +57,11 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
     window.history.pushState(null, "", newUrl);
   }, [searchQuery]);
 
+  const dispatches = useAppDispatch();
+  useEffect(() => {
+    dispatch(cartManage());
+  }, [dispatches]);
+  const userCart = useSelector((state: RootState) => state.cart.data);
   return (
     <Stack
       className="px-4 bg-white w-full relative"
@@ -88,11 +94,21 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
             direction="row"
             className="flex justify-between items-center gap-2 bg-white"
           >
-            <Stack direction="row" className="flex items-center">
+            <Stack direction="row" className="flex items-center relative">
               <FaShoppingCart className="text-[24px] text-black" />
-              <Stack className="flex flex-col">
-                <span className="ml-2 font-semibold text-[12px]">Cart</span>
-                <span className="ml-2 font-semibold text-[12px]">$150.00</span>
+              <Stack className="flex flex-col ">
+                <Link to="/carts">
+                  <span className="ml-2 font-semibold text-[12px]">Cart</span>
+                </Link>
+                {/* <span className="ml-2 font-semibold text-[12px]">$150.00</span> */}
+
+                {!localStorage.getItem("accessToken") ? (
+                  ""
+                ) : (
+                  <div className="absolute w-5 h-5 bg-red-500 -top-3  -right-3 rounded-full text-center text-white text-[12px] flex justify-center items-center">
+                    <span className="">{userCart.length}</span>
+                  </div>
+                )}
               </Stack>
             </Stack>
             <Stack>
