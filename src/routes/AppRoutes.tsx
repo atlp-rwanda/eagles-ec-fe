@@ -19,6 +19,7 @@ import UserManagement from "../dashboard/admin/UserManagement";
 import Settings from "../dashboard/admin/Settings";
 import Analytics from "../dashboard/admin/Analytics";
 import Dashboard from "../dashboard/admin/Dashboard";
+import CartManagement from "../pages/CartManagement";
 
 const AppRoutes = () => (
   <Routes>
@@ -26,6 +27,7 @@ const AppRoutes = () => (
       <Route index element={<Homepage />} />
       <Route path="products" element={<ProductPage />} />
       <Route path="products/:id" element={<ProductDetails />} />
+      <Route path="/carts" element={<CartManagement />} />
     </Route>
     <Route path="/password-reset-link" element={<GetLinkPage />} />
     <Route path="/reset-password" element={<ResetPassword />} />

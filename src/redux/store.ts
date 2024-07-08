@@ -10,6 +10,7 @@ import updatePasswordApiSlice from "./api/updatePasswordApiSlice";
 import profileSlice from "./reducers/profileSlice";
 import updateProfileSlice from "./reducers/updateProfileSlice";
 import productsReducer from "./reducers/productsSlice";
+import cartsReducer from "./reducers/cartSlice";
 
 const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ const store = configureStore({
     usersProfile: profileSlice,
     updateUsersProfile: updateProfileSlice,
     products: productsReducer,
+    cart: cartsReducer,
   },
 });
 export type RootState = ReturnType<typeof store.getState>;

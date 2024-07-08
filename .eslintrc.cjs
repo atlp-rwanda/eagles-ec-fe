@@ -22,6 +22,7 @@ module.exports = {
   rules: {
     "react/react-in-jsx-scope": "off",
     "react/jsx-props-no-spreading": "off",
+    "implicit-arrow-linebreak":"off",
     "react/require-default-props": "off",
     "import/no-extraneous-dependencies": "off",
     "@typescript-eslint/no-shadow": "off",
@@ -41,10 +42,12 @@ module.exports = {
     "react/button-has-type": "off",
     "no-param-reassign": "off",
     "react/prop-types": "off",
+    "import/no-named-as-default": "off",
     "import/no-extraneous-dependencies": "off",
     "no-nested-ternary": "off",
     "import/prefer-default-export": "off",
     "no-return-assign": "off",
+    "react-refresh/only-export-components":"off",
     "jsx-a11y/label-has-associated-control": "off",
     "react/function-component-definition": [
       "warn",
@@ -72,7 +75,7 @@ module.exports = {
     "react/prop-types": "off",
     "jsx-a11y/control-has-associated-label": "off",
     "react-refresh/only-export-components": [
-      "warn",
+      "off",
       { allowConstantExport: true },
     ],
     "@typescript-eslint/quotes": ["off"],
