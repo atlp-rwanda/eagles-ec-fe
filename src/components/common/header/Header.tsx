@@ -3,7 +3,7 @@ import {
 } from "@mui/material";
 import { CiUser } from "react-icons/ci";
 import { FaSearch, FaShoppingCart } from "react-icons/fa";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, SetStateAction } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -16,6 +16,7 @@ import { useAppDispatch } from "../../../redux/hooks";
 interface ISerachProps {
   searchQuery: string;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+  setRefetch: React.Dispatch<SetStateAction<boolean>>;
 }
 
 const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
@@ -23,12 +24,14 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
+
   let userInfo;
   const accessToken = localStorage.getItem("accessToken");
   if (accessToken) {
     userInfo = JSON.parse(atob(accessToken.split(".")[1]));
   }
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     if (accessToken) {
       try {
@@ -41,6 +44,19 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
       }
     }
   }, []);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    if (searchQuery) {
+      searchParams.set("name", searchQuery);
+    } else {
+      searchParams.delete("name");
+    }
+    const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+
+    window.history.pushState(null, "", newUrl);
+  }, [searchQuery]);
+
   const dispatches = useAppDispatch();
   useEffect(() => {
     dispatch(cartManage());

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { Divider } from "@mui/material";
 
@@ -11,6 +11,8 @@ import BreadCrums from "../common/breadcrum/BreadCrum";
 export interface IOutletProps {
   searchQuery: string;
   showFilters: boolean;
+  refetch: boolean;
+  setRefetch: React.Dispatch<SetStateAction<boolean>>;
 }
 
 const RootLayout = () => {
@@ -18,6 +20,11 @@ const RootLayout = () => {
   const [isHeaderInfoVisible, setIsHeaderInfoVisible] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [showFilters, setShowFilters] = useState(true);
+  const [refetch, setRefetch] = useState(false);
+
+  const handleRefect = () => {
+    setRefetch(true);
+  };
 
   const location = useLocation();
 
@@ -52,14 +59,27 @@ const RootLayout = () => {
       <div className={`soleil ${isSticky ? "sticky top-0 z-50" : ""}`}>
         <div className="max-w-[1440px] lg:mx-auto lg:w-[90%] w-full">
           {isHeaderInfoVisible && <HeaderInfo />}
-          <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+          <Header
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            setRefetch={setRefetch}
+          />
         </div>
         <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       </div>
       <div className="flex-1 max-w-[1440px] mx-auto lg:w-[90%] w-[100%]">
         <BreadCrums showFilters={showFilters} toggleFilter={toggleFilters} />
         {location.pathname !== "/" && <Divider className="mb-3" />}
-        <Outlet context={{ searchQuery, showFilters } satisfies IOutletProps} />
+        <Outlet
+          context={
+            {
+              searchQuery,
+              showFilters,
+              refetch,
+              setRefetch,
+            } satisfies IOutletProps
+          }
+        />
       </div>
       <Footer />
     </div>

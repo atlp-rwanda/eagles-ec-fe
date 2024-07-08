@@ -1,6 +1,9 @@
 import React from "react";
+import { BiCross } from "react-icons/bi";
 import { FaFilter } from "react-icons/fa";
-import { Link, useLocation } from "react-router-dom";
+import { FcClearFilters } from "react-icons/fc";
+import { MdCurtainsClosed } from "react-icons/md";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 
 interface IBreadCrumbsProps {
   showFilters: boolean;
@@ -11,11 +14,18 @@ const BreadCrums: React.FC<IBreadCrumbsProps> = ({
   showFilters,
   toggleFilter,
 }) => {
+  const [searchParams, setSearchParams] = useSearchParams({
+    minPrice: "0",
+    maxPrice: "",
+    category: "",
+    name: "",
+  });
   const location = useLocation();
   let currentLink: string = "";
 
   const handleClick = () => {
     toggleFilter();
+    setSearchParams({});
   };
   const crums = location.pathname
     .split("/")
@@ -41,8 +51,7 @@ const BreadCrums: React.FC<IBreadCrumbsProps> = ({
           <FaFilter
             className={` transition duration-300 ${!showFilters ? " rotate-180 " : ""}`}
           />
-          {" "}
-          <span>Filters</span>
+          <span>Clear Filters</span>
         </div>
       )}
     </div>

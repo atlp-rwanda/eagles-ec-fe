@@ -27,7 +27,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
 
-  const soleilFN = (price: number) => {
+  const formatPrice = (price: number) => {
     if (price < 1000) {
       return price.toString();
     }
@@ -87,8 +87,9 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
   return (
     <div className="max-h-[270px] bg-[#F5F5F5] mb-2 relative" data-testid="tbt">
       {diff < 2 && (
-        <div className="absolute top-2 left-2" data-testid="new">
-          <p className="rounded-md z-40 text-white new-product">New</p>
+        <div className="absolute top-2 left-2 " data-testid="new">
+          {/* <p className=" rounded-md z-40  text-white new-product ">New</p> */}
+          {diff}
         </div>
       )}
       <ToastContainer />
@@ -155,7 +156,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
       <div className="flex items-center gap-1 p-1">
         <p className="text-red-400 text-[10px]" data-testid="price">
           $
-          {soleilFN(product.price)}
+          {formatPrice(product.price)}
         </p>
         <Rating
           value={4}

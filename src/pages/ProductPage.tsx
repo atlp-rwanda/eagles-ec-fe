@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Grid,
   FormControl,
@@ -10,75 +10,87 @@ import {
 import { gsap } from "gsap";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import { useOutletContext } from "react-router-dom";
-// import { toast } from "react-toastify";
+import { useOutletContext, useSearchParams } from "react-router-dom";
 
 import ProductPageSkeleton from "../components/skeletons/ProductPageSkeleton";
 import ProductCard from "../components/cards/ProductCard";
 import { IProduct } from "../types";
 import ProductFilter from "../components/common/filter/ProductFilter";
-// import { useFetchProducts } from "../libs/queries";
 import { IOutletProps } from "../components/layouts/RootLayout";
-import api from "../redux/api/api";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { handleSearchProduct } from "../redux/reducers/productsSlice";
 
 const ProductPage = () => {
-  const [products, setProducts] = useState<IProduct[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(15);
-  const [isLoading, setIsloading] = useState(true);
-  const [error, setError] = useState("");
-  const { searchQuery, showFilters } = useOutletContext<IOutletProps>();
+  const {
+    searchQuery, showFilters, refetch, setRefetch,
+  } = useOutletContext<IOutletProps>();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const dispatch = useAppDispatch();
+  const { data, loading, error } = useAppSelector((state) => state.products);
 
   useEffect(() => {
-    const fetch = async () => {
+    dispatch(
+      handleSearchProduct({
+        name: "",
+        minPrice: "0",
+        maxPrice: "100000000000000000000",
+        category: "",
+      }),
+    );
+  }, [dispatch]);
+
+  useEffect(() => {
+    const fetchFilteredProducts = async () => {
       try {
-        const res = await api.get("/products");
-        setProducts(res.data.products);
-        setIsloading(false);
-        gsap.fromTo(
-          ".soleil2",
-          {
-            opacity: 0,
-            y: 20,
-          },
-          {
-            y: 0,
-            opacity: 1,
-            ease: "power1.inOut",
-            stagger: 0.2,
-            yoyo: true,
-            delay: 1,
-          },
+        const name = searchParams.get("name") || "";
+        const minPrice = searchParams.get("minPrice") || "0";
+        const maxPrice = searchParams.get("maxPrice") || "100000000000000000000";
+        const category = searchParams.get("category") || "";
+
+        await dispatch(
+          handleSearchProduct({
+            name: searchQuery,
+            minPrice,
+            maxPrice,
+            category,
+          }),
         );
       } catch (error: any) {
-        setError(error.message);
-        setIsloading(false);
-      } finally {
-        setIsloading(false);
+        alert("error");
       }
     };
-    fetch();
-  }, []);
+    fetchFilteredProducts();
+  }, [searchParams, searchQuery, dispatch]);
 
   useEffect(() => {
-    const filtered = products.filter(
-      (product) => product.name.toLowerCase().includes(searchQuery.toLowerCase())
-        || product.category.name.toLowerCase().includes(searchQuery.toLowerCase()),
+    let filtered = data;
+
+    const name = searchParams.get("name") || "";
+    const minPrice = parseFloat(searchParams.get("minPrice") || "0");
+    const maxPrice = parseFloat(
+      searchParams.get("maxPrice") || "100000000000000000000",
     );
+    const category = searchParams.get("category") || "";
+
+    if (name) {
+      filtered = filtered.filter((product) => product.name.toLowerCase().includes(name.toLowerCase()));
+    }
+
+    // if (category) {
+    //   filtered = filtered.filter((product) => product.category === category);
+    // }
+
+    filtered = filtered.filter(
+      (product) => product.price >= minPrice && product.price <= maxPrice,
+    );
+
     setFilteredProducts(filtered);
-    setCurrentPage(1);
-  }, [searchQuery]);
-
-  if (isLoading) {
-    return <ProductPageSkeleton />;
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center my-[50px]">{error}</div>
-    );
-  }
+  }, [data, searchParams]);
 
   const handleFilter = (filtered: IProduct[]) => {
     setFilteredProducts(filtered);
@@ -106,11 +118,27 @@ const ProductPage = () => {
     setCurrentPage(1);
   };
 
+  if (loading) {
+    return (
+      <>
+        <ProductFilter products={data} onFilter={handleFilter} />
+        <ProductPageSkeleton />
+        ;
+      </>
+    );
+  }
+  if (error) {
+    return (
+      <div>
+        <ProductFilter products={data} onFilter={handleFilter} />
+        <p className=" flex items-center justify-center p-4">{error}</p>
+      </div>
+    );
+  }
+
   return (
     <div className={`${!showFilters ? "mt-4" : ""}`}>
-      {showFilters && (
-        <ProductFilter products={products} onFilter={handleFilter} />
-      )}
+      <ProductFilter products={data} onFilter={handleFilter} />
 
       <Grid
         container
@@ -131,7 +159,7 @@ const ProductPage = () => {
           </Grid>
         ))}
 
-        {searchQuery && currentItems.length < 1 && (
+        {searchQuery && currentItems.length < 1 && data.length < 1 && (
           <div className="flex w-full items-center justify-center py-[50px]">
             <p className=" text-center">No product found based on your query</p>
           </div>

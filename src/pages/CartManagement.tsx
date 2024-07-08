@@ -70,7 +70,8 @@ const CartManagement: React.FC<IProductCardProps> = () => {
   const handleUpdate = async () => {
     try {
       const updatePromises = Object.entries(updatedQuantities).map(
-        ([productId, quantity]) => dispatch(updateCarts({ productId: Number(productId), quantity })),
+        ([productId, quantity]) =>
+          dispatch(updateCarts({ productId: Number(productId), quantity })),
       );
 
       await Promise.all(updatePromises);
