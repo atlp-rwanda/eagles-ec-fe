@@ -16,7 +16,8 @@ import {
 } from "../../redux/reducers/cartSlice";
 import Warning from "../common/notify/Warning";
 import { RootState } from "../../redux/store";
-import { RegisterError } from "../../../type";
+import { RegisterError, Review } from "../../../type";
+import api from "../../redux/api/api";
 
 interface IProductCardProps {
   product: IProduct;
@@ -25,6 +26,7 @@ interface IProductCardProps {
 const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const dispatch = useAppDispatch();
 
   const formatPrice = (price: number) => {
@@ -36,6 +38,28 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
     }
     return `${(price / 1000000).toFixed(1)}M`;
   };
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await api.get(`/products/${product.id}/reviews`);
+        if (!response) {
+          throw new Error("Failed to fetch reviews");
+        }
+        const data = await response.data;
+        setReviews(data.reviewProduct);
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
+
+    fetchReviews();
+  }, [product.id]);
+  const total = reviews
+    ? reviews.reduce((sum, review) => sum + (review.rating, 10), 0)
+      / reviews.length
+    : 0;
+
   const handleRemove = async (productId: number) => {
     try {
       // @ts-ignore
@@ -159,14 +183,16 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
           {formatPrice(product.price)}
         </p>
         <Rating
-          value={4}
+          value={total}
           color="orange"
           disabled
           size="small"
           data-testid="rating"
         />
         <p className="text-[10px]" data-testid="review">
-          (56)
+          (
+          {reviews ? reviews.length : 0}
+          )
         </p>
       </div>
     </div>
