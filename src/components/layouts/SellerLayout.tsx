@@ -1,8 +1,11 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 
 import ProtectDashboard from "../../redux/ProtectDashboard";
 import SideBar from "../dashboard/SideBar";
 import Header from "../dashboard/Header";
+import { useAppDispatch } from "../../redux/hooks";
+import { getUserNotifications } from "../../redux/reducers/notificationSlice";
+import { connectToSocket, disconnectFromSocket } from "../../utils/socket";
 
 interface LayoutProps {
   children: ReactNode;
@@ -11,9 +14,26 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
+  const dispatch = useAppDispatch();
+
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
+  useEffect(() => {
+    const initializeSocket = async () => {
+      await connectToSocket();
+    };
+
+    initializeSocket();
+    dispatch(getUserNotifications());
+
+    return () => {
+      disconnectFromSocket();
+    };
+  }, [dispatch]);
+  useEffect(() => {
+    dispatch(getUserNotifications());
+  }, [dispatch]);
 
   return (
     <ProtectDashboard>

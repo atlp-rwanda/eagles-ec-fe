@@ -11,10 +11,12 @@ import PasswordInput from "../common/auth/password";
 
 interface UpdatePasswordProps {
   setPasswordModal: (isOpen: boolean) => void;
+  target?: string;
 }
 
 const UpdatePasswordmod: React.FC<UpdatePasswordProps> = ({
   setPasswordModal,
+  target,
 }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -39,7 +41,8 @@ const UpdatePasswordmod: React.FC<UpdatePasswordProps> = ({
       toast.success(response.message);
       setTimeout(() => {
         setPasswordModal(false);
-      }, 3000);
+        window.location.href = target || "/";
+      }, 2000);
     } catch (err) {
       setLoading(false);
       const error = err as AxiosError;
@@ -80,7 +83,10 @@ const UpdatePasswordmod: React.FC<UpdatePasswordProps> = ({
           <div className="flex justify-center gap-4">
             <button
               type="button"
-              onClick={() => setPasswordModal(false)}
+              onClick={() => {
+                window.location.href = "/";
+                setPasswordModal(false);
+              }}
               className="bg-transparent text-primary border border-[#DB4444] px-4 py-2 rounded"
             >
               Cancel

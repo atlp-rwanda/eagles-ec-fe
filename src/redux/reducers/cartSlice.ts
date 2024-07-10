@@ -100,7 +100,6 @@ export const updateCarts = createAsyncThunk(
           },
         },
       );
-      console.log(response);
 
       return response.data;
     } catch (err) {

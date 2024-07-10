@@ -15,7 +15,6 @@ export const fetchCategories = createAsyncThunk(
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
-      console.log("soleil kubeeting", response.data.categories);
       return response.data.categories;
     } catch (err: any) {
       const error = err as AxiosError;
