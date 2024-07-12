@@ -11,14 +11,18 @@ import { getCurrentUser } from "./currentuser";
 
 let socket: Socket | undefined;
 
+const link = process.env.VITE_BASE_URL;
+
+const connectionString = link?.slice(0, -7);
+
 export const connectToSocket = async () => {
   if (!socket) {
-    socket = io("https://eagles-ec-be-development.onrender.com", {
+    socket = io(`${connectionString}`, {
       autoConnect: true,
     });
 
     socket.on("connect", () => {
-      //   alert("CONNECTED TO THE SERVER");
+      // alert("CONNECTED TO THE SERVER");
     });
 
     const user = await getCurrentUser();

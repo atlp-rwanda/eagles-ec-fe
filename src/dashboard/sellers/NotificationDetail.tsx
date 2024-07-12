@@ -40,6 +40,11 @@ const NotificationDetail = () => {
     // @ts-ignore
     return date.toLocaleDateString("en-US", options);
   };
+  useEffect(() => {
+    if (notification && !notification.isRead) {
+      dispatch(readNotification(notification.id));
+    }
+  }, []);
 
   useEffect(() => {
     if (id) {
