@@ -58,6 +58,15 @@ export type Profile = {
   postalCode: string;
   country: string;
 };
+
+export type Review = {
+  id: number;
+  userId: string;
+  productId: number;
+  reviewId: number;
+  rating: number;
+  feedback: string;
+};
 export interface UserCart {
   id: number;
   userId: number;

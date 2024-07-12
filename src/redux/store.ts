@@ -11,6 +11,7 @@ import profileSlice from "./reducers/profileSlice";
 import updateProfileSlice from "./reducers/updateProfileSlice";
 import productsReducer from "./reducers/productsSlice";
 import cartsReducer from "./reducers/cartSlice";
+import reviewSlice from "./reducers/reviewSlice";
 
 const store = configureStore({
   reducer: {
@@ -25,6 +26,7 @@ const store = configureStore({
     updateUsersProfile: updateProfileSlice,
     products: productsReducer,
     cart: cartsReducer,
+    review: reviewSlice,
   },
 });
 export type RootState = ReturnType<typeof store.getState>;

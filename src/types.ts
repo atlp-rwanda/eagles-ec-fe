@@ -1,3 +1,5 @@
+import { Review } from "../type";
+
 export interface IUser {
   id: number;
   name: string;

@@ -14,12 +14,16 @@ import { useParams } from "react-router-dom";
 import { MdChat, MdCurrencyExchange } from "react-icons/md";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { BsChatRightText } from "react-icons/bs";
+import { useSelector } from "react-redux";
 
 import { useFetchSingleProduct } from "../libs/queries";
 import ProductDetailSkleton from "../components/skeletons/ProductDetailSkleton";
 import { IProduct, prod } from "../types";
 import api from "../redux/api/api";
 import RelatedProducts from "../components/common/related-products/RelatedProducts";
+import { fetchReviews } from "../redux/reducers/reviewSlice";
+
+import ReviewsList from "./ReviewList";
 
 const ProductDetails: React.FC = () => {
   const [mainImage, setMainImage] = useState<string | null>(null);
@@ -29,15 +33,12 @@ const ProductDetails: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
   const { id } = useParams();
-
+  const { reviews } = useSelector((state: RootState) => state.review);
   useEffect(() => {
     setIsLoading(true);
-
     const fetch = async () => {
       try {
         const res = await api.get(`/products/${id}`);
-
-        console.log(res.data.product[0]);
         res.status === 404;
         setProduct(res.data.product[0]);
         setIsLoading(false);
@@ -47,7 +48,6 @@ const ProductDetails: React.FC = () => {
         setIsloading(false);
       }
     };
-
     fetch();
   }, [id]);
 
@@ -58,17 +58,20 @@ const ProductDetails: React.FC = () => {
   if (isLoading) {
     return <ProductDetailSkleton />;
   }
-
   const handleImageClick = (image: string) => {
     setMainImage(image);
   };
-
   const isDiscounted = product && product?.discount > 0;
   const discount = product?.discount;
 
   const discountedAmount = product && (product!.price * product?.discount) / 100;
 
   const priceAfterDiscount = discountedAmount && product?.price - discountedAmount;
+
+  const totalRatings = reviews
+    ? reviews.reduce((sum, review) => sum + parseInt(review.rating, 10), 0)
+      / reviews.length
+    : 0;
 
   const handleImage = (url: string, index: number) => {
     setMainImage(url);
@@ -145,8 +148,12 @@ const ProductDetails: React.FC = () => {
                   <Typography variant="h5">{product?.name}</Typography>
                   <div className="flex items-center gap-3 h-[44px]">
                     <div className="flex items-center gap-1 h-[44px]">
-                      <Rating value={4} disabled size="small" />
-                      <p className="text-[10px] text-[#6085A5]">(56 Reviews)</p>
+                      <Rating value={totalRatings} disabled size="small" />
+                      <p className="text-[10px] text-[#6085A5]">
+                        (
+                        {reviews ? reviews.length : 0}
+                        )
+                      </p>
                       <p className="text-[10px] text-[#6085A5]">
                         (
                         {product?.stockQuantity}
@@ -265,6 +272,7 @@ const ProductDetails: React.FC = () => {
           />
         </>
       )}
+      <ReviewsList productId={id} />
     </div>
   );
 };
