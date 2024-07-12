@@ -33,6 +33,7 @@ import BuyerOrders from "../pages/BuyerOrders";
 import SignupVerification from "../pages/SignupVerification";
 import SmoothScroll from "../utils/SmoothScroll";
 import NotFound from "../pages/NotFound";
+import Payment, { SuccessfulPayment } from "../pages/paymentPage";
 
 const AppRoutes = () => {
   const navigate = useNavigate();
@@ -67,6 +68,9 @@ const AppRoutes = () => {
         <Route path="/carts" element={<CartManagement />} />
         <Route path="/wishes" element={<BuyerWishesList />} />
         <Route path="/orders" element={<BuyerOrders />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/payment/success" element={<SuccessfulPayment />} />
+        <Route path="/payment/canceled" element={<Payment />} />
       </Route>
       <Route path="chat" element={<ChatPage />} />
       <Route path="/password-reset-link" element={<GetLinkPage />} />
