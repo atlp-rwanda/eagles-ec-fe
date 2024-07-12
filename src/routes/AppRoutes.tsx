@@ -29,6 +29,10 @@ import ChatPage from "../pages/ChatPage";
 import BuyerWishesList from "../pages/Wishes";
 // import { setNavigateFunction } from "../redux/api/api";
 import Wishes from "../dashboard/sellers/wishesList";
+// import { setNavigateFunction } from "../redux/api/api";
+import SellerOrder from "../components/dashboard/orders/SellerOrder";
+import BuyerOrders from "../pages/BuyerOrders";
+import SignupVerification from "../pages/SignupVerification";
 
 const AppRoutes = () => {
   const navigate = useNavigate();
@@ -61,11 +65,14 @@ const AppRoutes = () => {
         <Route path="products/:id" element={<ProductDetails />} />
         <Route path="/carts" element={<CartManagement />} />
         <Route path="/wishes" element={<BuyerWishesList />} />
+        <Route path="/orders" element={<BuyerOrders />} />
       </Route>
       <Route path="chat" element={<ChatPage />} />
       <Route path="/password-reset-link" element={<GetLinkPage />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/register" element={<RegisterUser />} />
+      <Route path="/verify-user" element={<SignupVerification />} />
+
       <Route
         path="/login"
         element={(
@@ -82,6 +89,7 @@ const AppRoutes = () => {
       <Route path="/profile/update" element={<UpdateUserProfile />} />
       <Route path="/dashboard/products" element={<Products />} />
       <Route path="/dashboard/products/:id" element={<AddProduct />} />
+      <Route path="/dashboard/orders" element={<SellerOrder />} />
       <Route path="/admin/dashboard" element={<Dashboard />} />
       <Route path="/admin/users" element={<UserManagement />} />
       <Route path="/admin/settings" element={<Settings />} />

@@ -61,7 +61,7 @@ const ProductPage = () => {
           }),
         );
       } catch (error: any) {
-        alert("error");
+        alert("error"); // eslint-disable-line no-alert
       }
     };
     fetchFilteredProducts();

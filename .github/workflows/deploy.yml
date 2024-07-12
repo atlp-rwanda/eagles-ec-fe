@@ -26,7 +26,7 @@ jobs:
           node-version: "20"
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --force
 
       - name: Running test
         run: npm run test:coverage

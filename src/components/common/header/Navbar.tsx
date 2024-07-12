@@ -105,6 +105,9 @@ const Navbar: React.FC<InavbarProps> = ({ searchQuery, setSearchQuery }) => {
             <NavLink to="/" className="text-nowrap text-white">
               New Arrival
             </NavLink>
+            <NavLink to="/orders" className="text-nowrap text-white">
+              Orders
+            </NavLink>
           </Stack>
         </Stack>
       </Stack>
