@@ -5,6 +5,7 @@ import { IoChevronUpOutline, IoChevronDownSharp } from "react-icons/io5";
 import { MdOutlineClose } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
 import { AxiosError } from "axios";
+import { Link } from "react-router-dom";
 
 import { RootState } from "../redux/store";
 import {
@@ -50,7 +51,6 @@ const CartManagement: React.FC<IProductCardProps> = () => {
       </div>
     );
   }
-  console.log(userCart);
 
   const handleDelete = async () => {
     await dispatch(cartDelete());
@@ -239,7 +239,7 @@ const CartManagement: React.FC<IProductCardProps> = () => {
             </div>
             <hr className="w-full border-t border-gray-300 mt-2" />
             <div className="bg-[#DB4444] text-white rounded-sm px-2 md:px-2 py-2 hover:border-[0.5px] mt-8 cursor-pointer mx-auto md:text-[14px]">
-              Proceed to Checkout
+              <Link to="/payment">Proceed to Checkout</Link>
             </div>
           </div>
         )}
