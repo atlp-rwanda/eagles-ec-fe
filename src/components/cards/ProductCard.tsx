@@ -2,7 +2,7 @@ import { IconButton, Rating, Typography } from "@mui/material";
 import { FaEye } from "react-icons/fa";
 import { CiHeart } from "react-icons/ci";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { useSelector } from "react-redux";
@@ -28,6 +28,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [reviews, setReviews] = useState<Review[]>([]);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const formatPrice = (price: number) => {
     if (price < 1000) {
@@ -84,6 +85,10 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
   const handleAddToCart = async () => {
     if (!localStorage.getItem("accessToken")) {
       toast.info("Please Log in to add to cart.");
+      setTimeout(() => {
+        navigate("/login");
+      }, 4000);
+
       return;
     }
     setIsLoading(true);
@@ -94,7 +99,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
       dispatch(cartManage());
     } catch (err) {
       const error = err as AxiosError;
-      toast.error(`Failed to add product to cart: ${error.message}`);
+      // toast.error(`Failed to add product to cart: ${error.message}`);
     } finally {
       setIsLoading(false);
     }

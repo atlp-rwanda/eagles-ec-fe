@@ -50,6 +50,7 @@ module.exports = {
     "no-return-assign": "off",
     "react-refresh/only-export-components":"off",
     "jsx-a11y/label-has-associated-control": "off",
+    "import/no-cycle": "off",
     "react/function-component-definition": [
       "warn",
       {
