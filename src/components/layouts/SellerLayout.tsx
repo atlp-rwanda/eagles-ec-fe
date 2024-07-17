@@ -19,18 +19,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
-  useEffect(() => {
-    const initializeSocket = async () => {
-      await connectToSocket();
-    };
 
-    initializeSocket();
-    dispatch(getUserNotifications());
-
-    return () => {
-      disconnectFromSocket();
-    };
-  }, [dispatch]);
   useEffect(() => {
     dispatch(getUserNotifications());
   }, [dispatch]);

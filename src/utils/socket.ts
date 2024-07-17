@@ -29,7 +29,6 @@ export const connectToSocket = async () => {
     if (user && user.id !== null) {
       socket.emit("joinRoom", `${user.id}`);
     }
-    socket.emit("joinRoom", `30`);
 
     socket.on("notification", (notification) => {
       store.dispatch(onIncomingNotification(notification));
