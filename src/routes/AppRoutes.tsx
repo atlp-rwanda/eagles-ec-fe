@@ -23,6 +23,7 @@ import Dashboard from "../dashboard/admin/Dashboard";
 import CartManagement from "../pages/CartManagement";
 import { setNavigate } from "../redux/api/api";
 import ChatPage from "../pages/ChatPage";
+import BuyerWishesList from "../pages/Wishes";
 
 const AppRoutes = () => {
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ const AppRoutes = () => {
         <Route path="products" element={<ProductPage />} />
         <Route path="products/:id" element={<ProductDetails />} />
         <Route path="/carts" element={<CartManagement />} />
+        <Route path="/wishes" element={<BuyerWishesList />} />
       </Route>
       <Route path="chat" element={<ChatPage />} />
       <Route path="/password-reset-link" element={<GetLinkPage />} />

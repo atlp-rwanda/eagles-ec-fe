@@ -6,7 +6,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { useSelector } from "react-redux";
+import { Spinner } from "flowbite-react";
 
+import {
+  addWish,
+  fetchWishes,
+  deleteWish,
+} from "../../redux/reducers/wishListSlice";
 import { IProduct } from "../../types";
 import { useAppDispatch } from "../../redux/hooks";
 import {
@@ -26,7 +32,9 @@ interface IProductCardProps {
 const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [loadWishes, setLoadWishes] = useState(false);
   const [reviews, setReviews] = useState<Review[]>([]);
+  const { wishes } = useSelector((state: RootState) => state.wishes);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -56,6 +64,19 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
 
     fetchReviews();
   }, [product.id]);
+
+  useEffect(() => {
+    setLoadWishes(true);
+    const fetchData = async () => {
+      try {
+        await dispatch(fetchWishes());
+        setLoadWishes(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, [dispatch]);
   const total = reviews
     ? reviews.reduce((sum, review) => sum + (review.rating, 10), 0)
       / reviews.length
@@ -81,6 +102,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
       // @ts-ignore
       item.product?.id === product.id,
   );
+  const alreadyWished = wishes?.some((item) => item.product?.id === product.id);
 
   const handleAddToCart = async () => {
     if (!localStorage.getItem("accessToken")) {
@@ -102,6 +124,40 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
       // toast.error(`Failed to add product to cart: ${error.message}`);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleAddWish = async () => {
+    try {
+      setLoadWishes(true);
+      if (product.id) {
+        const response = await dispatch(addWish({ productId: product.id }));
+        if (response.payload === "product already exists in your wishlist") {
+          handleDeleteWish();
+          setLoadWishes(false);
+          await dispatch(fetchWishes());
+        } else {
+          await dispatch(fetchWishes());
+          setLoadWishes(false);
+        }
+      }
+    } catch (err) {
+      const error = err as AxiosError;
+      toast.error(error.message);
+    }
+  };
+
+  const handleDeleteWish = async () => {
+    try {
+      setLoadWishes(true);
+      if (product.id) {
+        dispatch(deleteWish({ productId: product.id }));
+        await dispatch(fetchWishes());
+        setLoadWishes(false);
+      }
+    } catch (err) {
+      const error = err as AxiosError;
+      toast.error(error.message);
     }
   };
 
@@ -160,10 +216,23 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
             className="bg-white"
             sx={{ paddingY: 0.5, paddingX: 0.5 }}
           >
-            <CiHeart
-              className="text-black bg-white p-2 rounded-full text-[30px]"
-              data-testid="like-btn"
-            />
+            {!localStorage.getItem("accessToken") ? (
+              ""
+            ) : loadWishes ? (
+              <Spinner color="pink" aria-label="Pink spinner example" />
+            ) : alreadyWished ? (
+              <CiHeart
+                className="text-white bg-[#DB4444] p-2 rounded-full text-[30px]"
+                data-testid="like-btn"
+                onClick={handleAddWish}
+              />
+            ) : (
+              <CiHeart
+                className="text-black bg-white p-2 rounded-full text-[30px]"
+                data-testid="like-btn"
+                onClick={handleAddWish}
+              />
+            )}
           </IconButton>
           <IconButton
             sx={{ paddingY: 0.5, paddingX: 0.5 }}
