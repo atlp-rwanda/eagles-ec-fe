@@ -1,13 +1,13 @@
 import { IconButton, Rating, Typography } from "@mui/material";
 import { FaEye } from "react-icons/fa";
-import { CiHeart } from "react-icons/ci";
+import { IoHeartSharp } from "react-icons/io5";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { useSelector } from "react-redux";
-import { Spinner } from "flowbite-react";
 
+import Spinner from "../dashboard/Spinner";
 import {
   addWish,
   fetchWishes,
@@ -37,7 +37,12 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
   const { wishes } = useSelector((state: RootState) => state.wishes);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  const loggedInUserToken = localStorage.getItem("accessToken");
+  let loggedInUser;
+  if (loggedInUserToken) {
+    // @ts-ignore
+    loggedInUser = JSON.parse(atob(loggedInUserToken.split(".")[1]));
+  }
   const formatPrice = (price: number) => {
     if (price < 1000) {
       return price.toString();
@@ -216,18 +221,18 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
             className="bg-white"
             sx={{ paddingY: 0.5, paddingX: 0.5 }}
           >
-            {!localStorage.getItem("accessToken") ? (
+            {!loggedInUserToken || loggedInUser.roleId !== 1 ? (
               ""
             ) : loadWishes ? (
-              <Spinner color="pink" aria-label="Pink spinner example" />
+              <Spinner />
             ) : alreadyWished ? (
-              <CiHeart
-                className="text-white bg-[#DB4444] p-2 rounded-full text-[30px]"
+              <IoHeartSharp
+                className="text-[#DB4444] bg-white p-2 rounded-full text-[30px]"
                 data-testid="like-btn"
                 onClick={handleAddWish}
               />
             ) : (
-              <CiHeart
+              <IoHeartSharp
                 className="text-black bg-white p-2 rounded-full text-[30px]"
                 data-testid="like-btn"
                 onClick={handleAddWish}

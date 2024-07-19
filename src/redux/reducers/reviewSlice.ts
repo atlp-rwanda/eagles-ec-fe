@@ -163,6 +163,9 @@ const reviewSlice = createSlice({
       })
       .addCase(addReview.fulfilled, (state, action: PayloadAction<Review>) => {
         state.isLoading = false;
+        if (!Array.isArray(state.reviews)) {
+          state.reviews = [];
+        }
         state.reviews.push(action.payload);
       })
       .addCase(addReview.rejected, (state, action) => {

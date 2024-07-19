@@ -3,13 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import { MdOutlineClose } from "react-icons/md";
 import { AxiosError } from "axios";
-import { Spinner } from "flowbite-react";
+import { useNavigate } from "react-router-dom";
 
+import Spinner from "../components/dashboard/Spinner";
 import MainSpinner from "../components/common/auth/Loader";
 import Warning from "../components/common/notify/Warning";
 import { deleteWish, fetchWishes } from "../redux/reducers/wishListSlice";
 import { RootState, AppDispatch } from "../redux/store";
 import { addToCart } from "../redux/reducers/cartSlice";
+import LinkToUpdatePage from "../components/profile/linkToUpdate";
 
 // @ts-ignore
 const BuyerWishesList: React.FC = () => {
@@ -17,6 +19,13 @@ const BuyerWishesList: React.FC = () => {
   const { wishes, error } = useSelector((state: RootState) => state.wishes);
   const [loadingWish, setLoadingWish] = useState<number | null>(null);
   const [isLoading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const loggedInUserToken = localStorage.getItem("accessToken");
+  let loggedInUser;
+  if (loggedInUserToken) {
+    // @ts-ignore
+    loggedInUser = JSON.parse(atob(loggedInUserToken.split(".")[1]));
+  }
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
@@ -31,13 +40,12 @@ const BuyerWishesList: React.FC = () => {
 
     fetchData();
   }, [dispatch]);
-
   const handleDeleteWish = async (productId) => {
     setLoadingWish(productId);
     try {
-      await dispatch(deleteWish({ productId }));
+      const response = await dispatch(deleteWish({ productId }));
       dispatch(fetchWishes());
-      toast.success("Product removed from your wish list");
+      toast.success("Wish removed from the list");
     } catch (err) {
       const error = err as AxiosError;
       toast.error(error.message);
@@ -71,23 +79,23 @@ const BuyerWishesList: React.FC = () => {
       </p>
     );
   }
-  if (!localStorage.getItem("accessToken")) {
-    return <Warning />;
+  if (!loggedInUserToken) {
+    navigate("/login");
   }
 
-  if (error) {
-    return (
-      <div className="w-full h-[60vh] flex justify-center items-center">
-        <h2>{error}</h2>
-      </div>
-    );
+  if (loggedInUserToken && loggedInUser.roleId !== 1) {
+    navigate("/");
   }
-
   return (
     <div className="w-full px-[2%] md:px-[4%]">
       <ToastContainer />
       <div className="pt-8">
-        <h2>Home / Wishes</h2>
+        <h2>
+          <LinkToUpdatePage link="/">
+            <span className="hover:text-[#DB4444]">Home </span>
+          </LinkToUpdatePage>
+          / Wishes
+        </h2>
       </div>
       <div className="overflow-x-auto">
         <table className="min-w-full my-4 overflow-x-auto">
@@ -107,7 +115,7 @@ const BuyerWishesList: React.FC = () => {
             {wishes.length === 0 ? (
               <tr>
                 <td colSpan={4} className="text-center">
-                  No wishes found
+                  No wishes found 😎
                 </td>
               </tr>
             ) : (
@@ -120,10 +128,7 @@ const BuyerWishesList: React.FC = () => {
                     <div className="flex items-center">
                       {loadingWish === wish.productId && (
                         <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-10">
-                          <Spinner
-                            color="pink"
-                            aria-label="Pink spinner example"
-                          />
+                          <Spinner />
                         </div>
                       )}
                       <div

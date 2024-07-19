@@ -48,6 +48,7 @@ type passwordType = {
 export type Profile = {
   profileImage: string;
   fullName: string;
+  email: string;
   gender: string;
   birthdate: string;
   preferredLanguage: string;
