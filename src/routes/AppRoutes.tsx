@@ -20,6 +20,7 @@ import Settings from "../dashboard/admin/Settings";
 import Analytics from "../dashboard/admin/Analytics";
 import Dashboard from "../dashboard/admin/Dashboard";
 import CartManagement from "../pages/CartManagement";
+import BuyerWishesList from "../pages/Wishes";
 
 const AppRoutes = () => (
   <Routes>
@@ -28,6 +29,7 @@ const AppRoutes = () => (
       <Route path="products" element={<ProductPage />} />
       <Route path="products/:id" element={<ProductDetails />} />
       <Route path="/carts" element={<CartManagement />} />
+      <Route path="/wishes" element={<BuyerWishesList />} />
     </Route>
     <Route path="/password-reset-link" element={<GetLinkPage />} />
     <Route path="/reset-password" element={<ResetPassword />} />

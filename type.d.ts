@@ -67,6 +67,11 @@ export type Review = {
   rating: number;
   feedback: string;
 };
+
+export type Wish = {
+  id: number;
+  productId: number;
+};
 export interface UserCart {
   id: number;
   userId: number;
