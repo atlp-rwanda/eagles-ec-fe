@@ -1,11 +1,13 @@
 import {
   IconButton, Stack, TextField, Typography,
 } from "@mui/material";
-import { CiUser } from "react-icons/ci";
+import { LuUser } from "react-icons/lu";
+import { IoCartOutline } from "react-icons/io5";
 import { FaSearch, FaShoppingCart } from "react-icons/fa";
 import React, { useEffect, useState, SetStateAction } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { IoMdHeartEmpty } from "react-icons/io";
 
 import { getProfile } from "../../../redux/reducers/profileSlice";
 import Logo from "../auth/Logo";
@@ -63,18 +65,13 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
   }, [dispatches]);
   const userCart = useSelector((state: RootState) => state.cart.data);
   return (
-    <Stack
-      className="px-4 bg-white w-full relative"
-      // display={{ xs: "none", sm: "none", md: "flex" }}
-      id="header"
-    >
-      <Stack className=" justify-between items-center" direction="row">
+    <Stack className="px-[5%] bg-white w-full relative" id="header">
+      <Stack className=" justify-between gap-64 items-center" direction="row">
         <Stack paddingY={{ xs: "15px" }}>
           <Logo className="" />
         </Stack>
         <Stack
-          className="items-center gap-2 py-"
-          direction="row"
+          className="w-full"
           display={{ xs: "none", sm: "none", md: "flex" }}
         >
           <TextField
@@ -82,6 +79,7 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
             placeholder="Search"
             value={searchQuery}
             onChange={handleSearch}
+            fullWidth
             InputProps={{
               endAdornment: (
                 <button>
@@ -90,54 +88,53 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
               ),
             }}
           />
-          <Stack
-            direction="row"
-            className="flex justify-between items-center gap-2 bg-white"
-          >
-            <Stack direction="row" className="flex items-center relative">
-              <FaShoppingCart className="text-[24px] text-black" />
-              <Stack className="flex flex-col ">
-                <Link to="/carts">
-                  <span className="ml-2 font-semibold text-[12px]">Cart</span>
-                </Link>
-                {/* <span className="ml-2 font-semibold text-[12px]">$150.00</span> */}
-
-                {!localStorage.getItem("accessToken") ? (
-                  ""
-                ) : (
-                  <div className="absolute w-5 h-5 bg-red-500 -top-3  -right-3 rounded-full text-center text-white text-[12px] flex justify-center items-center">
-                    <span className="">{userCart.length}</span>
-                  </div>
-                )}
-              </Stack>
-            </Stack>
-            <Stack>
-              {isLoggedIn ? (
-                <Link to="/profile" className="flex items-center">
-                  <CiUser className="text-[24px] text-black" />
-                  <Stack className="flex flex-col">
-                    <span className="ml-2 font-semibold text-[12px]">
-                      {userInfo.name}
-                    </span>
-                    <span className="ml-2 font-semibold text-[12px]">
-                      {userInfo.email}
-                    </span>
-                  </Stack>
-                </Link>
+        </Stack>
+        <Stack
+          direction="row"
+          className="flex justify-between items-center gap-6 bg-white"
+          display={{ xs: "none", sm: "none", md: "flex" }}
+        >
+          <Stack direction="row" className="flex items-center relative">
+            <Link to="/carts">
+              <IoCartOutline className="text-[24px] cursor-pointer text-black" />
+            </Link>
+            <Stack className="flex flex-col ">
+              {!localStorage.getItem("accessToken") ? (
+                ""
               ) : (
-                <Link to="/login" className="flex items-center">
-                  <CiUser className="text-[24px] text-black" />
-                  <Stack className="flex flex-col">
-                    <span className="ml-2 font-semibold text-[12px]">User</span>
-                    <span className="ml-2 font-semibold text-[12px]">
-                      Account
-                    </span>
-                  </Stack>
-                </Link>
+                <div className="absolute w-5 h-5 bg-red-500 -top-3  -right-3 rounded-full text-center text-white text-[12px] flex justify-center items-center">
+                  <span className="">{userCart.length}</span>
+                </div>
               )}
             </Stack>
           </Stack>
+          <Stack>
+            <IoMdHeartEmpty className="text-[24px] text-black" />
+          </Stack>
+          <Stack className="">
+            {isLoggedIn ? (
+              <Link to="/profile" className="flex items-center">
+                <LuUser className="text-[24px] text-black" />
+                <Stack className="flex flex-col">
+                  <span className="ml-2 font-semibold text-[12px]">
+                    {userInfo.name.split(" ")[0]}
+                  </span>
+                </Stack>
+              </Link>
+            ) : (
+              <Link to="/login" className="flex items-center">
+                <LuUser className="text-[24px] text-black" />
+                <Stack className="flex flex-col">
+                  <span className="ml-2 font-semibold text-[12px]">User</span>
+                  <span className="ml-2 font-semibold text-[12px]">
+                    Account
+                  </span>
+                </Stack>
+              </Link>
+            )}
+          </Stack>
         </Stack>
+        {/* </Stack> */}
       </Stack>
     </Stack>
   );

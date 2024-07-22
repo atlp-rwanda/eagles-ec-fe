@@ -22,17 +22,17 @@ const Popup = () => {
   if (!showPopup) return null;
 
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-[#D0D0D0] bg-opacity-50">
-      <div className="relative bg-white rounded-lg p-10 w-[90%] md:w-[65%] lg:w-[55%] xl:w-[50%] duration-75 animate-fadeIn">
-        <p>
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-[#000] bg-opacity-50">
+      <div className="relative bg-white rounded-lg p-10 w-[90%] flex flex-col items-center gap-2 md:w-[65%] lg:w-[55%] xl:w-[50%] duration-75 animate-fadeIn">
+        <h3 className="flex items-center gap-2">
           📵
           <b>Network Error </b>
-          <br />
-          Please check your internet connection.
-        </p>
+        </h3>
+
+        <p>Please check your internet connection.</p>
         <button
           onClick={() => setShowPopup(false)}
-          className="mt-10 bg-transparent text-primary border border-[#DB4444] px-4 py-2 rounded"
+          className="bg-transparent text-primary border border-[#DB4444] px-4 py-2 rounded"
         >
           Close
         </button>

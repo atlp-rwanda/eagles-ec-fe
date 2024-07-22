@@ -7,28 +7,21 @@ const HeroSection = () => {
       className="flex w-[96%] min-h-[300px] sm:min-h-[554px] h-full my-4 rounded-md relative mx-auto ss "
       data-testid="hero-section"
     >
-      <Stack className="absolute left-[30px] top-1/2 transform -translate-y-1/2 space-y-2">
-        <p className="sm:text-[48px] text-[30px] font-bold text-white">
-          Your One-Stop
-        </p>
-        <p className="sm:text-[48px] text-[30px] font-bold text-white">
-          Electronic Market
-        </p>
-        <p className="text-white">
-          Welcome to eagles, a place where you can
-          {' '}
-          <br />
-          {' '}
-          buy everything about
+      <div className="absolute left-[40px] top-1/2 transform -translate-y-1/2 space-y-4">
+        <h1 className="sm:text-[48px] text-[30px] font-bold text-white md:max-w-[60%]">
+          Your One-Stop Online Market
+        </h1>
+        <p className="text-white md:max-w-[60%] text-md">
+          Welcome to eagles, a place where you can buy everything about
           electronics sale every day!
         </p>
-        <div
-          className="bg-black px-4 py-2 rounded-md text-white w-[150px] text-center"
+        <button
           data-testid="get-started-button"
+          className="bg-[#161616] text-white rounded-[5px] px-3 py-2"
         >
           Get Started
-        </div>
-      </Stack>
+        </button>
+      </div>
     </div>
   );
 };
