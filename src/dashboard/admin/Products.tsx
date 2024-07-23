@@ -2,9 +2,9 @@ import React from "react";
 
 import AdminLayout from "../../components/layouts/AdminLayout";
 
-const Products = (props) => (
+const ProductsForAdmin = (props) => (
   <AdminLayout>
     <section className="w-full mt-20 text-center">Products page</section>
   </AdminLayout>
 );
-export default Products;
+export default ProductsForAdmin;
