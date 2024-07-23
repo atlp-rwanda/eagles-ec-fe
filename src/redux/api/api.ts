@@ -8,9 +8,6 @@ import api from "./action";
 
 let navigateFunction = null;
 
-export const setNavigateFunction = (navigate) => {
-  navigateFunction = navigate;
-};
 const redirectToLogin = (navigate) => {
   setTimeout(() => {
     navigate("/login");
@@ -39,3 +36,7 @@ api.interceptors.response.use(
 );
 
 export default api;
+
+export const setNavigate = (navigate) => {
+  navigateFunction = navigate;
+};

@@ -64,31 +64,35 @@ export const NotificationPopup: React.FC<INotificationPop> = ({
         horizontal: "center",
       }}
     >
-      {notifications.slice(0, 5).map((notification, index) => (
-        <>
-          <Link
-            to={`/dashboard/notifications/${notification.id}`}
-            onClick={handleClose}
-            key={index}
-            className="flex justify-between items-center mb-[3px] px-2 gap-4 $"
-          >
-            {notification.isRead ? (
-              <FaEnvelopeOpenText className=" min-h-[30px] min-w-[30px] " />
-            ) : (
-              <FaEnvelope className=" text-[30px]" />
-            )}
-            <p className={` text-[13px]  `}>{notification.message}</p>
-          </Link>
-          <Divider />
-        </>
-      ))}
+      {notifications.length > 0 ? (
+        notifications.slice(0, 5).map((notification, index) => (
+          <>
+            <Link
+              to={`/dashboard/notifications/${notification.id}`}
+              onClick={handleClose}
+              key={index}
+              className="flex justify-between items-center mb-[3px] px-2 gap-4 $"
+            >
+              {notification.isRead ? (
+                <FaEnvelopeOpenText className=" min-h-[30px] min-w-[30px] " />
+              ) : (
+                <FaEnvelope className=" text-[30px]" />
+              )}
+              <p className={` text-[13px]  `}>{notification.message}</p>
+            </Link>
+            <Divider />
+          </>
+        ))
+      ) : (
+        <div>You Dont have any notification yet </div>
+      )}
 
       <Link
         to="/dashboard/notifications"
         onClick={handleClose}
         className=" flex items-center justify-center text-center text-blue-700"
       >
-        {notifications && notifications.length > 5 && <div>View More</div>}
+        <div>View All</div>
       </Link>
     </Menu>
   );

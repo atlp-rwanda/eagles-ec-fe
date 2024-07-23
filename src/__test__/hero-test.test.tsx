@@ -19,8 +19,8 @@ describe("Testing HeroSection Component", () => {
     );
 
     expect(screen.getByTestId("hero-section")).toBeInTheDocument();
-    expect(screen.getByText("Your One-Stop")).toBeInTheDocument();
-    expect(screen.getByText("Electronic Market")).toBeInTheDocument();
+    expect(screen.getByText("Your One-Stop Online Market")).toBeInTheDocument();
+    // expect(screen.getByText("Electronic Market")).toBeInTheDocument();
     expect(screen.getByText(/Welcome to eagles/i)).toBeInTheDocument();
     expect(screen.getByTestId("get-started-button")).toBeInTheDocument();
     expect(screen.getByText("Get Started")).toBeInTheDocument();

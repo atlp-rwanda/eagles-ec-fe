@@ -16,7 +16,7 @@ import { login } from "../redux/api/loginApiSlice";
 import sideImage from "../assets/sideImage.png";
 import LinkPages from "../components/common/auth/LinkPages";
 import { GoogleAuthLink } from "../components/common/auth/GoogleAuthLink";
-// Ensure the export is default
+import { useAppDispatch } from "../redux/hooks";
 
 interface LoginFormInputs {
   email: string;
@@ -24,7 +24,7 @@ interface LoginFormInputs {
 }
 
 const Login = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const loading = useSelector((state: RootState) => state.login.loading);
   const navigate = useNavigate();
 
@@ -45,9 +45,7 @@ const Login = () => {
       const { token } = result;
       localStorage.setItem("accessToken", token);
       reset();
-
       const decodedToken: any = decodeToken(token);
-
       if (decodedToken.roleId === 3) {
         navigate("/admin/dashboard");
       } else {
@@ -56,13 +54,12 @@ const Login = () => {
           navigate("/2fa-verify");
         } else {
           setTimeout(() => {
-            navigate("/");
+            window.location.href = "/";
           }, 3000);
         }
       }
-    } catch (err) {
-      const error = err as AxiosError;
-      toast.error(`Login failed: ${error.message}`);
+    } catch (err: any) {
+      toast.error(err.message);
       console.error(err);
     }
   };

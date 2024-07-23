@@ -13,7 +13,7 @@
 }
 
 .ss {
-  background-image: url("/public/images/premium.png");
+  background-image: url("/src/assets/bg-image1.jpg");
   background-size: cover;
 }
 

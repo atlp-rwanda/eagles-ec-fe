@@ -3,6 +3,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
 import { Socket } from "socket.io-client";
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
+import { Link, useLocation } from "react-router-dom";
 
 import AppRoutes from "./routes/AppRoutes";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
@@ -18,6 +20,7 @@ import PasswordPopup from "./components/password/PasswordPopup";
 const App: React.FC = () => {
   const [expired, setExpired] = React.useState(false);
   const [PasswordModal, setPasswordModal] = React.useState(false);
+  const location = useLocation();
 
   const dispatch = useAppDispatch();
   React.useEffect(() => {
@@ -43,6 +46,15 @@ const App: React.FC = () => {
       <AppRoutes />
 
       {isPasswordExpired && <PasswordPopup />}
+      {location.pathname !== "/chat"
+        && location.pathname !== "/login"
+        && location.pathname !== "/register" && (
+          <Link to="/chat">
+            <div className="fixed bg-primary text-white shadow-md rounded px-3 py-3 z-50 right-6 bottom-6 cursor-pointer group">
+              <IoChatbubbleEllipsesOutline className="text-[30px] text-white" />
+            </div>
+          </Link>
+      )}
     </main>
   );
 };

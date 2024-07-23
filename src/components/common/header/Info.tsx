@@ -4,11 +4,12 @@ import { CiLocationOn } from "react-icons/ci";
 import {
   FaFacebook, FaInstagram, FaPhone, FaTwitter,
 } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 const HeaderInfo = () => {
   return (
     <div
-      className="hidden lg:flex justify-between items-center bg-[#FFFFFF] px-4 py-2"
+      className="hidden lg:flex justify-between w-full items-center bg-[#FFFFFF]  py-2"
       id="header-info"
     >
       <div className="flex items-center gap-4">
@@ -21,7 +22,7 @@ const HeaderInfo = () => {
           <span>+250782443651</span>
         </div>
       </div>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
         <TextField select size="small" value="RWF">
           <MenuItem value="USD">USD</MenuItem>
           <MenuItem value="RWF">RWF</MenuItem>
@@ -33,9 +34,9 @@ const HeaderInfo = () => {
           <MenuItem value="burundi"> Burundi</MenuItem>
         </TextField>
         <div className="flex items-center gap-1">
-          <FaFacebook className="text-[28px]" />
-          <FaTwitter className="text-[28px]" />
-          <FaInstagram className="text-[28px]" />
+          <FaFacebook className="text-[20px]" />
+          <FaXTwitter className="text-[20px]" />
+          <FaInstagram className="text-[20px]" />
         </div>
       </div>
     </div>

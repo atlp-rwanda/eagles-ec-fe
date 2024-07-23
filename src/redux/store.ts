@@ -14,6 +14,8 @@ import cartsReducer from "./reducers/cartSlice";
 import notificationReducer from "./reducers/notificationSlice";
 import updatePasswordReducer from "./reducers/updatePasswordSlice";
 import reviewSlice from "./reducers/reviewSlice";
+import chatSlice from "./reducers/chatSlice";
+import authReducer from "./reducers/authSlice";
 
 const store = configureStore({
   reducer: {
@@ -31,6 +33,8 @@ const store = configureStore({
     notifications: notificationReducer,
     updatePin: updatePasswordReducer,
     review: reviewSlice,
+    chats: chatSlice,
+    auth: authReducer,
   },
 });
 export type RootState = ReturnType<typeof store.getState>;
