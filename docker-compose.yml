@@ -1,0 +1,59 @@
+version: '3.1'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: eagle-ec-fe-container
+    image: mugemanebertin/eagle-ec-fe
+    ports:
+      - "5173:5173"
+    env_file:
+      - .env
+
+  backend:
+    image: mugemanebertin/eagle_ec_be:latest
+    container_name: eagle-ec-be-container
+    ports:
+      - "499:499"
+    command: sh -c "npm run migrate && (npm run seed || true) && npm run dev"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DB_CONNECTION=${DOCKER_DB_CONNECTION}
+      - JWT_SECRET=${JWT_SECRET}
+      - PORT=${PORT}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - CLOUD_NAME=${CLOUD_NAME}
+      - CLOUD_KEY=${CLOUD_KEY}
+      - CLOUD_SECRET=${CLOUD_SECRET}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GOOGLE_CALLBACK_URL=${GOOGLE_CALLBACK_URL}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+  db:
+    image: postgres:latest
+    container_name: eagle-ec-db-container
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:
