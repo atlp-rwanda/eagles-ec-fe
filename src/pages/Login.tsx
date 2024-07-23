@@ -74,9 +74,30 @@ const Login = () => {
     };
 
     const token = getTokenFromUrl();
+
     if (token) {
       localStorage.setItem("accessToken", token);
-      navigate("/");
+
+      try {
+        const decodedToken = decodeToken(token);
+        // @ts-ignore
+        const roleId = decodedToken?.roleId;
+
+        if (roleId === 3) {
+          navigate("/admin/dashboard");
+        } else if (roleId === 2) {
+          navigate("/dashboard");
+        } else if (roleId === 1) {
+          navigate("/");
+        } else {
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        navigate("/login");
+      }
+    } else {
+      navigate("/login");
     }
   }, [navigate]);
 
@@ -88,7 +109,7 @@ const Login = () => {
       </div>
       <div className="w-full md:w-1/2 xl:w-2/5 flex flex-col justify-center mt-[15vh] mx-auto px-16">
         <div className="flex items-center gap-1 text-2xl font-bold text-black">
-          <h1 className="text-2xl flex items-center gap-1 font-medium">
+          <h1 className="flex items-center gap-1 text-2xl font-medium">
             Login to
             <Stack paddingY={{ xs: "12px" }}>
               <Logo className="" />
