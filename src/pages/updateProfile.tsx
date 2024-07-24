@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { FaCircleUser } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 import LinkPages from "../components/common/auth/LinkPages";
 import { RootState } from "../redux/store";
@@ -30,6 +31,7 @@ export const convertUrlToFile = async (url: string): Promise<File> => {
 
 const UpdateUserProfile: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { profile } = useSelector((state: RootState) => state.usersProfile);
   useEffect(() => {
     // @ts-ignore
@@ -77,7 +79,6 @@ const UpdateUserProfile: React.FC = () => {
         setImagePreview(reader.result as string);
       };
       reader.readAsDataURL(file);
-      // @ts-ignore
       setSelectedImage(file);
     }
   };
@@ -99,8 +100,7 @@ const UpdateUserProfile: React.FC = () => {
     const formData = new FormData();
     if (selectedImage) {
       formData.append("profileImage", selectedImage);
-    }
-    if (profile?.profileImage) {
+    } else if (profile?.profileImage) {
       // @ts-ignore
       const newFile = await convertUrlToFile(profile.profileImage);
       formData.append("profileImage", newFile);
@@ -137,7 +137,10 @@ const UpdateUserProfile: React.FC = () => {
     { value: "RWF", label: "RWF" },
     { value: "USD", label: "USD" },
   ];
-
+  const loggedInUserToken = localStorage.getItem("accessToken");
+  if (!loggedInUserToken) {
+    navigate("/login");
+  }
   return (
     <div className="parent-container h-screen overflow-auto">
       <div className="sticky top-0 w-[92%] ml-[4%] mr-[4%]">
@@ -147,7 +150,7 @@ const UpdateUserProfile: React.FC = () => {
       <div className="w-[92%]  overflow-y-hidden ml-[4%] mr-[4%]bg-yellow-100">
         <LinkToUpdatePage link="/">
           <p className="border-solid sm:border-none border-b-[1px] border-gray-200 ">
-            <span className="text-gray-400">Home</span>
+            <span className="text-gray-400 hover:text-[#DB4444]">Home</span>
             /My Account
           </p>
         </LinkToUpdatePage>
@@ -206,11 +209,11 @@ const UpdateUserProfile: React.FC = () => {
                         </span>
                       )}
                     </label>
-                    <BiImageAdd className="mt-[-30px] inset-0 bg-[#DB4444] h-[30%] w-[10%] text-white rounded-[50%]" />
+                    <BiImageAdd className="mt-[-25px] ml-14 inset-0 bg-[#DB4444] h-[25%] w-[6%] text-white rounded-[50%]" />
                   </div>
 
                   <ProfileTextInput
-                    label="Full name"
+                    label="Name"
                     defaultValue={profile?.fullName}
                     register={register}
                     name="fullName"

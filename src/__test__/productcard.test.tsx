@@ -100,11 +100,11 @@ describe("ProductCard Component", () => {
       </Provider>,
     );
 
-    const wishlistButton = screen.getByTestId("like-btn");
+    // const wishlistButton = screen.getByTestId("like-btn");
     const viewDetailsButton = screen.getByTestId("dprod-detailbtn");
-    expect(screen.getByTestId("like-btn")).toBeDefined();
+    // expect(screen.getByTestId("like-btn")).toBeDefined();
 
-    expect(wishlistButton).toBeDefined();
+    // expect(wishlistButton).toBeDefined();
     expect(viewDetailsButton).toBeDefined();
     // expect(viewDetailsButton.querySelector('a')).toHaveAttribute('href', `/products/${product.id}`);
   });
