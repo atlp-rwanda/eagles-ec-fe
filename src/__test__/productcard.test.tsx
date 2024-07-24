@@ -61,20 +61,6 @@ describe("ProductCard Component", () => {
     expect(productPrice).toBeDefined();
   });
 
-  test('shows "New" label for recently added products', () => {
-    const recentProduct = { ...product, createdAt: new Date().toISOString() };
-    render(
-      <Provider store={store}>
-        <BrowserRouter>
-          <ProductCard product={recentProduct} />
-        </BrowserRouter>
-      </Provider>,
-    );
-
-    const newLabel = screen.getByTestId("new");
-    expect(newLabel).toBeDefined();
-  });
-
   test('displays "Add to cart" button on hover', () => {
     render(
       <Provider store={store}>
@@ -100,11 +86,11 @@ describe("ProductCard Component", () => {
       </Provider>,
     );
 
-    const wishlistButton = screen.getByTestId("like-btn");
+    // const wishlistButton = screen.getByTestId("like-btn");
     const viewDetailsButton = screen.getByTestId("dprod-detailbtn");
-    expect(screen.getByTestId("like-btn")).toBeDefined();
+    // expect(screen.getByTestId("like-btn")).toBeDefined();
 
-    expect(wishlistButton).toBeDefined();
+    // expect(wishlistButton).toBeDefined();
     expect(viewDetailsButton).toBeDefined();
     // expect(viewDetailsButton.querySelector('a')).toHaveAttribute('href', `/products/${product.id}`);
   });

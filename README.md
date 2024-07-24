@@ -62,6 +62,24 @@ npm install
 
 Write your test by creating a file with .test.tsx extetion under **test** directory.
 
-```
 
-```
+## Running it with Docker Image
+
+## 1. Pull Docker Image:
+
+   ```bash
+   docker pull mugemanebertin/eagle-ec-fe:latest
+   ```
+
+   This command downloads the Docker image `mugemanebertin/eagle-ec-fe` from Docker Hub.
+
+## 2. Run Docker Container:
+
+   ```bash
+   docker run -d --name eagle-ec-fe-container -p 5173:5173 mugemanebertin/eagle-ec-fe:latest
+   ```
+
+   This command starts a Docker container named `eagle-ec-fe-container`, mapping port `5173` on your host to port `5173` in the container. The `-d` flag runs the container in detached mode.
+
+   You can now access the Eagle E-commerce application by navigating to `http://localhost:5173` in your web browser.
+

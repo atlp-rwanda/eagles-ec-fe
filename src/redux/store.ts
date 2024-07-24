@@ -16,6 +16,7 @@ import updatePasswordReducer from "./reducers/updatePasswordSlice";
 import reviewSlice from "./reducers/reviewSlice";
 import chatSlice from "./reducers/chatSlice";
 import authReducer from "./reducers/authSlice";
+import wishListSlice from "./reducers/wishListSlice";
 
 const store = configureStore({
   reducer: {
@@ -35,6 +36,7 @@ const store = configureStore({
     review: reviewSlice,
     chats: chatSlice,
     auth: authReducer,
+    wishes: wishListSlice,
   },
 });
 export type RootState = ReturnType<typeof store.getState>;

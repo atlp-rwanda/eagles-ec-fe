@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IoMdHeartEmpty } from "react-icons/io";
 
+import { fetchWishes } from "../../../redux/reducers/wishListSlice";
 import { getProfile } from "../../../redux/reducers/profileSlice";
 import Logo from "../auth/Logo";
 import { RootState } from "../../../redux/store";
@@ -23,16 +24,21 @@ interface ISerachProps {
 
 const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { profile } = useSelector((state: RootState) => state.usersProfile);
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
-
   let userInfo;
   const accessToken = localStorage.getItem("accessToken");
   if (accessToken) {
     userInfo = JSON.parse(atob(accessToken.split(".")[1]));
   }
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    // @ts-ignore
+    dispatch(getProfile());
+  }, [dispatch]);
 
   useEffect(() => {
     if (accessToken) {
@@ -64,6 +70,18 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
     dispatch(cartManage());
   }, [dispatches]);
   const userCart = useSelector((state: RootState) => state.cart.data);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await dispatch(fetchWishes());
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, [dispatch]);
+  const { wishes } = useSelector((state: RootState) => state.wishes);
   return (
     <Stack className="px-[5%] bg-white w-full relative" id="header">
       <Stack className=" justify-between gap-64 items-center" direction="row">
@@ -109,7 +127,15 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
             </Stack>
           </Stack>
           <Stack>
-            <IoMdHeartEmpty className="text-[24px] text-black" />
+            {localStorage.getItem("accessToken") && userInfo.roleId === 2 ? (
+              <Link to="dashboard/wishes">
+                <IoMdHeartEmpty className="text-[24px] cursor-pointer text-black" />
+              </Link>
+            ) : (
+              <Link to="/wishes">
+                <IoMdHeartEmpty className="text-[24px] cursor-pointer text-black" />
+              </Link>
+            )}
           </Stack>
           <Stack className="">
             {isLoggedIn ? (
@@ -117,7 +143,7 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
                 <LuUser className="text-[24px] text-black" />
                 <Stack className="flex flex-col">
                   <span className="ml-2 font-semibold text-[12px]">
-                    {userInfo.name.split(" ")[0]}
+                    {profile && profile.fullName}
                   </span>
                 </Stack>
               </Link>

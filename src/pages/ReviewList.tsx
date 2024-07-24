@@ -70,7 +70,7 @@ const ReviewsList: React.FC<ReviewsListProps> = ({ productId }) => {
       setNewRating("");
       setNewFeedback("");
       // @ts-ignore
-      if (response.error) {
+      if (response && response.error) {
         // @ts-ignore
         toast.error(response.payload.message);
       } else {
@@ -212,7 +212,7 @@ const ReviewsList: React.FC<ReviewsListProps> = ({ productId }) => {
               }
             }}
             placeholder="Write your feedback"
-            className="border-[#DB4444] p-2 rounded"
+            className="border-2 border-[#DB4444] p-2 rounded"
           />
           {errors.newFeedback && (
             <p className="text-red-500">{errors.newFeedback}</p>

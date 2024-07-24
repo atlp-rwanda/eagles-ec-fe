@@ -48,6 +48,7 @@ type passwordType = {
 export type Profile = {
   profileImage: string;
   fullName: string;
+  email: string;
   gender: string;
   birthdate: string;
   preferredLanguage: string;
@@ -66,6 +67,11 @@ export type Review = {
   reviewId: number;
   rating: number;
   feedback: string;
+};
+
+export type Wish = {
+  id: number;
+  productId: number;
 };
 export interface UserCart {
   id: number;

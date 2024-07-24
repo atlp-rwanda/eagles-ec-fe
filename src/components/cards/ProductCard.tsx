@@ -1,12 +1,23 @@
 import { IconButton, Rating, Typography } from "@mui/material";
 import { FaEye } from "react-icons/fa";
-import { CiHeart } from "react-icons/ci";
+import { IoHeartSharp } from "react-icons/io5";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useNavigation,
+} from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { useSelector } from "react-redux";
 
+import Spinner from "../dashboard/Spinner";
+import {
+  addWish,
+  fetchWishes,
+  deleteWish,
+} from "../../redux/reducers/wishListSlice";
 import { IProduct } from "../../types";
 import { useAppDispatch } from "../../redux/hooks";
 import {
@@ -26,9 +37,17 @@ interface IProductCardProps {
 const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [loadWishes, setLoadWishes] = useState(false);
   const [reviews, setReviews] = useState<Review[]>([]);
+  const { wishes } = useSelector((state: RootState) => state.wishes);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const loggedInUserToken = localStorage.getItem("accessToken");
+  let loggedInUser;
+  if (loggedInUserToken) {
+    // @ts-ignore
+    loggedInUser = JSON.parse(atob(loggedInUserToken.split(".")[1]));
+  }
 
   const formatPrice = (price: number) => {
     if (price < 1000) {
@@ -56,6 +75,19 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
 
     fetchReviews();
   }, [product.id]);
+
+  useEffect(() => {
+    setLoadWishes(true);
+    const fetchData = async () => {
+      try {
+        await dispatch(fetchWishes());
+        setLoadWishes(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, [dispatch]);
   const total = reviews
     ? reviews.reduce((sum, review) => sum + (review.rating, 10), 0)
       / reviews.length
@@ -81,6 +113,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
       // @ts-ignore
       item.product?.id === product.id,
   );
+  const alreadyWished = wishes?.some((item) => item.product?.id === product.id);
 
   const handleAddToCart = async () => {
     if (!localStorage.getItem("accessToken")) {
@@ -105,6 +138,40 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
     }
   };
 
+  const handleAddWish = async () => {
+    try {
+      setLoadWishes(true);
+      if (product.id) {
+        const response = await dispatch(addWish({ productId: product.id }));
+        if (response.payload === "product already exists in your wishlist") {
+          handleDeleteWish();
+          setLoadWishes(false);
+          await dispatch(fetchWishes());
+        } else {
+          await dispatch(fetchWishes());
+          setLoadWishes(false);
+        }
+      }
+    } catch (err) {
+      const error = err as AxiosError;
+      toast.error(error.message);
+    }
+  };
+
+  const handleDeleteWish = async () => {
+    try {
+      setLoadWishes(true);
+      if (product.id) {
+        dispatch(deleteWish({ productId: product.id }));
+        await dispatch(fetchWishes());
+        setLoadWishes(false);
+      }
+    } catch (err) {
+      const error = err as AxiosError;
+      toast.error(error.message);
+    }
+  };
+
   const name = product.name.length > 20
     ? `${product.name.substring(0, 12)}...`
     : product.name;
@@ -115,12 +182,6 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
   const diff = currentDate - date;
   return (
     <div className="max-h-[270px] bg-[#F5F5F5] mb-2 relative" data-testid="tbt">
-      {diff < 2 && (
-        <div className="absolute top-2 left-2 " data-testid="new">
-          {/* <p className=" rounded-md z-40  text-white new-product ">New</p> */}
-          {diff}
-        </div>
-      )}
       <ToastContainer />
       <div
         className="relative min-h-[200px]"
@@ -132,6 +193,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
           alt="product"
           className="w-[100%] h-[200px] hover:scale-[1.05] transition duration-200"
           data-testid="prod-image"
+          onClick={() => navigate(`/products/${product.id}`)}
         />
         {isHovered && (
           <div className="">
@@ -154,16 +216,29 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
           </div>
         )}
       </div>
-      <div className="absolute top-0 right-0 p-0">
+      <div className="absolute top-0 right-0 p-0" data-testid="new">
         <div className="w-full flex flex-col gap-0">
           <IconButton
             className="bg-white"
             sx={{ paddingY: 0.5, paddingX: 0.5 }}
           >
-            <CiHeart
-              className="text-black bg-white p-2 rounded-full text-[30px]"
-              data-testid="like-btn"
-            />
+            {!loggedInUserToken || loggedInUser.roleId !== 1 ? (
+              ""
+            ) : loadWishes ? (
+              <Spinner />
+            ) : alreadyWished ? (
+              <IoHeartSharp
+                className="text-[#DB4444] bg-white p-2 rounded-full text-[30px]"
+                data-testid="like-btn"
+                onClick={handleAddWish}
+              />
+            ) : (
+              <IoHeartSharp
+                className="text-black bg-white p-2 rounded-full text-[30px]"
+                data-testid="like-btn"
+                onClick={handleAddWish}
+              />
+            )}
           </IconButton>
           <IconButton
             sx={{ paddingY: 0.5, paddingX: 0.5 }}
@@ -183,9 +258,11 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
         {name}
       </Typography>
       <div className="flex items-center gap-1 p-1">
-        <p className="text-red-400 text-[10px]" data-testid="price">
-          $
-          {formatPrice(product.price)}
+        <p className="text-red-700 font-bold text-[10px]" data-testid="price">
+          {/* ${formatPrice(product.price)} */}
+          {product.price}
+          {' '}
+          Rwf
         </p>
         <Rating
           value={total}

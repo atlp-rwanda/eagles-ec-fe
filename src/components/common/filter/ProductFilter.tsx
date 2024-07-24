@@ -65,7 +65,8 @@ const ProductFilter: React.FC<IProductFilterProps> = ({
     }
     const filterProducts = () => {
       const filtered = products.filter(
-        (product) => product.name.toLowerCase().includes(query.toLowerCase())
+        (product) =>
+          product.name.toLowerCase().includes(query.toLowerCase())
           && product.price >= priceRange[0]
           && product.price <= priceRange[1]
           && (selectedCategories.length === 0
@@ -256,8 +257,8 @@ const ProductFilter: React.FC<IProductFilterProps> = ({
           <h5 className="text-lg font-bold" data-testid="Filter By Category">
             FILTER BY CATEGORY
           </h5>
-          {loading && <p>Loading categories...</p>}
-          {isError && <p>Error fetching categories</p>}
+          {/* {loading && <p>Loading categories...</p>}
+          {isError && <p>Error fetching categories</p>} */}
 
           <TextField
             select

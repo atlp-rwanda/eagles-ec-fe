@@ -14,7 +14,8 @@ interface SidebarProps {
 const SideBar: React.FC<SidebarProps> = ({ isOpen }) => {
   const location = useLocation();
 
-  const getLinkClass = (path: string) => (location.pathname === path ? "text-primary" : "text-dark-gray");
+  const getLinkClass = (path: string) =>
+    (location.pathname === path ? "text-primary" : "text-dark-gray");
 
   return (
     <div
@@ -71,9 +72,9 @@ const SideBar: React.FC<SidebarProps> = ({ isOpen }) => {
               </p>
             </NavLink>
             <NavLink
-              to="/wishes"
+              to="/dashboard/wishes"
               className={`py-2.5 px-4 flex items-center gap-2 text-lg rounded transition duration-200 ${getLinkClass(
-                "/wishes",
+                "/dashboard/wishes",
               )}`}
             >
               <MdInsertChartOutlined className="text-xl" />

@@ -25,8 +25,9 @@ const UsersProfile: React.FC = () => {
     dispatch(getProfile());
   }, [dispatch]);
   const loggedInUserToken = localStorage.getItem("accessToken");
-  // @ts-ignore
-  const userData = JSON.parse(atob(loggedInUserToken.split(".")[1]));
+  if (!loggedInUserToken) {
+    navigate("/login");
+  }
   if (loading) {
     return (
       <div>
@@ -38,8 +39,19 @@ const UsersProfile: React.FC = () => {
     );
   }
   if (error) {
-    console.log(error);
-    navigate("/profile/update");
+    <div>
+      <div className="sticky top-0 w-[92%] ml-[4%] mr-[4%]">
+        <HeaderInfo />
+      </div>
+      <LinkToUpdatePage link="/">
+        <p className="border-solid sm:border-none border-b-[1px] border-gray-200 ">
+          <span className="text-gray-400 hover:text-[#DB4444]">Home</span>
+          /Profile
+          {" "}
+        </p>
+      </LinkToUpdatePage>
+      <p>error;</p>
+    </div>;
   }
   return (
     <div className="parent-container h-screen overflow-auto">
@@ -50,7 +62,7 @@ const UsersProfile: React.FC = () => {
       <div className="w-[92%] overflow-y-hidden ml-[4%] mr-[4%]">
         <LinkToUpdatePage link="/">
           <p className="border-solid sm:border-none border-b-[1px] border-gray-200 ">
-            <span className="text-gray-400">Home</span>
+            <span className="text-gray-400 hover:text-[#DB4444]">Home</span>
             /Profile
             {" "}
           </p>
@@ -72,7 +84,7 @@ const UsersProfile: React.FC = () => {
             </div>
             <div className="hidden sm:block">
               <p className="w-[100%] font-bold">{profile?.fullName}</p>
-              <p className="w-[100%] text-gray-500">{userData.email}</p>
+              <p className="w-[100%] text-gray-500">{profile?.email}</p>
             </div>
           </div>
           <div className="w-[100%] flex justify-end mr-[4%]">
@@ -91,7 +103,7 @@ const UsersProfile: React.FC = () => {
         {profile && (
           <div className="text-black">
             <DisplayProfileData label="Full name" value={profile.fullName} />
-            <DisplayProfileData label="Email" value={userData.email} />
+            <DisplayProfileData label="Email" value={profile.email} />
             <DisplayProfileData label="Gender" value={profile.gender} />
             <DisplayProfileData label="Birth Date" value={profile.birthdate} />
             <DisplayProfileData
