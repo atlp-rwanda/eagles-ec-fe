@@ -79,13 +79,7 @@ const BuyerWishesList: React.FC = () => {
       </p>
     );
   }
-  if (!loggedInUserToken) {
-    navigate("/login");
-  }
 
-  if (loggedInUserToken && loggedInUser.roleId !== 1) {
-    navigate("/");
-  }
   return (
     <div className="w-full px-[2%] md:px-[4%]">
       <ToastContainer />

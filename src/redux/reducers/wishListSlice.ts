@@ -44,7 +44,14 @@ void,
     });
     return response.data.wishes;
   } catch (error: any) {
-    return rejectWithValue(error.message || "Failed to fetch wishes");
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      return rejectWithValue(
+        // @ts-ignore
+        axiosError.response?.data?.message ?? "Unknown error occurred",
+      );
+    }
+    return rejectWithValue("Unknown error occurred");
   }
 });
 
