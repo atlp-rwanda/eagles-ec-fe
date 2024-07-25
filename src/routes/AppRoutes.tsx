@@ -26,6 +26,7 @@ import ChatPage from "../pages/ChatPage";
 import BuyerWishesList from "../pages/Wishes";
 // import { setNavigateFunction } from "../redux/api/api";
 import Wishes from "../dashboard/sellers/wishesList";
+import isTokenExpired from "../utils/isTokenExpired";
 
 const AppRoutes = () => {
   const navigate = useNavigate();
@@ -38,12 +39,15 @@ const AppRoutes = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem("accessToken");
     const decodedToken = token ? JSON.parse(atob(token!.split(".")[1])) : {};
-    const tokenIsValid = decodedToken.id && decodedToken.roleId;
+    const tokenIsValid = decodedToken.id && decodedToken.roleId && !isTokenExpired(token);
     const isSeller = decodedToken.roleId === 2;
 
     useEffect(() => {
       if (tokenIsValid) {
         isSeller ? navigate("/dashboard") : navigate("/");
+      } else {
+        localStorage.removeItem("accessToken");
+        navigate("/login");
       }
     }, [tokenIsValid, navigate]);
 
