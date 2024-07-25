@@ -3,7 +3,8 @@ import { useState } from "react";
 import UpdatePasswordmod from "../components/password/updateModal";
 
 const UpdatePasswordPage = () => {
-  const [PasswordModal, setPasswordModal] = useState(false);
+  const [PasswordModal, setPasswordModal] = useState(true);
+  const target = window.location.search.split("=")[1];
   return (
     <div className="w-full h-screen flex justify-center items-center">
       <button
@@ -15,8 +16,12 @@ const UpdatePasswordPage = () => {
       >
         Update Password
       </button>
+
       {PasswordModal && (
-        <UpdatePasswordmod setPasswordModal={setPasswordModal} />
+        <UpdatePasswordmod
+          setPasswordModal={setPasswordModal}
+          target={target}
+        />
       )}
     </div>
   );

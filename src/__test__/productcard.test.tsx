@@ -61,20 +61,6 @@ describe("ProductCard Component", () => {
     expect(productPrice).toBeDefined();
   });
 
-  test('shows "New" label for recently added products', () => {
-    const recentProduct = { ...product, createdAt: new Date().toISOString() };
-    render(
-      <Provider store={store}>
-        <BrowserRouter>
-          <ProductCard product={recentProduct} />
-        </BrowserRouter>
-      </Provider>,
-    );
-
-    const newLabel = screen.getByTestId("new");
-    expect(newLabel).toBeDefined();
-  });
-
   test('displays "Add to cart" button on hover', () => {
     render(
       <Provider store={store}>

@@ -176,15 +176,17 @@ const ProductDetails: React.FC = () => {
                             variant="h4"
                             className="text-[24px] text-red-600 font-bold line-through"
                           >
-                            $
                             {soleilFN(product?.price)}
+                            {' '}
+                            Rwf
                           </Typography>
                           <Typography
                             variant="h4"
                             className="text-[24px] font-bold "
                           >
-                            $
                             {soleilFN(priceAfterDiscount)}
+                            {' '}
+                            Rwf
                           </Typography>
                         </>
                       ) : (
@@ -192,8 +194,9 @@ const ProductDetails: React.FC = () => {
                           variant="h4"
                           className="text-[24px] font-bold"
                         >
-                          $
                           {soleilFN(product?.price)}
+                          {' '}
+                          Rwf
                         </Typography>
                       )}
                     </div>

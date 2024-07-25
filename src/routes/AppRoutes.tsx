@@ -21,6 +21,9 @@ import Settings from "../dashboard/admin/Settings";
 import Analytics from "../dashboard/admin/Analytics";
 import Dashboard from "../dashboard/admin/Dashboard";
 import CartManagement from "../pages/CartManagement";
+import SellerNotifications from "../dashboard/sellers/SellerNotifications";
+import NotificationDetail from "../dashboard/sellers/NotificationDetail";
+// import { setNavigateFunction } from "../redux/api/api";
 import { setNavigate } from "../redux/api/api";
 import ChatPage from "../pages/ChatPage";
 import BuyerWishesList from "../pages/Wishes";
@@ -84,6 +87,14 @@ const AppRoutes = () => {
       <Route path="/admin/settings" element={<Settings />} />
       <Route path="/admin/analytics" element={<Analytics />} />
       <Route path="/admin/Products" element={<Products />} />
+      <Route
+        path="/dashboard/notifications"
+        element={<SellerNotifications />}
+      />
+      <Route
+        path="/dashboard/notifications/:id"
+        element={<NotificationDetail />}
+      />
       <Route path="/dashboard/wishes" element={<Wishes />} />
     </Routes>
   );

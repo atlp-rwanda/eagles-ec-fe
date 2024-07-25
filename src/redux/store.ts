@@ -11,6 +11,8 @@ import profileSlice from "./reducers/profileSlice";
 import updateProfileSlice from "./reducers/updateProfileSlice";
 import productsReducer from "./reducers/productsSlice";
 import cartsReducer from "./reducers/cartSlice";
+import notificationReducer from "./reducers/notificationSlice";
+import updatePasswordReducer from "./reducers/updatePasswordSlice";
 import reviewSlice from "./reducers/reviewSlice";
 import chatSlice from "./reducers/chatSlice";
 import authReducer from "./reducers/authSlice";
@@ -29,6 +31,8 @@ const store = configureStore({
     updateUsersProfile: updateProfileSlice,
     products: productsReducer,
     cart: cartsReducer,
+    notifications: notificationReducer,
+    updatePin: updatePasswordReducer,
     review: reviewSlice,
     chats: chatSlice,
     auth: authReducer,

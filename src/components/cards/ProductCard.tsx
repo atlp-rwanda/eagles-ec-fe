@@ -2,7 +2,12 @@ import { IconButton, Rating, Typography } from "@mui/material";
 import { FaEye } from "react-icons/fa";
 import { IoHeartSharp } from "react-icons/io5";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useNavigation,
+} from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { useSelector } from "react-redux";
@@ -43,6 +48,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
     // @ts-ignore
     loggedInUser = JSON.parse(atob(loggedInUserToken.split(".")[1]));
   }
+
   const formatPrice = (price: number) => {
     if (price < 1000) {
       return price.toString();
@@ -176,12 +182,6 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
   const diff = currentDate - date;
   return (
     <div className="max-h-[270px] bg-[#F5F5F5] mb-2 relative" data-testid="tbt">
-      {diff < 2 && (
-        <div className="absolute top-2 left-2 " data-testid="new">
-          {/* <p className=" rounded-md z-40  text-white new-product ">New</p> */}
-          {diff}
-        </div>
-      )}
       <ToastContainer />
       <div
         className="relative min-h-[200px]"
@@ -193,6 +193,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
           alt="product"
           className="w-[100%] h-[200px] hover:scale-[1.05] transition duration-200"
           data-testid="prod-image"
+          onClick={() => navigate(`/products/${product.id}`)}
         />
         {isHovered && (
           <div className="">
@@ -215,7 +216,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
           </div>
         )}
       </div>
-      <div className="absolute top-0 right-0 p-0">
+      <div className="absolute top-0 right-0 p-0" data-testid="new">
         <div className="w-full flex flex-col gap-0">
           <IconButton
             className="bg-white"
@@ -257,9 +258,11 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
         {name}
       </Typography>
       <div className="flex items-center gap-1 p-1">
-        <p className="text-red-400 text-[10px]" data-testid="price">
-          $
-          {formatPrice(product.price)}
+        <p className="text-red-700 font-bold text-[10px]" data-testid="price">
+          {/* ${formatPrice(product.price)} */}
+          {product.price}
+          {' '}
+          Rwf
         </p>
         <Rating
           value={total}

@@ -78,12 +78,9 @@ const ProductPage = () => {
     const category = searchParams.get("category") || "";
 
     if (name) {
-      filtered = filtered.filter((product) => product.name.toLowerCase().includes(name.toLowerCase()));
+      filtered = filtered.filter((product) =>
+        product.name.toLowerCase().includes(name.toLowerCase()));
     }
-
-    // if (category) {
-    //   filtered = filtered.filter((product) => product.category === category);
-    // }
 
     filtered = filtered.filter(
       (product) => product.price >= minPrice && product.price <= maxPrice,
