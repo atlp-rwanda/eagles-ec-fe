@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { MdSportsGolf } from "react-icons/md";
 
-import UserList from "../page-sections/chat/UserList";
-import ChatWindow from "../page-sections/chat/ChatWindow";
+import UserList from "../page-sections/UserList";
+import ChatWindow from "../page-sections/ChatWindow";
 import { fetchChats, sendMessage } from "../redux/reducers/chatSlice";
 import { useAppDispatch } from "../redux/hooks";
 import { fetchUser } from "../redux/reducers/authSlice";
@@ -167,6 +167,7 @@ const ChatPage: React.FC = () => {
           sendMessage({ message: text, id: selectedChat.receiverId }),
         ).unwrap();
         processedMessageIds.current.add(response.id);
+        dispatch(fetchChats());
       } catch (error) {
         console.error("Message failed to send:", error);
       }

@@ -27,10 +27,12 @@ const SideBar: React.FC<SidebarProps> = ({ isOpen }) => {
     >
       <div className="flex flex-col justify-between py-6 dark:bg-secondary-black min-h-screen">
         <div className="flex flex-col justify-center items-center">
-          <div className="text-black font-bold justify-center py-2 flex items-center gap-1">
-            <span className="font-[550] text-2xl"> eagles</span>
-            <FaCircle className="text-[12px] text-[#DB4444] mt-1" />
-          </div>
+          <Link to="/">
+            <div className="text-black font-bold justify-center py-2 flex items-center gap-1">
+              <span className="font-[550] text-2xl"> eagles</span>
+              <FaCircle className="text-[12px] text-[#DB4444] mt-1" />
+            </div>
+          </Link>
           <nav className="mt-10 flex flex-col gap-2">
             <NavLink
               to="/dashboard"

@@ -51,7 +51,7 @@ const UpdatePasswordmod: React.FC<UpdatePasswordProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-[#D0D0D0] bg-opacity-50">
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-[#161616] bg-opacity-50">
       <div className="relative bg-white rounded-lg p-10 w-[90%] md:w-[65%] lg:w-[55%] xl:w-[50%] duration-75 animate-fadeIn">
         <ToastContainer />
         <h2 className="text-2xl mb-4 font-bold text-[#DB4444]">

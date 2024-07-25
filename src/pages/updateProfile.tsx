@@ -21,6 +21,8 @@ import LinkToUpdatePage from "../components/profile/linkToUpdate";
 import HeaderInfo from "../components/common/header/Info";
 import Footer from "../components/common/footer/Footer";
 import ProfileTextInptCustomSelect from "../components/profile/customProfileSelect";
+import PasswordPopup from "../components/password/PasswordPopup";
+import UpdatePasswordmod from "../components/password/updateModal";
 
 export const convertUrlToFile = async (url: string): Promise<File> => {
   const response = await fetch(url);
@@ -46,6 +48,7 @@ const UpdateUserProfile: React.FC = () => {
   const { loading, error } = useSelector(
     (state: RootState) => state.updateUsersProfile,
   );
+  const [passwordModal, setPasswordModal] = useState(false);
 
   const {
     register,
@@ -286,14 +289,23 @@ const UpdateUserProfile: React.FC = () => {
                     error={errors.country?.message}
                   />
                 </div>
-                <div className="flex justify-end items-center gap-4 text-none">
-                  <LinkPages description="" link="/profile" text="Cancel" />
-                  <Button
-                    text={loading ? "Loading..." : "Save changes"}
-                    backgroundColor="bg-[#DB4444]"
-                    disabled={loading}
-                    data-testid="updating-btn"
-                  />
+                <div className="flex flex-col md:flex-row md:items-center  py-2  md:justify-between">
+                  <button
+                    type="button"
+                    className="bg-[#161616] whitespace-nowrap text-white px-2 py-2"
+                    onClick={() => setPasswordModal(true)}
+                  >
+                    Update password
+                  </button>
+                  <div className="flex w-full justify-between md:justify-end items-center gap-4 text-none">
+                    <LinkPages description="" link="/profile" text="Cancel" />
+                    <Button
+                      text={loading ? "Loading..." : "Save changes"}
+                      backgroundColor="bg-[#DB4444]"
+                      disabled={loading}
+                      data-testid="updating-btn"
+                    />
+                  </div>
                 </div>
               </form>
             </div>
@@ -303,6 +315,9 @@ const UpdateUserProfile: React.FC = () => {
       <div className=" mt-2">
         <Footer />
       </div>
+      {passwordModal && (
+        <UpdatePasswordmod setPasswordModal={setPasswordModal} />
+      )}
     </div>
   );
 };

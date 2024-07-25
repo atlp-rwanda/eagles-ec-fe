@@ -5,9 +5,9 @@ import { RxMixerHorizontal } from "react-icons/rx";
 import { useSelector } from "react-redux";
 import { HiMiniUserGroup } from "react-icons/hi2";
 
-import { useAppDispatch } from "../../redux/hooks";
-import Spinner from "../../components/dashboard/Spinner";
-import { fetchChats, fetchUsers } from "../../redux/reducers/chatSlice";
+import { useAppDispatch } from "../redux/hooks";
+import Spinner from "../components/dashboard/Spinner";
+import { fetchChats, fetchUsers } from "../redux/reducers/chatSlice";
 
 interface UserListProps {
   onUserSelect: (chat: any | null, user: any) => void;

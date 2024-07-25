@@ -23,16 +23,16 @@ import Dashboard from "../dashboard/admin/Dashboard";
 import CartManagement from "../pages/CartManagement";
 import SellerNotifications from "../dashboard/sellers/SellerNotifications";
 import NotificationDetail from "../dashboard/sellers/NotificationDetail";
-// import { setNavigateFunction } from "../redux/api/api";
 import { setNavigate } from "../redux/api/api";
 import ChatPage from "../pages/ChatPage";
 import BuyerWishesList from "../pages/Wishes";
-// import { setNavigateFunction } from "../redux/api/api";
 import Wishes from "../dashboard/sellers/wishesList";
 // import { setNavigateFunction } from "../redux/api/api";
 import SellerOrder from "../components/dashboard/orders/SellerOrder";
 import BuyerOrders from "../pages/BuyerOrders";
 import SignupVerification from "../pages/SignupVerification";
+import SmoothScroll from "../utils/SmoothScroll";
+import NotFound from "../pages/NotFound";
 
 const AppRoutes = () => {
   const navigate = useNavigate();
@@ -58,6 +58,7 @@ const AppRoutes = () => {
   };
 
   return (
+    <SmoothScroll>
     <Routes>
       <Route path="/" element={<RootLayout />}>
         <Route index element={<Homepage />} />
@@ -104,7 +105,9 @@ const AppRoutes = () => {
         element={<NotificationDetail />}
       />
       <Route path="/dashboard/wishes" element={<Wishes />} />
+      <Route path="/*" element={<NotFound />} />
     </Routes>
+    </SmoothScroll>
   );
 };
 

@@ -1,13 +1,13 @@
-import {
-  IconButton, Stack, TextField, Typography,
-} from "@mui/material";
+import React, {
+  useEffect, useState, SetStateAction, useRef,
+} from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Stack } from "@mui/material";
 import { LuUser } from "react-icons/lu";
 import { IoCartOutline } from "react-icons/io5";
-import { FaSearch, FaShoppingCart } from "react-icons/fa";
-import React, { useEffect, useState, SetStateAction } from "react";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { IoMdHeartEmpty } from "react-icons/io";
+import { FiSearch } from "react-icons/fi";
 
 import { fetchWishes } from "../../../redux/reducers/wishListSlice";
 import { getProfile } from "../../../redux/reducers/profileSlice";
@@ -15,6 +15,9 @@ import Logo from "../auth/Logo";
 import { RootState } from "../../../redux/store";
 import { cartManage } from "../../../redux/reducers/cartSlice";
 import { useAppDispatch } from "../../../redux/hooks";
+import ProfileDropdown from "../ProfileDropdown";
+
+import SearchSuggestions from "./SearchSuggestions";
 
 interface ISerachProps {
   searchQuery: string;
@@ -24,34 +27,32 @@ interface ISerachProps {
 
 const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { profile } = useSelector((state: RootState) => state.usersProfile);
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
-  let userInfo;
-  const accessToken = localStorage.getItem("accessToken");
-  if (accessToken) {
-    userInfo = JSON.parse(atob(accessToken.split(".")[1]));
-  }
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [suggestions, setSuggestions] = useState<string[]>([
+    "Accessories",
+    "Phone",
+    "Laptops",
+    "Furnitures",
+  ]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const profileDropdownRef = useRef<HTMLDivElement>(null);
+  const userInfo = localStorage.getItem("accessToken")
+    ? JSON.parse(atob(localStorage.getItem("accessToken")!.split(".")[1]))
+    : null;
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleSelectSuggestion = (suggestion: string) => {
+    setSearchQuery(suggestion);
+    setShowSuggestions(false);
+  };
 
   useEffect(() => {
-    // @ts-ignore
-    dispatch(getProfile());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (accessToken) {
-      try {
-        const userInfo = JSON.parse(atob(accessToken.split(".")[1]));
-        if (userInfo) {
-          setIsLoggedIn(true);
-        }
-      } catch (error) {
-        console.error("Invalid token format", error);
-      }
+    if (userInfo) {
+      setIsLoggedIn(true);
     }
-  }, []);
+  }, [userInfo]);
+  const profile = JSON.parse(localStorage.getItem("userInfo") || "{}");
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -65,68 +66,89 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
     window.history.pushState(null, "", newUrl);
   }, [searchQuery]);
 
-  const dispatches = useAppDispatch();
   useEffect(() => {
     dispatch(cartManage());
-  }, [dispatches]);
+  }, [dispatch]);
+
   const userCart = useSelector((state: RootState) => state.cart.data);
 
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      profileDropdownRef.current
+      && !profileDropdownRef.current.contains(event.target as Node)
+    ) {
+      setDropdownOpen(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await dispatch(fetchWishes());
-      } catch (error) {
-        console.error(error);
-      }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-    fetchData();
-  }, [dispatch]);
-  const { wishes } = useSelector((state: RootState) => state.wishes);
+  }, []);
+
+  const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      navigate(`/products?query=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
+  const handleSearchClick = () => {
+    navigate(`/products?query=${encodeURIComponent(searchQuery)}`);
+  };
+
   return (
-    <Stack className="px-[5%] bg-white w-full relative" id="header">
-      <Stack className=" justify-between gap-64 items-center" direction="row">
+    <Stack
+      className="px-[5%] z-40 2xl:px-[8%] border-t bg-white w-full relative "
+      id="header"
+    >
+      <div className="justify-between gap-20 md:gap-18 w-full relative flex flex-row lg:gap-40 xl:gap-72 items-center">
         <Stack paddingY={{ xs: "15px" }}>
           <Logo className="" />
         </Stack>
-        <Stack
-          className="w-full"
-          display={{ xs: "none", sm: "none", md: "flex" }}
-        >
-          <TextField
-            size="small"
-            placeholder="Search"
+        <div className="hidden md:block relative w-full">
+          <span
+            className="absolute inset-y-0 cursor-pointer right-0 pr-4 pl-4 flex bg-[#DB4444] items-center pointer-events-auto"
+            onClick={handleSearchClick}
+          >
+            <FiSearch className="text-white" />
+          </span>
+          <input
+            type="text"
+            placeholder="Search..."
+            className="px-4 py-1 text-gray-500 border-[1.5px] w-full outline-none bg-bg-gray border-[#DB4444] focus:outline-none"
             value={searchQuery}
-            onChange={handleSearch}
-            fullWidth
-            InputProps={{
-              endAdornment: (
-                <button>
-                  <FaSearch className="" />
-                </button>
-              ),
-            }}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => setShowSuggestions(true)}
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+            onKeyDown={handleSearch}
           />
-        </Stack>
-        <Stack
-          direction="row"
-          className="flex justify-between items-center gap-6 bg-white"
-          display={{ xs: "none", sm: "none", md: "flex" }}
-        >
-          <Stack direction="row" className="flex items-center relative">
+          {showSuggestions && (
+            <SearchSuggestions
+              suggestions={suggestions}
+              onSelect={handleSelectSuggestion}
+            />
+          )}
+        </div>
+        <div className="flex justify-between items-center relative w-[40%] md:w-[40%] lg:w-[40%] gap-2 bg-white">
+          <div className="flex items-center relative">
             <Link to="/carts">
               <IoCartOutline className="text-[24px] cursor-pointer text-black" />
             </Link>
-            <Stack className="flex flex-col ">
-              {!localStorage.getItem("accessToken") ? (
-                ""
-              ) : (
+            <div className="flex flex-col ">
+              {userCart.length > 0 && (
                 <div className="absolute w-5 h-5 bg-red-500 -top-3  -right-3 rounded-full text-center text-white text-[12px] flex justify-center items-center">
                   <span className="">{userCart?.length}</span>
                 </div>
               )}
-            </Stack>
-          </Stack>
-          <Stack>
+            </div>
+          </div>
+          <div>
             {localStorage.getItem("accessToken") && userInfo.roleId === 2 ? (
               <Link to="dashboard/wishes">
                 <IoMdHeartEmpty className="text-[24px] cursor-pointer text-black" />
@@ -136,32 +158,46 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
                 <IoMdHeartEmpty className="text-[24px] cursor-pointer text-black" />
               </Link>
             )}
-          </Stack>
-          <Stack className="">
-            {isLoggedIn ? (
-              <Link to="/profile" className="flex items-center">
-                <LuUser className="text-[24px] text-black" />
-                <Stack className="flex flex-col">
-                  <span className="ml-2 font-semibold text-[12px]">
-                    {profile && profile.fullName}
-                  </span>
-                </Stack>
-              </Link>
-            ) : (
-              <Link to="/login" className="flex items-center">
-                <LuUser className="text-[24px] text-black" />
-                <Stack className="flex flex-col">
-                  <span className="ml-2 font-semibold text-[12px]">User</span>
-                  <span className="ml-2 font-semibold text-[12px]">
-                    Account
-                  </span>
-                </Stack>
-              </Link>
-            )}
-          </Stack>
-        </Stack>
-        {/* </Stack> */}
-      </Stack>
+          </div>
+          {isLoggedIn ? (
+            <div
+              className="flex items-center gap-2 relative"
+              ref={profileDropdownRef}
+            >
+              {profile?.profile?.profileImage ? (
+                <img
+                  src={profile?.profile?.profileImage}
+                  alt={profile.username}
+                  className="h-10 w-10 cursor-pointer rounded-full"
+                  onClick={toggleDropdown}
+                />
+              ) : (
+                <div
+                  className={`hover:bg-slate-100 ${dropdownOpen ? "bg-slate-100" : "bg-slate-100"} rounded-full p-2 cursor-pointer`}
+                  onClick={toggleDropdown}
+                >
+                  <LuUser className="text-[24px] text-black" />
+                </div>
+              )}
+              <Stack className="flex flex-col">
+                <span className="hidden lg:block select-none font-semibold text-[12px]">
+                  {userInfo.name.split(" ")[0]}
+                </span>
+              </Stack>
+              {dropdownOpen && <ProfileDropdown userInfo={userInfo} />}
+            </div>
+          ) : (
+            <Link to="/login" className="flex items-center">
+              <LuUser className="text-[24px] text-black" />
+              <div className="hidden md:flex flex-col">
+                <span className="ml-2 font-semibold text-[12px] whitespace-nowrap">
+                  Sign In
+                </span>
+              </div>
+            </Link>
+          )}
+        </div>
+      </div>
     </Stack>
   );
 };
