@@ -6,6 +6,7 @@ interface ConfirmDeleteModalProps {
   message: string;
   product: any;
   loading: boolean;
+  text: string;
 }
 
 const ConfirmModal: React.FC<ConfirmDeleteModalProps> = ({
@@ -14,6 +15,7 @@ const ConfirmModal: React.FC<ConfirmDeleteModalProps> = ({
   message,
   product,
   loading,
+  text,
 }) => (
   <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50">
     <div className="bg-white py-8 px-6 rounded-lg duration-75 animate-fadeIn">
@@ -40,7 +42,7 @@ const ConfirmModal: React.FC<ConfirmDeleteModalProps> = ({
           className="bg-red-600 text-white px-4 py-2 rounded"
           onClick={onConfirm}
         >
-          {loading ? "Loading..." : "Delete"}
+          {loading ? "Loading..." : text}
         </button>
       </div>
     </div>
