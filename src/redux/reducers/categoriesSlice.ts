@@ -63,7 +63,9 @@ const categoriesSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchCategories.pending, (state) => {
-        state.loading = true;
+        if (state.data.length === 0) {
+          state.loading = true;
+        }
       })
       .addCase(
         fetchCategories.fulfilled,

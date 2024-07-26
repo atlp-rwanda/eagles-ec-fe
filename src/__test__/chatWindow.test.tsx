@@ -2,7 +2,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import MockAdapter from "axios-mock-adapter";
 import { configureStore } from "@reduxjs/toolkit";
 
-import ChatWindow from "../page-sections/chat/ChatWindow";
+import ChatWindow from "../page-sections/ChatWindow";
 import api from "../redux/api/api";
 import chatSlice from "../redux/reducers/chatSlice";
 

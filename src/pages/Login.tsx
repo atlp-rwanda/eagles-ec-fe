@@ -7,6 +7,7 @@ import { AxiosError } from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { decodeToken } from "react-jwt";
+import { Stack } from "@mui/material";
 
 import loginSchema from "../schemas/loginSchema";
 import Button from "../components/common/auth/Button";
@@ -17,6 +18,7 @@ import sideImage from "../assets/sideImage.png";
 import LinkPages from "../components/common/auth/LinkPages";
 import { GoogleAuthLink } from "../components/common/auth/GoogleAuthLink";
 import { useAppDispatch } from "../redux/hooks";
+import Logo from "../components/common/auth/Logo";
 
 interface LoginFormInputs {
   email: string;
@@ -86,11 +88,12 @@ const Login = () => {
       </div>
       <div className="w-full md:w-1/2 xl:w-2/5 flex flex-col justify-center mt-[15vh] mx-auto px-16">
         <div className="flex items-center gap-1 text-2xl font-bold text-black">
-          <h1 className="text-3xl font-medium">
+          <h1 className="text-2xl flex items-center gap-1 font-medium">
             Login to
-            <span className="font-semibold text-heading"> eagles</span>
+            <Stack paddingY={{ xs: "12px" }}>
+              <Logo className="" />
+            </Stack>
           </h1>
-          <FaCircle className="text-sm text-[#DB4444] mt-3" />
         </div>
         <h5 className="pt-6 text-base font-normal text-left">
           Enter your details below

@@ -44,8 +44,8 @@ const BreadCrums: React.FC<IBreadCrumbsProps> = ({
       );
     });
   return (
-    <div className=" px-3 flex justify-between items-center">
-      <div className="breadcrumbs flex-1">{crums}</div>
+    <div className="w-full px-[5%] flex justify-between items-center">
+      <div className="breadcrumbs flex-1 text-sm">{crums}</div>
       {location.pathname === "/products" && (
         <div className="flex items-center" onClick={handleClick}>
           <FaFilter

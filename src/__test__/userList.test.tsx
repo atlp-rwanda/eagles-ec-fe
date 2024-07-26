@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import MockAdapter from "axios-mock-adapter";
 
-import UserList from "../page-sections/chat/UserList";
+import UserList from "../page-sections/UserList";
 import chatSlice from "../redux/reducers/chatSlice";
 import api from "../redux/api/api";
 

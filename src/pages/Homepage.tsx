@@ -9,9 +9,7 @@ import AdvertisedCategory from "../components/common/ads/AdvertisedCategory";
 const Homepage = () => (
   <div className="mx-auto">
     <HeroSection />
-    <Divider orientation="horizontal" className="my-4" />
     <FeaturedProducts />
-    {/* <NewArrivals /> */}
     <AdvertisedCategory />
     <CustomerService />
   </div>

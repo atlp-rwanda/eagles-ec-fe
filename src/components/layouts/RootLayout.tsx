@@ -57,7 +57,7 @@ const RootLayout = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <div className={`soleil ${isSticky ? "sticky top-0 z-50" : ""}`}>
-        <div className="max-w-[1440px] lg:mx-auto lg:w-[90%] w-full">
+        <div className="w-full">
           {isHeaderInfoVisible && <HeaderInfo />}
           <Header
             searchQuery={searchQuery}
@@ -67,7 +67,7 @@ const RootLayout = () => {
         </div>
         <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       </div>
-      <div className="flex-1 max-w-[1440px] mx-auto lg:w-[90%] w-[100%]">
+      <div className="flex-1 mx-auto lg:w-[90%] 2xl:max-w-[80%] w-[100%]">
         <BreadCrums showFilters={showFilters} toggleFilter={toggleFilters} />
         {location.pathname !== "/" && <Divider className="mb-3" />}
         <Outlet

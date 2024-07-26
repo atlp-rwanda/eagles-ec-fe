@@ -7,7 +7,7 @@ import store from "../store";
 import api from "./action";
 
 let navigateFunction = null;
-
+let isNotificationSent = false;
 const redirectToLogin = (navigate) => {
   setTimeout(() => {
     navigate("/login");
@@ -18,12 +18,13 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     const excludeRoute = "/";
-
     if (
-      error.response
+      !isNotificationSent
+      && error.response
       && error.response.status === 401
       && window.location.pathname !== excludeRoute
     ) {
+      isNotificationSent = true;
       if (navigateFunction) {
         toast("Login is Required for this action \n Redirecting to Login \n ");
         setTimeout(() => {

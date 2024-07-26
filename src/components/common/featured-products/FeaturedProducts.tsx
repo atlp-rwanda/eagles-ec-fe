@@ -43,8 +43,8 @@ const FeaturedProducts = () => {
     return (
       <div className="my-5">
         <div className="flex items-center gap-2 p-3">
-          <p className="w-5 h-9 bg-red-400 rounded-md" />
-          <p className="text-red-400">Our Products</p>
+          <p className="w-5 h-9 bg-[#DB4444] rounded-md" />
+          <p className="text-[#DB4444] font-medium">Our Products</p>
         </div>
         <Typography className="p-3 font-bold" variant="h5">
           Featured Products
@@ -76,8 +76,8 @@ const FeaturedProducts = () => {
   return (
     <div className="my-5">
       <div className="flex items-center gap-2 p-3">
-        <p className="w-5 h-9 bg-red-400 rounded-md" />
-        <p className="text-red-400">Our Products</p>
+        <p className="w-5 h-9 bg-[#DB4444] rounded-md" />
+        <p className="text-[#DB4444] font-medium">Our Products</p>
       </div>
       <Typography className="p-3 font-bold" variant="h5">
         Featured Products

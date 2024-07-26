@@ -85,7 +85,9 @@ const chatsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchChats.pending, (state) => {
-        state.chats.loading = true;
+        if (state.chats.data.length === 0) {
+          state.chats.loading = true;
+        }
       })
       .addCase(fetchChats.fulfilled, (state, action) => {
         state.chats.loading = false;
@@ -115,7 +117,9 @@ const chatsSlice = createSlice({
         state.chats.sendError = action.payload || action.error.message;
       })
       .addCase(fetchUsers.pending, (state) => {
-        state.users.loading = true;
+        if (state.users.data.length === 0) {
+          state.users.loading = true;
+        }
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
         state.users.loading = false;
