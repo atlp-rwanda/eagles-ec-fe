@@ -4,7 +4,7 @@ import { IoBriefcaseOutline, IoSettingsOutline } from "react-icons/io5";
 import { AiFillProduct } from "react-icons/ai";
 import { MdInsertChartOutlined } from "react-icons/md";
 import { FiLogOut } from "react-icons/fi";
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { FaCircle } from "react-icons/fa";
 
 interface SidebarProps {
@@ -60,9 +60,9 @@ const SideBar: React.FC<SidebarProps> = ({ isOpen }) => {
               Add product
             </NavLink>
             <NavLink
-              to="/orders"
+              to="/dashboard/orders"
               className={`py-2.5 px-4 flex items-center relative gap-2 text-lg rounded transition duration-200 ${getLinkClass(
-                "/orders",
+                "/dashboard/orders",
               )}`}
             >
               <IoBriefcaseOutline className="text-xl" />

@@ -85,6 +85,52 @@ export interface UserCart {
   updatedAt: string;
 }
 
+export interface Buyer {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  password: string;
+}
+
+export interface Product {
+  productId: number;
+  productName: string;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+export interface Item {
+  itemId: number;
+  quantity: number;
+}
+
+export interface orders {
+  [x: string]: any;
+  id: number;
+  buyerId: number;
+  buyer: Buyer;
+  createdAt: string;
+  deliveryDate: string;
+  items: Item[];
+  products: Product[];
+  status: string;
+  updatedAt: string;
+}
+
+export interface ProductOrders {
+  map(
+    arg0: (product: any) => import("react/jsx-runtime").JSX.Element,
+  ): import("react").ReactNode;
+  order: any;
+  name: any;
+  product: any;
+  products: Product[];
+  price: any;
+  quantity: number;
+}
+
 export interface CartState {
   isLoading: boolean;
   data: UserCart | null;

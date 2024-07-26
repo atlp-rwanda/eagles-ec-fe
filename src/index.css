@@ -56,3 +56,7 @@
   height: 100%;
   object-fit: cover;
 }
+
+.hide::-webkit-scrollbar {
+  display: none;
+}

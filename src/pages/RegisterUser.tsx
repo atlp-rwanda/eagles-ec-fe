@@ -32,7 +32,9 @@ const RegisterUser = () => {
     try {
       // @ts-ignore
       await dispatch(createUser(data)).unwrap();
-      toast.success("Account created successfully!");
+      toast.success(
+        "Account created successfully, check your inbox to verify!",
+      );
       reset();
     } catch (err) {
       const error = err as AxiosError<RegisterError>;

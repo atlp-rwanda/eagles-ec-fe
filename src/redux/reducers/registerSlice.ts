@@ -13,18 +13,20 @@ interface UserData {
 
 interface RegisterState {
   isLoading: boolean;
-  data: [];
+  data: any[];
   error: string | null;
+  verified: boolean;
 }
 
 const initialState: RegisterState = {
   isLoading: false,
   data: [],
   error: null,
+  verified: false,
 };
 
 export const createUser = createAsyncThunk(
-  "registerUser",
+  "register/createUser",
   async (userData: UserData, { rejectWithValue }) => {
     try {
       const response = await axios.post("/users/register", userData, {
@@ -39,8 +41,22 @@ export const createUser = createAsyncThunk(
     }
   },
 );
-export const registerSlice = createSlice({
-  name: "registerUser",
+
+export const verifyUser = createAsyncThunk(
+  "register/verifyUser",
+  async (token: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`/users/verify-user?token=${token}`);
+      return response.data;
+    } catch (error) {
+      const err = error as AxiosError;
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  },
+);
+
+const registerSlice = createSlice({
+  name: "register",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -54,6 +70,18 @@ export const registerSlice = createSlice({
         state.data = action.payload;
       })
       .addCase(createUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(verifyUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(verifyUser.fulfilled, (state) => {
+        state.isLoading = false;
+        state.verified = true;
+      })
+      .addCase(verifyUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       });

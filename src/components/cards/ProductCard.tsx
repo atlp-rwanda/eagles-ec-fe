@@ -117,7 +117,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
 
   const handleAddToCart = async () => {
     if (!localStorage.getItem("accessToken")) {
-      toast.info("Please Log in to add to cart.");
+      toast.error("Please Log in to add to cart.");
       setTimeout(() => {
         navigate("/login");
       }, 4000);

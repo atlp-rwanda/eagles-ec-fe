@@ -50,6 +50,7 @@ const CartManagement: React.FC<IProductCardProps> = () => {
       </div>
     );
   }
+  console.log(userCart);
 
   const handleDelete = async () => {
     await dispatch(cartDelete());
