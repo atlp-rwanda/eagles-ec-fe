@@ -1,80 +1,89 @@
-import { Button, Stack, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
-const AdvertisedCategory = () => (
-  <Stack
-    direction={{ xs: "column", sm: "column", md: "row" }}
-    justifyContent={{ xs: "center", sm: "center", md: "space-between" }}
-    className="bg-gray-900 text-white p-10 rounded-lg shadow-lg"
-    gap={4}
-    data-testid="advertised-category"
-  >
-    <Stack
-      width={{ xs: "100%", sm: "100%", md: "50%" }}
-      alignItems={{ xs: "center", md: "flex-start" }}
-      textAlign={{ xs: "center", md: "left" }}
-    >
-      <p className="text-red-400">Categories</p>
-      <Typography
-        variant="h2"
-        className="py-8 sm:text-[48px]"
-        display={{ xs: "none", sm: "none", md: "flex" }}
-      >
-        Enhance Your
-        {' '}
-        <br className="hidden md:block" />
-        {' '}
-        Music Experience
-      </Typography>
-      <Typography
-        display={{ xs: "flex", sm: "flex", md: "none" }}
-        className="py-8"
-      >
-        Enhance Your
-        {' '}
-        <br className="hidden md:block" />
-        {' '}
-        Music Experiences
-      </Typography>
-      <div className="my-5 flex gap-2 justify-center md:justify-start">
-        <div className="flex items-center flex-col justify-center h-[62px] w-[62px] bg-white px-4 py-2 rounded-full">
-          <span className="text-xl text-[#000000] font-bold">23</span>
-          <span className="text-[11px] text-[#8D8D8D]">Hours</span>
-        </div>
-        <div className="flex items-center flex-col justify-center h-[62px] w-[62px] bg-white px-4 py-2 rounded-full">
-          <span className="text-xl text-[#000000] font-bold">05</span>
-          <span className="text-[11px] text-[#8D8D8D]">Days</span>
-        </div>
-        <div className="flex items-center flex-col justify-center h-[62px] w-[62px] bg-white px-4 py-2 rounded-full">
-          <span className="text-xl text-[#000000] font-bold">59</span>
-          <span className="text-[11px] text-[#8D8D8D]">Minutes</span>
-        </div>
-        <div className="flex items-center flex-col justify-center h-[62px] w-[62px] bg-white px-4 py-2 rounded-full">
-          <span className="text-xl text-[#000000] font-bold">35</span>
-          <span className="text-[11px] text-[#8D8D8D]">Seconds</span>
-        </div>
+import { createAds } from "../../../redux/reducers/listAddSlice";
+import { RootState } from "../../../redux/store";
+import Spinner from "../auth/Loader";
+
+const AdvertisedCategory = () => {
+  const dispatch = useDispatch();
+  const { data, isLoading }: any = useSelector((state: RootState) => state.ads);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    // @ts-ignore
+    dispatch(createAds());
+  }, [dispatch]);
+
+  return (
+    <div className="w-full overflow-hidden">
+      <div className="mt-4 mb-6">
+        <h1 className="text-2xl">Advertisement</h1>
       </div>
-      <Button
-        variant="contained"
-        color="error"
-        sx={{ paddingY: "15px", width: "200px" }}
-        data-testid="buy-now-button"
-      >
-        Buy Now!
-      </Button>
-    </Stack>
-    <Stack
-      width={{ xs: "100%", sm: "100%", md: "50%" }}
-      display={{ xs: "none", md: "flex" }}
-      justifyContent="center"
-      alignItems="center"
-    >
-      <img
-        src="/images/jbl.png"
-        className="w-full h-auto"
-        alt="this is alt to skip eslint hhhh"
-      />
-    </Stack>
-  </Stack>
-);
+      <div className="flex gap-3 overflow-x-auto hide">
+        {isLoading ? (
+          <div className="flex items-center justify-center w-full">
+            <Spinner />
+          </div>
+        ) : (
+          <motion.div
+            className="flex gap-5"
+            initial={{ x: 0 }}
+            animate={{ x: isHovered ? 10 : "-1000% " }}
+            transition={{
+              repeat: Infinity,
+              duration: isHovered ? 10000 : 60,
+              ease: "linear",
+            }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            {data?.data?.map((img) => (
+              <div
+                key={img.id}
+                className="relative flex-shrink-0 hover-container"
+              >
+                <img
+                  src={img.image}
+                  alt={img.name}
+                  loading="lazy"
+                  className="w-80 h-80 object-cover rounded-"
+                />
+                {img.discount && (
+                  <div className="absolute top-0 left-0 bg-red-500 text-white text-sm font-bold p-2">
+                    {(((img.price - img.discount) / img.price) * 100).toFixed(
+                      2,
+                    )}
+                    % OFF
+                  </div>
+                )}
+                <div className="hover-content absolute inset-0 flex flex-col justify-center items-center bg-black bg-opacity-50 text-white opacity-0 hover:opacity-100 transition-opacity duration-300">
+                  <div className="">
+                    <Link to="/products">
+                      <p className="text-red-500 font-bold text-center mt-6">
+                        Shop Now
+                      </p>
+                    </Link>
+                    <p className="font-bold text-red-100 pt-6 text-center">
+                      $
+                      {img.price}
+                    </p>
+                  </div>
+                </div>
+                <div className="absolute bottom-0 flex justify-center  w-full bg-black py-2">
+                  <p className="font-bold text-center text-white ">
+                    {img.name}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 export default AdvertisedCategory;

@@ -11,22 +11,9 @@ describe("Testing AdvertisedCategory Component", () => {
   it("should render advertised category section", () => {
     render(
       <Provider store={store}>
-        <BrowserRouter>
-          <AdvertisedCategory />
-        </BrowserRouter>
+        <AdvertisedCategory />
       </Provider>,
     );
-
-    expect(screen.getByTestId("advertised-category")).toBeInTheDocument();
-    expect(screen.getByText(/Categories/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(/Enhance Your Music Experiences/i),
-    ).toBeInTheDocument();
-    expect(screen.getByTestId("buy-now-button")).toBeInTheDocument();
-
-    expect(screen.getByText("23")).toBeInTheDocument();
-    expect(screen.getByText("05")).toBeInTheDocument();
-    expect(screen.getByText("59")).toBeInTheDocument();
-    expect(screen.getByText("35")).toBeInTheDocument();
+    expect(screen.getByText(/Advertisement/i)).toBeInTheDocument();
   });
 });

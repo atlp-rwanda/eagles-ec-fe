@@ -19,6 +19,7 @@ import authReducer from "./reducers/authSlice";
 import wishListSlice from "./reducers/wishListSlice";
 import ordersReducer from "./reducers/ordersSlice";
 import PaymentSlice from "./reducers/payment";
+import adsReducer from "./reducers/listAddSlice";
 
 const store = configureStore({
   reducer: {
@@ -41,6 +42,7 @@ const store = configureStore({
     wishes: wishListSlice,
     order: ordersReducer,
     payment: PaymentSlice,
+    ads: adsReducer,
   },
 });
 export type RootState = ReturnType<typeof store.getState>;
