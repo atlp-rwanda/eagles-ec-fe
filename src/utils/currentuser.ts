@@ -1,4 +1,5 @@
 import api from "../redux/api/api";
+import { ICurrentUser } from "../redux/reducers/notificationSlice";
 
 export const getCurrentUser = async () => {
   try {
@@ -8,7 +9,7 @@ export const getCurrentUser = async () => {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     });
-    return response.data;
+    return response.data as ICurrentUser;
   } catch (error: any) {
     return null;
   }

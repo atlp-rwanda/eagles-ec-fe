@@ -17,7 +17,9 @@ export const NotificationPopup: React.FC<INotificationPop> = ({
   handleClose,
   open,
 }) => {
-  const { notifications } = useAppSelector((state) => state.notifications);
+  const { notifications, currentUser } = useAppSelector(
+    (state) => state.notifications,
+  );
 
   return (
     <Menu
@@ -68,7 +70,11 @@ export const NotificationPopup: React.FC<INotificationPop> = ({
         notifications.slice(0, 5).map((notification, index) => (
           <>
             <Link
-              to={`/dashboard/notifications/${notification.id}`}
+              to={
+                currentUser && currentUser.roleId === 2
+                  ? `/dashboard/notifications/${notification.id}`
+                  : `/notifications/${notification.id}`
+              }
               onClick={handleClose}
               key={index}
               className="flex justify-between items-center mb-[3px] px-2 gap-4 $"
@@ -88,7 +94,11 @@ export const NotificationPopup: React.FC<INotificationPop> = ({
       )}
 
       <Link
-        to="/dashboard/notifications"
+        to={
+          currentUser && currentUser.roleId === 2
+            ? "/dashboard/notifications"
+            : "/notifications"
+        }
         onClick={handleClose}
         className=" flex items-center justify-center text-center text-blue-700"
       >
