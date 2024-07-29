@@ -13,6 +13,7 @@ import Spinner from "../Spinner";
 import {
   deleteProduct,
   fetchProducts,
+  isProductAvailable,
 } from "../../../redux/reducers/productsSlice";
 import { useAppDispatch } from "../../../redux/hooks";
 import ToggleSwitch from "../ToggleSwitch";
@@ -31,12 +32,16 @@ const ProductsTable: React.FC = () => {
 
   useEffect(() => {
     const sorted = [...products].sort(
-      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+      (a, b) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     );
     setSortedProducts(sorted);
   }, [products]);
 
   const [confirmDeleteModal, setConfirmModal] = useState(false);
+  const [confirmTaggleModal, setConfirmTaggleModal] = useState(false);
+  const [isAvailable, setIsAvailable] = useState(true);
+  const [taggleLoading, setTaggleLoading] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
@@ -59,8 +64,34 @@ const ProductsTable: React.FC = () => {
     setCurrentPage(1);
   };
 
-  const handleToggle = (id: number) => {
-    console.log("id", id);
+  const handleCancelTaggle = () => {
+    setConfirmTaggleModal(false);
+  };
+
+  const handleTaggleClick = (product: any) => {
+    setSelectedProduct(product);
+    setConfirmTaggleModal(true);
+  };
+
+  const handleToggle = async () => {
+    if (selectedProduct !== null) {
+      try {
+        setTaggleLoading(true);
+        const response = await dispatch(
+          // @ts-ignore
+          isProductAvailable(selectedProduct.id),
+        ).unwrap();
+        setTaggleLoading(false);
+        setIsAvailable(false);
+        setConfirmTaggleModal(false);
+        await dispatch(fetchProducts());
+        toast.success(
+          `Product was successfully ${isAvailable ? "Disabled" : "Enabled"}`,
+        );
+      } catch (err: any) {
+        toast.error(err.message);
+      }
+    }
   };
 
   const handleCancelDelete = () => {
@@ -166,7 +197,7 @@ const ProductsTable: React.FC = () => {
                   <td className="py-3 px-4">
                     <ToggleSwitch
                       checked={item.isAvailable}
-                      onChange={() => handleToggle(item.id)}
+                      onChange={() => handleTaggleClick(item)}
                     />
                   </td>
                   <td className="px-4 py-2 whitespace-nowrap">
@@ -232,8 +263,19 @@ const ProductsTable: React.FC = () => {
           onConfirm={handleConfirmDelete}
           product={selectedProduct}
           loading={loadingDelete}
+          text="Delete"
           onCancel={handleCancelDelete}
           message="Are you sure you want to delete this product?"
+        />
+      )}
+      {confirmTaggleModal && (
+        <ConfirmModal
+          onConfirm={handleToggle}
+          product={selectedProduct}
+          loading={taggleLoading}
+          text="Confirm"
+          onCancel={handleCancelTaggle}
+          message={`Are you sure you want to ${isAvailable ? "disable" : "enable"} this product?`}
         />
       )}
     </div>

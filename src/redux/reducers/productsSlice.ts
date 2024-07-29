@@ -79,6 +79,26 @@ SearchParams
   },
 );
 
+export const isProductAvailable = createAsyncThunk(
+  "products/avail",
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await api.patch(
+        `/products/${id}/status`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        },
+      );
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  },
+);
+
 const initialState: ProductsState = {
   loading: false,
   data: [],
@@ -96,7 +116,9 @@ const productsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.pending, (state) => {
-        state.loading = true;
+        if (state.data.length === 0) {
+          state.loading = true;
+        }
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = false;
