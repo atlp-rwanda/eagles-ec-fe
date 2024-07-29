@@ -174,5 +174,24 @@ const SuccessfulPayment = () => {
   );
 };
 
+const CancelledPayment = () => (
+  <section className="flex items-center justify-center py-32 bg-gray-100 md:m-0 px-4  ">
+    <div className="bg-white p-6 rounded shadow-md text-center">
+      <h1 className="text-2xl font-medium text-red-500">
+        ❌ Payment Was Cancelled
+      </h1>
+      <p className="mt-4">
+        Checkout Details about your carts If you wish to adjust !
+      </p>
+      <p className="mt-2">Thank you for shopping with us.</p>
+
+      <Link to="/carts">
+        <button className="mt-4 inline-block px-4 py-2 text-white bg-red-500 rounded transition-colors duration-300 cursor-pointer hover:bg-green-600">
+          Checkout your Carts
+        </button>
+      </Link>
+    </div>
+  </section>
+);
 export default Payment;
-export { SuccessfulPayment };
+export { SuccessfulPayment, CancelledPayment };
