@@ -55,6 +55,11 @@ describe("FileUpload component", () => {
     new File(["dummy content"], "example.png", { type: "image/png" }),
   ];
 
+  jest.mock("react-router-dom", () => ({
+    ...jest.requireActual("react-router-dom"),
+    useParams: jest.fn(),
+  }));
+
   beforeEach(() => {
     (useDropzone as jest.Mock).mockImplementation(() => ({
       getRootProps: jest.fn(() => ({ onClick: () => {} })),

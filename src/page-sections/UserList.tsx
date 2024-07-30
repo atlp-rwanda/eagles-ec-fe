@@ -8,6 +8,7 @@ import { HiMiniUserGroup } from "react-icons/hi2";
 import { useAppDispatch } from "../redux/hooks";
 import Spinner from "../components/dashboard/Spinner";
 import { fetchChats, fetchUsers } from "../redux/reducers/chatSlice";
+import { socket } from "../config/socket";
 
 interface UserListProps {
   onUserSelect: (chat: any | null, user: any) => void;
@@ -38,6 +39,17 @@ const UserList: React.FC<UserListProps> = ({
   useEffect(() => {
     dispatch(fetchChats());
     dispatch(fetchUsers());
+
+    const handlePrivateMessage = () => {
+      dispatch(fetchChats());
+      dispatch(fetchUsers());
+    };
+
+    socket.on("private message recieved", handlePrivateMessage);
+
+    return () => {
+      socket.off("private message recieved", handlePrivateMessage);
+    };
   }, [dispatch]);
 
   useEffect(() => {
@@ -114,7 +126,7 @@ const UserList: React.FC<UserListProps> = ({
         <input
           type="text"
           placeholder="Search..."
-          className="px-10 py-2 rounded-md dark:border-[1px] text-gray-500 w-full outline-none bg-bg-gray dark:bg-transparent dark:border-dark-gray focus:outline-none"
+          className="px-10 py-2 rounded-md border-[1px] text-gray-500 w-full outline-none bg-bg-gray bg-transparent border-dark-gray focus:outline-none"
           value={searchTerm}
           onChange={handleSearchChange}
         />
@@ -193,7 +205,7 @@ const UserList: React.FC<UserListProps> = ({
                       {chat.messages.length > 0
                         ? chat.messages[
                           chat.messages.length - 1
-                        ].message.substring(0, 20)
+                        ].message.substring(0, 15)
                         : "No messages yet"}
                       ...
                     </p>
