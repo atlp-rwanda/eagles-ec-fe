@@ -33,8 +33,11 @@ import BuyerOrders from "../pages/BuyerOrders";
 import SignupVerification from "../pages/SignupVerification";
 import SmoothScroll from "../utils/SmoothScroll";
 import NotFound from "../pages/NotFound";
-import Payment, { SuccessfulPayment } from "../pages/paymentPage";
 import { LogoutProvider } from "../components/dashboard/admin/LogoutContext";
+import Payment, {
+  CancelledPayment,
+  SuccessfulPayment,
+} from "../pages/paymentPage";
 
 const AppRoutes = () => {
   const navigate = useNavigate();
@@ -69,7 +72,7 @@ const AppRoutes = () => {
             <Route path="/orders" element={<BuyerOrders />} />
             <Route path="/payment" element={<Payment />} />
             <Route path="/payment/success" element={<SuccessfulPayment />} />
-            <Route path="/payment/canceled" element={<Payment />} />
+            <Route path="/payment/canceled" element={<CancelledPayment />} />
           </Route>
           <Route path="chat" element={<ChatPage />} />
           <Route path="/password-reset-link" element={<GetLinkPage />} />
@@ -111,7 +114,7 @@ const AppRoutes = () => {
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </LogoutProvider>
-    </SmoothScroll>
+     </SmoothScroll>
   );
 };
 export default AppRoutes;
