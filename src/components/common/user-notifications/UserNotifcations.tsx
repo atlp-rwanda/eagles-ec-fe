@@ -7,7 +7,9 @@ import { useAppSelector } from "../../../redux/hooks";
 import { getCurrentUser } from "../../../utils/currentuser";
 
 const UserNotifications = () => {
-  const { notifications } = useAppSelector((state) => state.notifications);
+  const { notifications, currentUser } = useAppSelector(
+    (state) => state.notifications,
+  );
 
   const formatDate = (dateString: Date) => {
     const date = new Date(dateString);
@@ -60,11 +62,17 @@ const UserNotifications = () => {
   }
 
   return (
-    <div className="mt-24 mb-4">
+    <div
+      className={` ${currentUser && currentUser.roleId === 2 && "mt-24"} mb-4`}
+    >
       <div>
         {sortedNotifications.map((notification, index) => (
           <Link
-            to={`/dashboard/notifications/${notification.id}`}
+            to={
+              currentUser && currentUser.roleId === 2
+                ? `/dashboard/notifications/${notification.id}`
+                : `/notifications/${notification.id}`
+            }
             key={index}
             className={`flex sm:flex-row flex-col justify-between items-center mb-[3px] p-4 rounded-md gap-4 ${notification.isRead ? "bg-[#FFFFFF]" : "bg-[#E1ECF4]"}`}
           >

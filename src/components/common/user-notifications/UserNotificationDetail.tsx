@@ -7,7 +7,9 @@ import { readNotification } from "../../../redux/reducers/notificationSlice";
 
 const UserNotificationDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const { notifications } = useAppSelector((state) => state.notifications);
+  const { notifications, currentUser } = useAppSelector(
+    (state) => state.notifications,
+  );
 
   const dispatch = useAppDispatch();
 
@@ -50,7 +52,9 @@ const UserNotificationDetail = () => {
   }, []);
 
   return (
-    <div className="mt-24 mb-4">
+    <div
+      className={` ${currentUser && currentUser.roleId === 2 && "mt-24"} mb-4`}
+    >
       <div className="flex flex-col gap-4 p-4 rounded-md bg-[#FFFFFF] min-h-[80vh]">
         <p>
           When :

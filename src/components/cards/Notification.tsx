@@ -21,6 +21,13 @@ export const NotificationPopup: React.FC<INotificationPop> = ({
     (state) => state.notifications,
   );
 
+  const recentNotifications = [...notifications]
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    )
+    .slice(0, 5);
+
   return (
     <Menu
       open={Boolean(anchorEl)}
@@ -67,7 +74,7 @@ export const NotificationPopup: React.FC<INotificationPop> = ({
       }}
     >
       {notifications.length > 0 ? (
-        notifications.slice(0, 5).map((notification, index) => (
+        recentNotifications.map((notification, index) => (
           <>
             <Link
               to={
@@ -80,9 +87,9 @@ export const NotificationPopup: React.FC<INotificationPop> = ({
               className="flex justify-between items-center mb-[3px] px-2 gap-4 $"
             >
               {notification.isRead ? (
-                <FaEnvelopeOpenText className=" min-h-[30px] min-w-[30px] " />
+                <FaEnvelopeOpenText className="text-[30px] min-h-[30px] min-w-[30px] " />
               ) : (
-                <FaEnvelope className=" text-[30px]" />
+                <FaEnvelope className=" text-[30px] min-w-[30px] min-h-[30px]" />
               )}
               <p className={` text-[13px]  `}>{notification.message}</p>
             </Link>
