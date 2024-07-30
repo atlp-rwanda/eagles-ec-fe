@@ -17,11 +17,14 @@ test("demo", () => {
 describe("Testing React components", () => {
   it("should render home page componets", () => {
     render(
-      <QueryClientProvider client={client}>
-        <BrowserRouter>
-          <Homepage />
-        </BrowserRouter>
-      </QueryClientProvider>,
+      <Provider store={store}>
+        <QueryClientProvider client={client}>
+          <BrowserRouter>
+            <Homepage />
+          </BrowserRouter>
+        </QueryClientProvider>
+        ,
+      </Provider>,
     );
     expect(true).toBeTruthy();
   });

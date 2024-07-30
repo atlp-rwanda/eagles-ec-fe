@@ -1,5 +1,5 @@
 const Spinner = () => (
-  <span className="inline-block dark:text-white">
+  <span className="inline-block">
     <svg
       width="20"
       height="20"

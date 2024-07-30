@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { MdSportsGolf } from "react-icons/md";
 
 import UserList from "../page-sections/UserList";
 import ChatWindow from "../page-sections/ChatWindow";
@@ -31,8 +30,20 @@ const ChatPage: React.FC = () => {
     setRefetch(true);
   };
 
+  const handlePastMessages = (pastMessages: any[]) => {
+    setPublicMessages(
+      pastMessages.map((msg) => ({
+        isOwner: msg.sender === profile?.name,
+        message: msg.message,
+        sender: msg.sender,
+        createdAt: msg.createdAt,
+      })),
+    );
+  };
+
   useEffect(() => {
     dispatch(fetchUser());
+    socket.on("past messages", handlePastMessages);
   }, [dispatch]);
 
   useEffect(() => {
@@ -43,32 +54,31 @@ const ChatPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const handleConnect = () => {
-      socket.emit("private chats");
-    };
+    socket.on("past messages", handlePastMessages);
+  }, [isPublicChat]);
 
+  useEffect(() => {
     const handleChatMessage = (msg: any) => {
       if (!publicMessageIds.current.has(msg.id)) {
         setPublicMessages((prevMessages) => [...prevMessages, msg]);
         publicMessageIds.current.add(msg.id);
       }
     };
-
-    const handlePastMessages = (pastMessages: any[]) => {
-      setPublicMessages(
-        pastMessages.map((msg) => ({
-          isOwner: msg.sender === profile?.name,
-          message: msg.message,
-          sender: msg.sender,
-          createdAt: msg.createdAt,
-        })),
-      );
-    };
-
-    socket.on("connect", handleConnect);
     socket.on("chat message", handleChatMessage);
     socket.on("past messages", handlePastMessages);
-  }, [publicMessages]);
+
+    return () => {
+      socket.off("chat message", handleChatMessage);
+      socket.off("past messages", handlePastMessages);
+    };
+  }, [publicMessageIds, selectedChat]);
+
+  useEffect(() => {
+    const handleConnect = () => {
+      socket.emit("private chats");
+    };
+    socket.on("connect", handleConnect);
+  }, [selectedChat]);
 
   useEffect(() => {
     const handlePrivateMessage = (message: any) => {
@@ -191,6 +201,12 @@ const ChatPage: React.FC = () => {
       }));
 
       try {
+        socket.emit("private chat message", {
+          sender: profile?.username,
+          userId: profile?.id,
+          receiverId: newChatUser.id,
+          message: text,
+        });
         await dispatch(
           sendMessage({ message: text, id: newChatUser.id }),
         ).unwrap();

@@ -151,7 +151,7 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
               <IoCartOutline className="text-[24px] cursor-pointer text-black" />
             </Link>
             <div className="flex flex-col ">
-              {userCart.length > 0 && (
+              {userCart?.length > 0 && (
                 <div className="absolute w-5 h-5 bg-red-500 -top-3  -right-3 rounded-full text-center text-white text-[12px] flex justify-center items-center">
                   <span className="">{userCart?.length}</span>
                 </div>

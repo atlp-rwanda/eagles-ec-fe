@@ -162,10 +162,7 @@ const ProductsTable: React.FC = () => {
               </tr>
             ) : products.length === 0 ? (
               <tr>
-                <td
-                  colSpan={6}
-                  className="text-center py-10 text-dark-gray dark:text-white"
-                >
+                <td colSpan={6} className="text-center py-10 text-dark-gray">
                   No products found.
                 </td>
               </tr>

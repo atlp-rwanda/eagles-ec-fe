@@ -77,6 +77,39 @@ describe("ProductCard Component", () => {
     // expect(addToCartButton).toBeDefined();
   });
 
+  test("renders rating and review count correctly", () => {
+    render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <ProductCard product={product} />
+        </BrowserRouter>
+      </Provider>,
+    );
+
+    const rating = screen.getByTestId("rating");
+    const reviewCount = screen.getByTestId("review");
+
+    expect(rating).toBeDefined();
+    expect(reviewCount).toBeDefined();
+  });
+
+  test("truncates long product names", () => {
+    const longNameProduct = {
+      ...product,
+      name: "This is a very long product name that should be truncated",
+    };
+    render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <ProductCard product={longNameProduct} />
+        </BrowserRouter>
+      </Provider>,
+    );
+
+    const productName = screen.getByTestId("product-name");
+    expect(productName.textContent).toHaveLength(15);
+  });
+
   test("renders wishlist and view details buttons", () => {
     render(
       <Provider store={store}>
