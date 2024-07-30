@@ -42,14 +42,12 @@ const AppRoutes = () => {
     setNavigate(navigate);
     // setNavigateFunction(navigate);
   }, [navigate]);
-
   const AlreadyLogged = ({ children }) => {
     const navigate = useNavigate();
     const token = localStorage.getItem("accessToken");
     const decodedToken = token ? JSON.parse(atob(token!.split(".")[1])) : {};
     const tokenIsValid = decodedToken.id && decodedToken.roleId;
     const isSeller = decodedToken.roleId === 2;
-
     useEffect(() => {
       if (tokenIsValid) {
         isSeller ? navigate("/dashboard") : navigate("/");
@@ -58,7 +56,6 @@ const AppRoutes = () => {
 
     return tokenIsValid ? null : children;
   };
-
   return (
     <SmoothScroll>
       <LogoutProvider>
@@ -117,5 +114,4 @@ const AppRoutes = () => {
     </SmoothScroll>
   );
 };
-
 export default AppRoutes;
