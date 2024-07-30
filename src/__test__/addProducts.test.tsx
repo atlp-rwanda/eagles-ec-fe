@@ -16,7 +16,6 @@ import TextInput from "../components/common/TextInput";
 import AddProduct from "../dashboard/sellers/AddProduct";
 import FileUpload from "../components/dashboard/FileUpload";
 import { fetchCategories } from "../redux/reducers/categoriesSlice";
-import { LogoutProvider } from "../components/dashboard/admin/LogoutContext";
 
 beforeAll(() => {
   const mockPayload = {
@@ -65,13 +64,7 @@ describe("FileUpload component", () => {
   });
 
   it("should render the component with no files", () => {
-    render(
-      <LogoutProvider>
-        {" "}
-        {/* Wrap with LogoutProvider */}
-        <FileUpload onDrop={onDropMock} remove={removeMock} files={[]} />
-      </LogoutProvider>,
-    );
+    render(<FileUpload onDrop={onDropMock} remove={removeMock} files={[]} />);
 
     expect(screen.getByText("Browse Images...")).toBeInTheDocument();
     expect(screen.getByText(/Browse Images.../i)).toBeInTheDocument();
@@ -80,22 +73,14 @@ describe("FileUpload component", () => {
 
   it("should render the component with files", () => {
     render(
-      <LogoutProvider>
-        {" "}
-        {/* Wrap with LogoutProvider */}
-        <FileUpload onDrop={onDropMock} remove={removeMock} files={filesMock} />
-      </LogoutProvider>,
+      <FileUpload onDrop={onDropMock} remove={removeMock} files={filesMock} />,
     );
     expect(screen.getByRole("button", { name: /remove/i })).toBeInTheDocument();
   });
 
   it("should call remove when the remove button is clicked", () => {
     render(
-      <LogoutProvider>
-        {" "}
-        {/* Wrap with LogoutProvider */}
-        <FileUpload onDrop={onDropMock} remove={removeMock} files={filesMock} />
-      </LogoutProvider>,
+      <FileUpload onDrop={onDropMock} remove={removeMock} files={filesMock} />,
     );
 
     const removeButton = screen.getByRole("button", { name: /remove/i });
@@ -110,13 +95,9 @@ describe("test seller dashboard components", () => {
     render(
       <Provider store={store}>
         <Router>
-          <LogoutProvider>
-            {" "}
-            {/* Wrap with LogoutProvider */}
-            <Layout>
-              <h1>Seller's dashboard</h1>
-            </Layout>
-          </LogoutProvider>
+          <Layout>
+            <h1>Seller's dashboard</h1>
+          </Layout>
         </Router>
       </Provider>,
     );
@@ -129,11 +110,7 @@ describe("test seller dashboard components", () => {
     render(
       <Provider store={store}>
         <Router>
-          <LogoutProvider>
-            {" "}
-            {/* Wrap with LogoutProvider */}
-            <AddCategory setCategoryModal={mockSetCategoryModal} />
-          </LogoutProvider>
+          <AddCategory setCategoryModal={mockSetCategoryModal} />
         </Router>
       </Provider>,
     );
@@ -165,15 +142,11 @@ describe("test seller dashboard components", () => {
     render(
       <Provider store={store}>
         <Router>
-          <LogoutProvider>
-            {" "}
-            {/* Wrap with LogoutProvider */}
-            <CustomSelect
-              options={options}
-              defaultValue="Select a category"
-              onSelect={mockOnSelect}
-            />
-          </LogoutProvider>
+          <CustomSelect
+            options={options}
+            defaultValue="Select a category"
+            onSelect={mockOnSelect}
+          />
         </Router>
       </Provider>,
     );
@@ -196,16 +169,12 @@ describe("test seller dashboard components", () => {
     const Component = () => {
       const { register } = useForm();
       return (
-        <LogoutProvider>
-          {" "}
-          {/* Wrap with LogoutProvider */}
-          <TextInput
-            label={label}
-            placeholder={placeholder}
-            register={register}
-            name="productName"
-          />
-        </LogoutProvider>
+        <TextInput
+          label={label}
+          placeholder={placeholder}
+          register={register}
+          name="productName"
+        />
       );
     };
 
@@ -229,17 +198,13 @@ describe("test seller dashboard components", () => {
     const Component = () => {
       const { register } = useForm();
       return (
-        <LogoutProvider>
-          {" "}
-          {/* Wrap with LogoutProvider */}
-          <TextInput
-            label={label}
-            placeholder={placeholder}
-            register={register}
-            name="productName"
-            error={errorMessage}
-          />
-        </LogoutProvider>
+        <TextInput
+          label={label}
+          placeholder={placeholder}
+          register={register}
+          name="productName"
+          error={errorMessage}
+        />
       );
     };
 
@@ -260,11 +225,7 @@ describe("test seller dashboard components", () => {
     render(
       <Provider store={store}>
         <Router>
-          <LogoutProvider>
-            {" "}
-            {/* Wrap with LogoutProvider */}
-            <AddProduct />
-          </LogoutProvider>
+          <AddProduct />
         </Router>
       </Provider>,
     );
@@ -300,11 +261,7 @@ describe("test seller dashboard components", () => {
     render(
       <Provider store={store}>
         <Router>
-          <LogoutProvider>
-            {" "}
-            {/* Wrap with LogoutProvider */}
-            <AddProduct />
-          </LogoutProvider>
+          <AddProduct />
         </Router>
       </Provider>,
     );
@@ -321,11 +278,7 @@ it("should display error messages for invalid inputs", async () => {
   render(
     <Provider store={store}>
       <Router>
-        <LogoutProvider>
-          {" "}
-          {/* Wrap with LogoutProvider */}
-          <AddProduct />
-        </LogoutProvider>
+        <AddProduct />
       </Router>
     </Provider>,
   );
@@ -341,11 +294,7 @@ it("should open and close AddCategory modal", () => {
   render(
     <Provider store={store}>
       <Router>
-        <LogoutProvider>
-          {" "}
-          {/* Wrap with LogoutProvider */}
-          <AddProduct />
-        </LogoutProvider>
+        <AddProduct />
       </Router>
     </Provider>,
   );

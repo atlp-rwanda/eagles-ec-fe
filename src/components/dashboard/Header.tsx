@@ -1,10 +1,9 @@
 import { FiSearch, FiMenu } from "react-icons/fi";
-import { FaRegBell, FaCircle, FaUserAlt } from "react-icons/fa";
+import { FaRegBell, FaCircle } from "react-icons/fa";
 import { FaAngleDown } from "react-icons/fa6";
 import { BiSolidMessageDetail } from "react-icons/bi";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-
 import { getProfile } from "../../redux/reducers/profileSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { RootState } from "../../redux/store";
@@ -26,7 +25,6 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
   useEffect(() => {
     dispatch(getProfile());
   }, [dispatch]);
-
   const profileImage = profile?.profileImage;
   const userInfo = localStorage.getItem("accessToken")
     ? JSON.parse(atob(localStorage.getItem("accessToken")!.split(".")[1]))
@@ -56,12 +54,14 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
     <>
       <header className="flex lg:w-[80%] lg:ml-[5%] px-8 fixed z-30 top-0 items-center w-full justify-between py-4 bg-white dark:bg-secondary-black">
         <div className="relative flex items-center justify-between w-full lg:hidden">
-          <FiMenu className="w-6 h-6 mr-3 text-black" onClick={toggleSidebar} />
-          <div className="flex items-center gap-4" />
+          <FiMenu className="text-black w-6 h-6 mr-3" onClick={toggleSidebar} />
+          <div className="flex items-center gap-4">
+
         </div>
-        <div className="flex items-center justify-end w-full lg:justify-between">
-          <div className="relative hidden lg:block">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+        </div>
+        <div className="flex items-center justify-end lg:justify-between  w-full">
+          <div className="hidden lg:block relative">
+            <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
               <FiSearch className="text-dark-gray" />
             </span>
             <input
@@ -72,39 +72,29 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
           </div>
           <div className="flex items-center gap-6">
             <div
-              className="relative flex items-center justify-center p-3"
+              className="flex items-center justify-center relative p-3"
               onClick={(e) => setTarget(e.currentTarget)}
             >
-              <FaRegBell className="cursor-pointer text-dark-gray size-6" />
-              <p className="bg-red-500 text-white rounded-full text-[10px] absolute top-0 right-0 px-2 py-1">
+              <FaRegBell className="text-dark-gray size-6 cursor-pointer" />
+              <p className="bg-red-500 text-white rounded-full  text-[10px] absolute top-0 right-0 px-2 py-1">
                 {unreadCount}
               </p>
             </div>
 
             <div
-              className="relative flex items-center h-full space-x-1 cursor-pointer"
-              ref={profileDropdownRef}
-            >
-              {profileImage ? (
-                <img
-                  src={profileImage}
-                  alt="User Avatar"
-                  className="object-cover w-10 h-10 rounded-full"
-                  onClick={() => setShowDropdown(!showDropdown)}
-                />
-              ) : (
-                <FaUserAlt
-                  className="w-10 h-10 text-gray-400 rounded-full"
-                  onClick={() => setShowDropdown(!showDropdown)}
-                />
-              )}
-              <h4>{profile?.fullName}</h4>
-              <FaAngleDown
-                className="hidden lg:block"
-                onClick={() => setShowDropdown(!showDropdown)}
-              />
-              {showDropdown && <ProfileDropdown userInfo={userInfo} />}
-            </div>
+            className="flex items-center space-x-1 h-full relative cursor-pointer"
+            ref={profileDropdownRef}
+          >
+            <img
+              src={profileImage}
+              alt="User Avatar"
+              className="w-10 h-10 object-cover rounded-full"
+              onClick={() => setShowDropdown(!showDropdown)}
+            />
+            <h4>{profile?.fullName}</h4>
+            <FaAngleDown className="hidden lg:block" onClick={() => setShowDropdown(!showDropdown)} />
+            {showDropdown && <ProfileDropdown userInfo={userInfo} />}
+          </div>
           </div>
         </div>
       </header>

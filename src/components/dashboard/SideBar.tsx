@@ -3,10 +3,9 @@ import { RiHome3Line, RiAddBoxLine } from "react-icons/ri";
 import { IoBriefcaseOutline, IoSettingsOutline } from "react-icons/io5";
 import { AiFillProduct } from "react-icons/ai";
 import { MdInsertChartOutlined } from "react-icons/md";
+import { FiLogOut } from "react-icons/fi";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { FaCircle } from "react-icons/fa";
-
-import HomeButton from "./HomeButton";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -26,15 +25,15 @@ const SideBar: React.FC<SidebarProps> = ({ isOpen }) => {
          isOpen ? "translate-x-0" : "-translate-x-full"
        } lg:translate-x-0`}
     >
-      <div className="flex flex-col justify-between min-h-screen py-6 dark:bg-secondary-black">
-        <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col justify-between py-6 dark:bg-secondary-black min-h-screen">
+        <div className="flex flex-col justify-center items-center">
           <Link to="/">
-            <div className="flex items-center justify-center gap-1 py-2 font-bold text-black">
+            <div className="text-black font-bold justify-center py-2 flex items-center gap-1">
               <span className="font-[550] text-2xl"> eagles</span>
               <FaCircle className="text-[12px] text-[#DB4444] mt-1" />
             </div>
           </Link>
-          <nav className="flex flex-col gap-2 mt-10">
+          <nav className="mt-10 flex flex-col gap-2">
             <NavLink
               to="/dashboard"
               className={`py-2.5 px-4 flex items-center gap-2 text-lg rounded transition duration-200 ${getLinkClass(
@@ -94,7 +93,10 @@ const SideBar: React.FC<SidebarProps> = ({ isOpen }) => {
             </NavLink>
           </nav>
         </div>
-        <HomeButton />
+        <div className="flex pl-16 lg:pl-20 xl:pl-16 2xl:pl-24 items-center justify-start gap-4 cursor-pointer text-gray-700">
+          <FiLogOut className="text-xl" />
+          Log Out
+        </div>
       </div>
     </div>
   );
