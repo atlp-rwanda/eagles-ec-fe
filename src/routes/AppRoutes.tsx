@@ -36,6 +36,7 @@ import NotFound from "../pages/NotFound";
 import Payment, { SuccessfulPayment } from "../pages/paymentPage";
 import UserNotifications from "../components/common/user-notifications/UserNotifcations";
 import UserNotificationDetail from "../components/common/user-notifications/UserNotificationDetail";
+import { LogoutProvider } from "../components/dashboard/admin/LogoutContext";
 
 const AppRoutes = () => {
   const navigate = useNavigate();
