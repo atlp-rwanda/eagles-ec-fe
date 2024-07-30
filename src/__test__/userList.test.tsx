@@ -6,8 +6,17 @@ import MockAdapter from "axios-mock-adapter";
 import UserList from "../page-sections/UserList";
 import chatSlice from "../redux/reducers/chatSlice";
 import api from "../redux/api/api";
+import { socket } from "../config/socket";
 
 const mockApi = new MockAdapter(api);
+
+jest.mock("../config/socket", () => ({
+  socket: {
+    on: jest.fn(),
+    off: jest.fn(),
+  },
+}));
+
 const mockStore = (initialState) =>
   configureStore({
     reducer: {

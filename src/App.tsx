@@ -49,11 +49,11 @@ const App: React.FC = () => {
       {location.pathname !== "/chat"
         && location.pathname !== "/login"
         && location.pathname !== "/register" && (
-          <Link to="/chat">
-            <div className="fixed bg-primary text-white shadow-md rounded px-3 py-3 z-50 right-6 bottom-6 cursor-pointer group">
+          <div onClick={() => (window.location.href = "/chat")}>
+            <div className="fixed bg-[#DB4444] text-white shadow-md rounded px-3 py-3 z-50 right-6 bottom-6 cursor-pointer group">
               <IoChatbubbleEllipsesOutline className="text-[30px] text-white" />
             </div>
-          </Link>
+          </div>
       )}
     </main>
   );

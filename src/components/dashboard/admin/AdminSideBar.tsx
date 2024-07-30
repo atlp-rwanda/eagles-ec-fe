@@ -47,7 +47,7 @@ const AdminSideBar: React.FC<SidebarProps> = ({ isOpen }) => {
         isOpen ? "translate-x-0" : "-translate-x-full"
       } lg:translate-x-0`}
     >
-      <div className="flex flex-col justify-between min-h-screen py-6 dark:bg-secondary-black">
+      <div className="flex flex-col justify-between min-h-screen py-6">
         <div className="flex flex-col items-center justify-center">
           <div className="flex items-center justify-center gap-1 py-2 font-bold text-black">
             <span className="font-[550] text-2xl">eagles</span>

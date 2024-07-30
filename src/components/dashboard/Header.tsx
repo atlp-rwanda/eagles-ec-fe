@@ -54,7 +54,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
 
   return (
     <>
-      <header className="flex lg:w-[80%] lg:ml-[5%] px-8 fixed z-30 top-0 items-center w-full justify-between py-4 bg-white dark:bg-secondary-black">
+      <header className="flex lg:w-[80%] lg:ml-[5%] px-8 fixed z-30 top-0 items-center w-full justify-between py-4 bg-white">
         <div className="relative flex items-center justify-between w-full lg:hidden">
           <FiMenu className="w-6 h-6 mr-3 text-black" onClick={toggleSidebar} />
           <div className="flex items-center gap-4" />
@@ -67,7 +67,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
             <input
               type="text"
               placeholder="Search..."
-              className="pl-10 pr-10 py-2 rounded-md dark:border-[0.3px] outline-none bg-[#F7F8FA] focus:outline-none"
+              className="pl-10 pr-10 py-2 rounded-md border-[0.3px] outline-none bg-[#F7F8FA] focus:outline-none"
             />
           </div>
           <div className="flex items-center gap-6">
