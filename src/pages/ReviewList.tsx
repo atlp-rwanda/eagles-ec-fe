@@ -154,7 +154,7 @@ const ReviewsList: React.FC<ReviewsListProps> = ({ productId }) => {
                 </p>
                 <Rating
                   value={parseInt(review.rating, 10) || parseInt(newRating, 10)}
-                  disabled
+                  // disabled
                   size="small"
                 />
                 {deletingReviewId === parseInt(review.id, 10) && <Spinner />}
@@ -186,53 +186,57 @@ const ReviewsList: React.FC<ReviewsListProps> = ({ productId }) => {
           </div>
         ))
       )}
-      <div className="mt-4">
-        <h3 className="text-md font-semibold">
-          {editingReview ? "Edit Review" : "Review this product"}
-        </h3>
-        <div className="flex flex-col gap-2 w-[100%] sm:w-[60%]">
-          <Rating
-            value={parseInt(newRating, 10)}
-            onChange={(e, newValue) => {
-              setNewRating(String(newValue));
-              if (errors.newRating) {
-                setError({ ...errors, newRating: undefined });
+      {!loggedInUserToken ? (
+        ""
+      ) : (
+        <div className="mt-4">
+          <h3 className="text-md font-semibold">
+            {editingReview ? "Edit Review" : "Review this product"}
+          </h3>
+          <div className="flex flex-col gap-2 w-[100%] sm:w-[60%]">
+            <Rating
+              value={parseInt(newRating, 10)}
+              onChange={(e, newValue) => {
+                setNewRating(String(newValue));
+                if (errors.newRating) {
+                  setError({ ...errors, newRating: undefined });
+                }
+              }}
+            />
+            {errors.newRating && (
+              <p className="text-red-500">{errors.newRating}</p>
+            )}
+            <textarea
+              value={newFeedback}
+              onChange={(e) => {
+                setNewFeedback(e.target.value);
+                if (errors.newFeedback) {
+                  setError({ ...errors, newFeedback: undefined });
+                }
+              }}
+              placeholder="Write your feedback"
+              className="border-2 border-[#DB4444] p-2 rounded"
+            />
+            {errors.newFeedback && (
+              <p className="text-red-500">{errors.newFeedback}</p>
+            )}
+            <Button
+              text={
+                isLoading
+                  ? "Loading..."
+                  : editingReview
+                    ? "Update Review"
+                    : "Add Review"
               }
-            }}
-          />
-          {errors.newRating && (
-            <p className="text-red-500">{errors.newRating}</p>
-          )}
-          <textarea
-            value={newFeedback}
-            onChange={(e) => {
-              setNewFeedback(e.target.value);
-              if (errors.newFeedback) {
-                setError({ ...errors, newFeedback: undefined });
-              }
-            }}
-            placeholder="Write your feedback"
-            className="border-2 border-[#DB4444] p-2 rounded"
-          />
-          {errors.newFeedback && (
-            <p className="text-red-500">{errors.newFeedback}</p>
-          )}
-          <Button
-            text={
-              isLoading
-                ? "Loading..."
-                : editingReview
-                  ? "Update Review"
-                  : "Add Review"
-            }
-            backgroundColor="bg-[#DB4444]"
-            disabled={isLoading}
-            data-testid="revUpdatete-btn"
-            className="w-[100%] sm:w-[30%]"
-            onClick={editingReview ? handleUpdateReview : handleAddReview}
-          />
+              backgroundColor="bg-[#DB4444]"
+              disabled={isLoading}
+              data-testid="revUpdatete-btn"
+              className="w-[100%] sm:w-[30%]"
+              onClick={editingReview ? handleUpdateReview : handleAddReview}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

@@ -49,8 +49,6 @@ export const LogoutProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     const checkTokenExpiration = async () => {
       const accessToken: any = localStorage.getItem("accessToken");
-
-      console.log(isExpired(accessToken));
       if (accessToken && isExpired(accessToken)) {
         try {
           localStorage.removeItem("accessToken");

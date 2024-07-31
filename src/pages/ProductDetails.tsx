@@ -14,7 +14,8 @@ import { useParams } from "react-router-dom";
 import { MdChat, MdCurrencyExchange } from "react-icons/md";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { BsChatRightText } from "react-icons/bs";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 import { useFetchSingleProduct } from "../libs/queries";
 import ProductDetailSkleton from "../components/skeletons/ProductDetailSkleton";
@@ -22,18 +23,26 @@ import { IProduct, prod } from "../types";
 import api from "../redux/api/api";
 import RelatedProducts from "../components/common/related-products/RelatedProducts";
 import { fetchReviews } from "../redux/reducers/reviewSlice";
+import {
+  addToCart,
+  removeFromCart,
+  cartManage,
+} from "../redux/reducers/cartSlice";
 
 import ReviewsList from "./ReviewList";
 
 const ProductDetails: React.FC = () => {
+  const dispatch = useDispatch();
   const [mainImage, setMainImage] = useState<string | null>(null);
   const [product, setProduct] = useState<IProduct | null>(null);
   const [items, setItems] = useState(0);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingAddToCart, setIsLoadingAddToCart] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
   const { id } = useParams();
   const { reviews } = useSelector((state: RootState) => state.review);
+
   useEffect(() => {
     setIsLoading(true);
     const fetch = async () => {
@@ -50,6 +59,14 @@ const ProductDetails: React.FC = () => {
     };
     fetch();
   }, [id]);
+
+  const userCart = useSelector((state: RootState) => state.cart.data);
+
+  const alreadyInCart = userCart?.some(
+    (item) =>
+      // @ts-ignore
+      item.product?.id === product?.id,
+  );
 
   if (error) {
     return <div>{error}</div>;
@@ -87,6 +104,31 @@ const ProductDetails: React.FC = () => {
     }
     return `${(price / 1000000).toFixed(1)}M`;
   };
+
+  const handleAddToCart = async (productId) => {
+    if (!localStorage.getItem("accessToken")) {
+      toast.info("Please Log in to add to cart.");
+      return;
+    }
+    setIsLoadingAddToCart(true);
+    try {
+      if (alreadyInCart) {
+        await dispatch(removeFromCart(productId)).unwrap();
+        dispatch(cartManage());
+      } else {
+        await dispatch(
+          addToCart({ productId, quantity: items === 0 ? 1 : items }),
+        ).unwrap();
+        dispatch(cartManage());
+      }
+    } catch (err) {
+      const error = err as AxiosError;
+      toast.error(`Failed to modify cart: ${error.message}`);
+    } finally {
+      setIsLoadingAddToCart(false);
+    }
+  };
+
   return (
     <div className="py-6 mx-auto p-1">
       {product && (
@@ -148,7 +190,7 @@ const ProductDetails: React.FC = () => {
                   <Typography variant="h5">{product?.name}</Typography>
                   <div className="flex items-center gap-3 h-[44px]">
                     <div className="flex items-center gap-1 h-[44px]">
-                      <Rating value={totalRatings} disabled size="small" />
+                      <Rating value={totalRatings} size="small" />
                       <p className="text-[10px] text-[#6085A5]">
                         (
                         {reviews ? reviews.length : 0}
@@ -176,7 +218,7 @@ const ProductDetails: React.FC = () => {
                             variant="h4"
                             className="text-[24px] text-red-600 font-bold line-through"
                           >
-                            {soleilFN(product?.price)}
+                            {product?.price}
                             {' '}
                             Rwf
                           </Typography>
@@ -184,7 +226,7 @@ const ProductDetails: React.FC = () => {
                             variant="h4"
                             className="text-[24px] font-bold "
                           >
-                            {soleilFN(priceAfterDiscount)}
+                            {priceAfterDiscount}
                             {' '}
                             Rwf
                           </Typography>
@@ -194,13 +236,13 @@ const ProductDetails: React.FC = () => {
                           variant="h4"
                           className="text-[24px] font-bold"
                         >
-                          {soleilFN(product?.price)}
+                          {product?.price}
                           {' '}
                           Rwf
                         </Typography>
                       )}
                     </div>
-                    <BsChatRightText size="35px" />
+                    {/* <BsChatRightText size="35px" /> */}
                   </Stack>
                   {isDiscounted && (
                     <Typography variant="h4" className=" text-red-600">
@@ -236,13 +278,20 @@ const ProductDetails: React.FC = () => {
                       +
                     </button>
                   </div>
-                  <button className="text-center px-3 py-2 text-white rounded-md bg-[#DB4444] min-h-[44px] min-w-[165px]">
-                    Buy Now
+                  <button
+                    className="text-center px-3 py-2 text-white rounded-md bg-[#DB4444] min-h-[44px] min-w-[165px]"
+                    onClick={() => handleAddToCart(product.id)}
+                  >
+                    {isLoadingAddToCart
+                      ? "Loading..."
+                      : alreadyInCart
+                        ? "Remove from Cart"
+                        : "Add to Cart"}
                   </button>
-                  <IoMdHeartEmpty
+                  {/* <IoMdHeartEmpty
                     size="40px"
                     className="p-1 rounded-md border border-[#808080]"
-                  />
+                  /> */}
                 </Stack>
 
                 <div className="border-2 border-[#848484] rounded-md w-[100%]">

@@ -46,6 +46,10 @@ void,
   } catch (error: any) {
     if (axios.isAxiosError(error)) {
       const axiosError = error as AxiosError;
+
+      if (axiosError.response?.status === 404) {
+        return rejectWithValue("Wishes not found.");
+      }
       return rejectWithValue(
         // @ts-ignore
         axiosError.response?.data?.message ?? "Unknown error occurred",

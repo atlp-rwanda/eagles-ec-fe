@@ -88,7 +88,7 @@ const FeaturedProducts = () => {
         alignItems="center"
         className="mb-4 px-4"
       >
-        {products?.slice(0, 8).map((product: IProduct) => (
+        {products?.slice(0, 10).map((product: IProduct) => (
           <Grid
             key={product.id}
             item

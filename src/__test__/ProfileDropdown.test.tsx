@@ -66,7 +66,7 @@ describe("ProfileDropdown", () => {
     expect(screen.getByText("My Dashboard")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /My Dashboard/i })).toHaveAttribute(
       "href",
-      "/admin/dashboard",
+      "/admin/users",
     );
   });
 

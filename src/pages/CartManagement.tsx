@@ -35,7 +35,9 @@ const CartManagement: React.FC<IProductCardProps> = () => {
   }>({});
 
   useEffect(() => {
-    dispatch(cartManage());
+    if (localStorage.getItem("accessToken")) {
+      dispatch(cartManage());
+    }
   }, [dispatch]);
 
   if (loading) {

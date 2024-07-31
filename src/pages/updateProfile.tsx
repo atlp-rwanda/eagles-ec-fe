@@ -23,6 +23,7 @@ import Footer from "../components/common/footer/Footer";
 import ProfileTextInptCustomSelect from "../components/profile/customProfileSelect";
 import PasswordPopup from "../components/password/PasswordPopup";
 import UpdatePasswordmod from "../components/password/updateModal";
+import { fetchUser } from "../redux/reducers/authSlice";
 
 export const convertUrlToFile = async (url: string): Promise<File> => {
   const response = await fetch(url);
@@ -121,6 +122,7 @@ const UpdateUserProfile: React.FC = () => {
     try {
       const result = await dispatch(updateProfile(formData)).unwrap();
       toast.success("Profile updated successfully!");
+      dispatch(fetchUser());
     } catch (error) {
       if (error instanceof AxiosError) {
         toast.error(`Error updating profile: ${error.message}`);

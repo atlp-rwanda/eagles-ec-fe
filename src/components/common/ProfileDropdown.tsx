@@ -36,7 +36,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ userInfo }) => {
             {(userInfo.roleId === 2 || userInfo.roleId === 3) && (
               <li>
                 <Link
-                  to={userInfo.roleId === 2 ? "/dashboard" : "/admin/dashboard"}
+                  to={userInfo.roleId === 2 ? "/dashboard" : "/admin/users"}
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-100"
                 >
                   My Dashboard
