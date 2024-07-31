@@ -33,10 +33,13 @@ import BuyerOrders from "../pages/BuyerOrders";
 import SignupVerification from "../pages/SignupVerification";
 import SmoothScroll from "../utils/SmoothScroll";
 import NotFound from "../pages/NotFound";
-import Payment, { SuccessfulPayment } from "../pages/paymentPage";
 import UserNotifications from "../components/common/user-notifications/UserNotifcations";
 import UserNotificationDetail from "../components/common/user-notifications/UserNotificationDetail";
 import { LogoutProvider } from "../components/dashboard/admin/LogoutContext";
+import Payment, {
+  CancelledPayment,
+  SuccessfulPayment,
+} from "../pages/paymentPage";
 
 const AppRoutes = () => {
   const navigate = useNavigate();
@@ -60,62 +63,64 @@ const AppRoutes = () => {
   };
   return (
     <SmoothScroll>
-      <Routes>
-        <Route path="/" element={<RootLayout />}>
-          <Route index element={<Homepage />} />
-          <Route path="products" element={<ProductPage />} />
-          <Route path="products/:id" element={<ProductDetails />} />
-          <Route path="/carts" element={<CartManagement />} />
-          <Route path="/wishes" element={<BuyerWishesList />} />
-          <Route path="/orders" element={<BuyerOrders />} />
-          <Route path="/payment" element={<Payment />} />
-          <Route path="/payment/success" element={<SuccessfulPayment />} />
-          <Route path="/payment/canceled" element={<Payment />} />
-          <Route path="/notifications" element={<UserNotifications />} />
-          <Route
-            path="/notifications/:id"
-            element={<UserNotificationDetail />}
-          />
-        </Route>
-        <Route path="chat" element={<ChatPage />} />
-        <Route path="/password-reset-link" element={<GetLinkPage />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/register" element={<RegisterUser />} />
-        <Route path="/verify-user" element={<SignupVerification />} />
+      <LogoutProvider>
+        <Routes>
+          <Route path="/" element={<RootLayout />}>
+            <Route index element={<Homepage />} />
+            <Route path="products" element={<ProductPage />} />
+            <Route path="products/:id" element={<ProductDetails />} />
+            <Route path="/carts" element={<CartManagement />} />
+            <Route path="/wishes" element={<BuyerWishesList />} />
+            <Route path="/orders" element={<BuyerOrders />} />
+            <Route path="/payment" element={<Payment />} />
+            <Route path="/payment/success" element={<SuccessfulPayment />} />
+            <Route path="/payment/canceled" element={<Payment />} />
+            <Route path="/notifications" element={<UserNotifications />} />
+            <Route
+              path="/notifications/:id"
+              element={<UserNotificationDetail />}
+            />
+          </Route>
+          <Route path="chat" element={<ChatPage />} />
+          <Route path="/password-reset-link" element={<GetLinkPage />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/register" element={<RegisterUser />} />
+          <Route path="/verify-user" element={<SignupVerification />} />
 
-        <Route
-          path="/login"
-          element={(
-            <AlreadyLogged>
-              <Login />
-            </AlreadyLogged>
-          )}
-        />
-        <Route path="2fa-verify" element={<OtpVerificationForm />} />
-        <Route path="/dashboard" element={<SellerDashboard />} />
-        <Route path="/dashboard/addproduct" element={<AddProduct />} />
-        <Route path="/update-password" element={<UpdatePasswordPage />} />
-        <Route path="/profile" element={<UsersProfile />} />
-        <Route path="/profile/update" element={<UpdateUserProfile />} />
-        <Route path="/dashboard/products" element={<Products />} />
-        <Route path="/dashboard/products/:id" element={<AddProduct />} />
-        <Route path="/dashboard/orders" element={<SellerOrder />} />
-        <Route path="/admin/dashboard" element={<Dashboard />} />
-        <Route path="/admin/users" element={<UserManagement />} />
-        <Route path="/admin/settings" element={<Settings />} />
-        <Route path="/admin/analytics" element={<Analytics />} />
-        <Route path="/admin/Products" element={<Products />} />
-        <Route
-          path="/dashboard/notifications"
-          element={<SellerNotifications />}
-        />
-        <Route
-          path="/dashboard/notifications/:id"
-          element={<NotificationDetail />}
-        />
-        <Route path="/dashboard/wishes" element={<Wishes />} />
-        <Route path="/*" element={<NotFound />} />
-      </Routes>
+          <Route
+            path="/login"
+            element={(
+              <AlreadyLogged>
+                <Login />
+              </AlreadyLogged>
+            )}
+          />
+          <Route path="2fa-verify" element={<OtpVerificationForm />} />
+          <Route path="/dashboard" element={<SellerDashboard />} />
+          <Route path="/dashboard/addproduct" element={<AddProduct />} />
+          <Route path="/update-password" element={<UpdatePasswordPage />} />
+          <Route path="/profile" element={<UsersProfile />} />
+          <Route path="/profile/update" element={<UpdateUserProfile />} />
+          <Route path="/dashboard/products" element={<Products />} />
+          <Route path="/dashboard/products/:id" element={<AddProduct />} />
+          <Route path="/dashboard/orders" element={<SellerOrder />} />
+          <Route path="/admin/dashboard" element={<Dashboard />} />
+          <Route path="/admin/users" element={<UserManagement />} />
+          <Route path="/admin/settings" element={<Settings />} />
+          <Route path="/admin/analytics" element={<Analytics />} />
+          <Route path="/admin/Products" element={<Products />} />
+          <Route
+            path="/dashboard/notifications"
+            element={<SellerNotifications />}
+          />
+          <Route
+            path="/dashboard/notifications/:id"
+            element={<NotificationDetail />}
+          />
+          <Route path="/dashboard/wishes" element={<Wishes />} />
+          <Route path="/*" element={<NotFound />} />
+        </Routes>
+      </LogoutProvider>
     </SmoothScroll>
   );
 };

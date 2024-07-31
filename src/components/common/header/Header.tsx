@@ -200,7 +200,7 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
               )}
               <Stack className="flex flex-col">
                 <span className="hidden lg:block select-none font-semibold text-[12px]">
-                  {userInfo.name.split(" ")[0]}
+                  {userInfo.name?.split(" ")[0]}
                 </span>
               </Stack>
               {dropdownOpen && <ProfileDropdown userInfo={userInfo} />}

@@ -91,7 +91,7 @@ const ProductPage = () => {
 
   const handleFilter = (filtered: IProduct[]) => {
     setFilteredProducts(filtered);
-    setCurrentPage(1);
+    // setCurrentPage(1);
   };
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -109,10 +109,9 @@ const ProductPage = () => {
   };
 
   const handleItemsPerPageChange = (
-    event: React.ChangeEvent<{ value: unknown }>,
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setItemsPerPage(event.target.value as number);
-    setCurrentPage(1);
+    setItemsPerPage(Number(event.target.value));
   };
 
   if (loading) {

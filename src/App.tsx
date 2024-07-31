@@ -32,19 +32,19 @@ const App: React.FC = () => {
     };
 
     initializeSocket();
-    dispatch(getUserNotifications());
 
     return () => {
       disconnectFromSocket();
     };
   }, [dispatch]);
-  React.useEffect(() => {
-    dispatch(getUserNotifications());
-  }, [dispatch]);
 
   React.useEffect(() => {
-    dispatch(handleCurrentUser());
-  }, []);
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      dispatch(handleCurrentUser());
+      dispatch(getUserNotifications());
+    }
+  }, [dispatch]);
 
   const { isPasswordExpired } = useAppSelector((state) => state.updatePin);
 

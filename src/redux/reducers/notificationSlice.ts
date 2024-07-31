@@ -121,10 +121,10 @@ const notificationSlice = createSlice({
       .addCase(
         getUserNotifications.fulfilled,
         (state, action: PayloadAction<INotificationR[]>) => {
-          // state.notifications = action.payload;
-          // state.unreadCount = action.payload.filter(
-          //   (notification) => !notification.isRead,
-          // ).length;
+          state.notifications = action.payload;
+          state.unreadCount = action.payload.filter(
+            (notification) => !notification.isRead,
+          ).length;
         },
       )
       .addCase(handleCurrentUser.fulfilled, (state, action) => {
