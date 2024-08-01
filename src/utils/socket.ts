@@ -25,9 +25,13 @@ export const connectToSocket = async () => {
       // alert("CONNECTED TO THE SERVER");
     });
 
-    const user = await getCurrentUser();
-    if (user && user.id !== null) {
-      socket.emit("joinRoom", `${user.id}`);
+    const token = localStorage.getItem("accessToken");
+
+    if (token) {
+      const user = await getCurrentUser();
+      if (user && user.id !== null) {
+        socket.emit("joinRoom", `${user.id}`);
+      }
     }
 
     socket.on("notification", (notification) => {

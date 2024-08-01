@@ -8,5 +8,6 @@ export default {
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)$":
       "<rootDir>/src/__test__/__mock__/fileMock.ts",
     "\\.(css|less)$": "identity-obj-proxy",
+    "~src/(.*)": "<rootDir>/src/$1",
   },
 };

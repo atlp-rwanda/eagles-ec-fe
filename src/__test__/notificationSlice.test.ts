@@ -87,7 +87,7 @@ describe("notificationSlice", () => {
     expect(state.unreadCount).toBe(1);
   });
 
-  it.skip("should handle getUserNotifications thunk", async () => {
+  it("should handle getUserNotifications thunk", async () => {
     const mockNotifications: INotificationR[] = [
       {
         id: 1,
@@ -113,17 +113,13 @@ describe("notificationSlice", () => {
       data: { notifications: mockNotifications },
     });
 
-    (connectSocketMock as jest.Mock).mockReturnValue(socketMock);
-
-    await store.dispatch(getUserNotifications());
+    const result = await store.dispatch(getUserNotifications());
+    console.log("Thunk result:", result);
 
     const state = store.getState().notifications;
-    console.log("State after getUserNotifications:", state);
-    // expect(state.notifications).toEqual(mockNotifications);
-    expect(state.unreadCount).toBe(1);
 
-    expect(socketMock.emit).not.toHaveBeenCalled();
-    expect(socketMock.on).not.toHaveBeenCalled();
+    expect(state.notifications).toEqual(mockNotifications);
+    expect(state.unreadCount).toBe(2);
   });
 
   it("should handle readNotification thunk", async () => {

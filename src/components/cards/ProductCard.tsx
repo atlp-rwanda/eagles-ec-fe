@@ -191,7 +191,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
         <img
           src={product.images[0]}
           alt="product"
-          className="w-[100%] h-[200px] hover:scale-[1.05] transition duration-200"
+          className="w-[100%] h-[200px] hover:scale-[1.05] transition duration-200 cursor-pointer"
           data-testid="prod-image"
           onClick={() => navigate(`/products/${product.id}`)}
         />
@@ -258,7 +258,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
         {name}
       </Typography>
       <div className="flex items-center gap-1 p-1">
-        <p className="text-red-700 font-bold text-[10px]" data-testid="price">
+        <p className="text-red-700 font-bold text-[14px]" data-testid="price">
           {/* ${formatPrice(product.price)} */}
           {product.price}
           {' '}
@@ -266,7 +266,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
         </p>
         <Rating
           value={total}
-          color="orange"
+          color="red"
           disabled
           size="small"
           data-testid="rating"

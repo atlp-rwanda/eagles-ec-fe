@@ -33,6 +33,8 @@ import BuyerOrders from "../pages/BuyerOrders";
 import SignupVerification from "../pages/SignupVerification";
 import SmoothScroll from "../utils/SmoothScroll";
 import NotFound from "../pages/NotFound";
+import UserNotifications from "../components/common/user-notifications/UserNotifcations";
+import UserNotificationDetail from "../components/common/user-notifications/UserNotificationDetail";
 import { LogoutProvider } from "../components/dashboard/admin/LogoutContext";
 import Payment, {
   CancelledPayment,
@@ -72,7 +74,12 @@ const AppRoutes = () => {
             <Route path="/orders" element={<BuyerOrders />} />
             <Route path="/payment" element={<Payment />} />
             <Route path="/payment/success" element={<SuccessfulPayment />} />
-            <Route path="/payment/canceled" element={<CancelledPayment />} />
+            <Route path="/payment/canceled" element={<Payment />} />
+            <Route path="/notifications" element={<UserNotifications />} />
+            <Route
+              path="/notifications/:id"
+              element={<UserNotificationDetail />}
+            />
           </Route>
           <Route path="chat" element={<ChatPage />} />
           <Route path="/password-reset-link" element={<GetLinkPage />} />
@@ -114,7 +121,7 @@ const AppRoutes = () => {
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </LogoutProvider>
-     </SmoothScroll>
+    </SmoothScroll>
   );
 };
 export default AppRoutes;

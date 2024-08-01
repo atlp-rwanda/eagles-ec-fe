@@ -13,7 +13,10 @@ import {
   disconnectFromSocket,
   getSocket,
 } from "./utils/socket";
-import { getUserNotifications } from "./redux/reducers/notificationSlice";
+import {
+  getUserNotifications,
+  handleCurrentUser,
+} from "./redux/reducers/notificationSlice";
 import UpdatePasswordmod from "./components/password/updateModal";
 import PasswordPopup from "./components/password/PasswordPopup";
 
@@ -29,14 +32,18 @@ const App: React.FC = () => {
     };
 
     initializeSocket();
-    dispatch(getUserNotifications());
 
     return () => {
       disconnectFromSocket();
     };
   }, [dispatch]);
+
   React.useEffect(() => {
-    dispatch(getUserNotifications());
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      dispatch(handleCurrentUser());
+      dispatch(getUserNotifications());
+    }
   }, [dispatch]);
 
   const { isPasswordExpired } = useAppSelector((state) => state.updatePin);

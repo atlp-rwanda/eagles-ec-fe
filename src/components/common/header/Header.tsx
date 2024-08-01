@@ -8,14 +8,16 @@ import { LuUser } from "react-icons/lu";
 import { IoCartOutline } from "react-icons/io5";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
+import { FaRegBell } from "react-icons/fa";
 
 import { fetchWishes } from "../../../redux/reducers/wishListSlice";
 import { getProfile } from "../../../redux/reducers/profileSlice";
 import Logo from "../auth/Logo";
 import { RootState } from "../../../redux/store";
 import { cartManage } from "../../../redux/reducers/cartSlice";
-import { useAppDispatch } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import ProfileDropdown from "../ProfileDropdown";
+import { NotificationPopup } from "../../cards/Notification";
 
 import SearchSuggestions from "./SearchSuggestions";
 
@@ -39,8 +41,12 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
   const userInfo = localStorage.getItem("accessToken")
     ? JSON.parse(atob(localStorage.getItem("accessToken")!.split(".")[1]))
     : null;
+  const [target, setTarget] = useState<null | HTMLElement>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { unreadCount, currentUser } = useAppSelector(
+    (state) => state.notifications,
+  );
 
   const handleSelectSuggestion = (suggestion: string) => {
     setSearchQuery(suggestion);
@@ -102,6 +108,10 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
     navigate(`/products?query=${encodeURIComponent(searchQuery)}`);
   };
 
+  const handleClose = () => {
+    setTarget(null);
+  };
+
   return (
     <Stack
       className="px-[5%] z-40 2xl:px-[8%] border-t bg-white w-full relative "
@@ -147,6 +157,15 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
                 </div>
               )}
             </div>
+          </div>
+          <div
+            className="flex items-center justify-center relative p-3"
+            onClick={(e) => setTarget(e.currentTarget)}
+          >
+            <FaRegBell className="text-dark-gray size-6 cursor-pointer" />
+            <p className="bg-red-500 text-white rounded-full  text-[10px] absolute top-0 right-0 px-2 py-1">
+              {unreadCount}
+            </p>
           </div>
           <div>
             {localStorage.getItem("accessToken") && userInfo.roleId === 2 ? (
@@ -198,6 +217,11 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
           )}
         </div>
       </div>
+      <NotificationPopup
+        anchorEl={target}
+        open={Boolean(target)}
+        handleClose={handleClose}
+      />
     </Stack>
   );
 };
