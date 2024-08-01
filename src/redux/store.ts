@@ -20,6 +20,7 @@ import wishListSlice from "./reducers/wishListSlice";
 import ordersReducer from "./reducers/ordersSlice";
 import PaymentSlice from "./reducers/payment";
 import adsReducer from "./reducers/listAddSlice";
+import sellerStatsReducer from "./reducers/sellerStats";
 
 const store = configureStore({
   reducer: {
@@ -43,6 +44,7 @@ const store = configureStore({
     order: ordersReducer,
     payment: PaymentSlice,
     ads: adsReducer,
+    sellerStats: sellerStatsReducer,
   },
 });
 export type RootState = ReturnType<typeof store.getState>;

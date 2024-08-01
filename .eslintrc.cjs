@@ -61,6 +61,7 @@ module.exports = {
     "no-console": "off",
     "no-undef": "off",
     "@typescript-eslint/no-unused-vars": "off",
+    "react/no-unstable-nested-components": "off",
     "jsx-a11y/mouse-events-have-key-events": "off",
     "react/button-has-type": "off",
     "react/no-array-index-key": "off",

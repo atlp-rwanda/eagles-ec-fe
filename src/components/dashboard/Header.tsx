@@ -1,13 +1,11 @@
 import { FiSearch, FiMenu } from "react-icons/fi";
-import { FaRegBell, FaCircle, FaUserAlt } from "react-icons/fa";
+import { FaRegBell, FaUserCircle } from "react-icons/fa";
 import { FaAngleDown } from "react-icons/fa6";
-import { BiSolidMessageDetail } from "react-icons/bi";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { getProfile } from "../../redux/reducers/profileSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { RootState } from "../../redux/store";
 import { NotificationPopup } from "../cards/Notification";
 import ProfileDropdown from "../common/ProfileDropdown";
 
@@ -15,9 +13,9 @@ interface HeaderProps {
   toggleSidebar: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
+const Header = ({ toggleSidebar }: any) => {
   const [target, setTarget] = useState<HTMLElement | null>(null);
-  const { profile } = useSelector((state: RootState) => state.usersProfile);
+  const { profile } = useSelector((state: any) => state.usersProfile);
   const dispatch = useAppDispatch();
   const { unreadCount } = useAppSelector((state) => state.notifications);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -93,7 +91,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
                   onClick={() => setShowDropdown(!showDropdown)}
                 />
               ) : (
-                <FaUserAlt
+                <FaUserCircle
                   className="w-10 h-10 text-gray-400 rounded-full"
                   onClick={() => setShowDropdown(!showDropdown)}
                 />
