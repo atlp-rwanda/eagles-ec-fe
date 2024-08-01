@@ -96,7 +96,8 @@ const DataTable: React.FC = () => {
     setFilterRole(role);
   };
 
-  const sortUsersByEmail = (users: User[]) => users.sort((a, b) => a.email.localeCompare(b.email));
+  const sortUsersByEmail = (users: User[]) =>
+    users.sort((a, b) => a.email.localeCompare(b.email));
 
   const toggleActiveStatus = async (id: number) => {
     const authToken = localStorage.getItem("accessToken");
@@ -112,7 +113,9 @@ const DataTable: React.FC = () => {
           },
         },
       );
-      setUsers((prevUsers) => prevUsers.map((user) => (user.id === id ? { ...user, isActive: !user.isActive } : user)));
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          (user.id === id ? { ...user, isActive: !user.isActive } : user)));
       toast.success("User status updated successfully");
     } catch (error: any) {
       toast.error(`Error toggling active status: ${error.message}`);
@@ -148,7 +151,9 @@ const DataTable: React.FC = () => {
         },
       );
       toast.success(response.data.message);
-      setUsers((prevUsers) => prevUsers.map((user) => (user.id === id ? { ...user, roleId: newRole } : user)));
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          (user.id === id ? { ...user, roleId: newRole } : user)));
     } catch (error: any) {
       toast.error(`Error changing user role: ${error.message}`);
     } finally {
@@ -176,32 +181,33 @@ const DataTable: React.FC = () => {
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
   const totalPages = Math.ceil(filteredUsers.length / rowsPerPage);
 
-  const renderSkeletonRows = () => Array.from({ length: rowsPerPage }).map((_, index) => (
-    <TableRow
-      key={index}
-      className="bg-white border-b"
-      data-testid="skeleton-loader"
-    >
-      <TableCell className="flex items-center">
-        <Skeleton width={40} height={40} />
-        <Skeleton className="ml-2" width="70%" />
-      </TableCell>
-      <TableCell>
-        <Skeleton width={150} />
-      </TableCell>
-      <TableCell>
-        <Skeleton width={100} />
-      </TableCell>
-      <TableCell>
-        <Skeleton width={40} />
-      </TableCell>
-    </TableRow>
-  ));
+  const renderSkeletonRows = () =>
+    Array.from({ length: rowsPerPage }).map((_, index) => (
+      <TableRow
+        key={index}
+        className="bg-white border-b"
+        data-testid="skeleton-loader"
+      >
+        <TableCell className="flex items-center">
+          <Skeleton width={40} height={40} />
+          <Skeleton className="ml-2" width="70%" />
+        </TableCell>
+        <TableCell>
+          <Skeleton width={150} />
+        </TableCell>
+        <TableCell>
+          <Skeleton width={100} />
+        </TableCell>
+        <TableCell>
+          <Skeleton width={40} />
+        </TableCell>
+      </TableRow>
+    ));
 
   return (
     <>
       <ToastContainer />
-      <div className="flex flex-wrap px-2 py-4 ">
+      <div className="flex flex-wrap justify-between px-2 py-4 ">
         <NumberCard
           title="Users"
           number={numberOfUsers}
@@ -218,12 +224,6 @@ const DataTable: React.FC = () => {
           title="Buyers"
           number={numberOfBuyers}
           Logo={FaShoppingCart}
-          loading={loading}
-        />
-        <NumberCard
-          title="Subscribers"
-          number={300}
-          Logo={FaRegBell}
           loading={loading}
         />
       </div>

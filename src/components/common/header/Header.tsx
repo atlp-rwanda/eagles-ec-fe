@@ -73,11 +73,13 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
   }, [searchQuery]);
 
   useEffect(() => {
-    dispatch(cartManage());
+    if (localStorage.getItem("accessToken")) {
+      dispatch(cartManage());
+    }
   }, [dispatch]);
 
   const userCart = useSelector((state: RootState) => state.cart.data);
-
+  const wished = useSelector((state: RootState) => state.wishes.wishes);
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
@@ -103,7 +105,6 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
       navigate(`/products?query=${encodeURIComponent(searchQuery)}`);
     }
   };
-
   const handleSearchClick = () => {
     navigate(`/products?query=${encodeURIComponent(searchQuery)}`);
   };
@@ -145,7 +146,7 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
             />
           )}
         </div>
-        <div className="flex justify-between items-center relative w-[40%] md:w-[40%] lg:w-[40%] gap-2 bg-white">
+        <div className="flex justify-between items-center relative w-[40%] md:w-[40%] lg:w-[40%] gap-3 bg-white">
           <div className="flex items-center relative">
             <Link to="/carts">
               <IoCartOutline className="text-[24px] cursor-pointer text-black" />
@@ -159,15 +160,15 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
             </div>
           </div>
           <div
-            className="flex items-center justify-center relative p-3"
+            className="flex items-center justify-center relative p-3 "
             onClick={(e) => setTarget(e.currentTarget)}
           >
             <FaRegBell className="text-dark-gray size-6 cursor-pointer" />
-            <p className="bg-red-500 text-white rounded-full  text-[10px] absolute top-0 right-0 px-2 py-1">
-              {unreadCount}
-            </p>
+            <div className="absolute w-5 h-5 bg-red-500 -top-0  -right-0 rounded-full text-center text-white text-[12px] flex justify-center items-center">
+              <span className="">{unreadCount}</span>
+            </div>
           </div>
-          <div>
+          <div className="relative">
             {localStorage.getItem("accessToken") && userInfo.roleId === 2 ? (
               <Link to="dashboard/wishes">
                 <IoMdHeartEmpty className="text-[24px] cursor-pointer text-black" />
@@ -177,6 +178,13 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
                 <IoMdHeartEmpty className="text-[24px] cursor-pointer text-black" />
               </Link>
             )}
+            <div className="flex flex-col ">
+              {wished?.length > 0 && (
+                <div className="absolute w-5 h-5 bg-red-500 -top-3  -right-3 rounded-full text-center text-white text-[12px] flex justify-center items-center">
+                  <span className="">{wished?.length}</span>
+                </div>
+              )}
+            </div>
           </div>
           {isLoggedIn ? (
             <div
@@ -200,7 +208,7 @@ const Header: React.FC<ISerachProps> = ({ searchQuery, setSearchQuery }) => {
               )}
               <Stack className="flex flex-col">
                 <span className="hidden lg:block select-none font-semibold text-[12px]">
-                  {userInfo.name?.split(" ")[0]}
+                  {profile?.name ? profile.name : userInfo.name}
                 </span>
               </Stack>
               {dropdownOpen && <ProfileDropdown userInfo={userInfo} />}

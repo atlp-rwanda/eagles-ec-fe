@@ -173,10 +173,10 @@ const ChatPage: React.FC = () => {
               : selectedChat.receiverId,
           message: text,
         });
-        const response = await dispatch(
-          sendMessage({ message: text, id: selectedChat.receiverId }),
-        ).unwrap();
-        processedMessageIds.current.add(response.id);
+        // const response = await dispatch(
+        //   sendMessage({ message: text, id: selectedChat.receiverId }),
+        // ).unwrap();
+        // processedMessageIds.current.add(response.id);
         dispatch(fetchChats());
       } catch (error) {
         console.error("Message failed to send:", error);

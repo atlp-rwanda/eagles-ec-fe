@@ -86,7 +86,9 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
         console.error(error);
       }
     };
-    fetchData();
+    if (localStorage.getItem("accessToken")) {
+      fetchData();
+    }
   }, [dispatch]);
   const total = reviews
     ? reviews.reduce((sum, review) => sum + (review.rating, 10), 0)
@@ -267,7 +269,7 @@ const ProductCard: React.FC<IProductCardProps> = ({ product }) => {
         <Rating
           value={total}
           color="red"
-          disabled
+          // disabled
           size="small"
           data-testid="rating"
         />

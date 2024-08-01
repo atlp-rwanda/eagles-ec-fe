@@ -20,25 +20,25 @@ const AdminSideBar: React.FC<SidebarProps> = ({ isOpen }) => {
 
   const navItems = [
     {
-      to: "/admin/dashboard",
+      to: "/admin/users",
       icon: <RiHome3Line className="text-xl" />,
       label: "Dashboard",
     },
-    {
-      to: "/admin/users",
-      icon: <TbUsers className="text-xl" />,
-      label: "Users",
-    },
-    {
-      to: "/admin/analytics",
-      icon: <SiSimpleanalytics className="text-xl" />,
-      label: "Analytics",
-    },
-    {
-      to: "/admin/settings",
-      icon: <IoSettingsOutline className="text-xl" />,
-      label: "Settings",
-    },
+    // {
+    //   to: "/admin/users",
+    //   icon: <TbUsers className="text-xl" />,
+    //   label: "Users",
+    // },
+    // {
+    //   to: "/admin/analytics",
+    //   icon: <SiSimpleanalytics className="text-xl" />,
+    //   label: "Analytics",
+    // },
+    // {
+    //   to: "/admin/settings",
+    //   icon: <IoSettingsOutline className="text-xl" />,
+    //   label: "Settings",
+    // },
   ];
 
   return (

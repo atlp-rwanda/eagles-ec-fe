@@ -15,6 +15,9 @@ export const performLogout = async () => {
         },
       );
       localStorage.removeItem("accessToken");
+      if (localStorage.getItem("userInfo")) {
+        localStorage.removeItem("userInfo");
+      }
       // eslint-disable-next-line no-restricted-globals
       window.location.href = "/";
     }

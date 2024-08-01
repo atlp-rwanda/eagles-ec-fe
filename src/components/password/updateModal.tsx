@@ -84,7 +84,7 @@ const UpdatePasswordmod: React.FC<UpdatePasswordProps> = ({
             <button
               type="button"
               onClick={() => {
-                window.location.href = "/";
+                // window.location.href = "/profile";
                 setPasswordModal(false);
               }}
               className="bg-transparent text-primary border border-[#DB4444] px-4 py-2 rounded"
