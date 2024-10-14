@@ -19,7 +19,7 @@ const HeaderInfo = () => {
         </div>
         <div className="flex text-sm items-center gap-1">
           <FaPhone />
-          <span>+250782443651</span>
+          <span>+250783430138</span>
         </div>
       </div>
       <div className="flex text-sm items-center gap-2">
