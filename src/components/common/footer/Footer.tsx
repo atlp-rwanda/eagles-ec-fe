@@ -16,7 +16,7 @@ const Footer = () => (
             Our Contacts
           </Typography>
           <Typography variant="body2">eagles</Typography>
-          <Typography variant="body2">+250 780 693 425</Typography>
+          <Typography variant="body2">+250 783430138</Typography>
           <Typography variant="body2">eagles.ec@gmail.com</Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
